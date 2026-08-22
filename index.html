@@ -59,7 +59,7 @@
             flex-grow: 1;
             overflow-y: auto;
             padding: 20px 15px;
-            padding-bottom: 80px; /* Space for nav */
+            padding-bottom: 120px; 
         }
 
         .tab-content {
@@ -147,6 +147,7 @@
             height: 24px;
             margin-left: 15px;
             accent-color: var(--primary-green);
+            flex-shrink: 0;
         }
 
         .checkbox-row span {
@@ -224,6 +225,7 @@
             font-size: 1.1rem;
             font-weight: bold;
             border: none;
+            cursor: pointer;
         }
 
         .phone-btn {
@@ -309,10 +311,10 @@
 
     <!-- Main Content -->
     <main>
-        <!-- Tab 0: Home (New Default) -->
+        <!-- Tab 0: Home -->
         <div id="tab-home" class="tab-content active">
             <div class="home-hero">
-                <img src="https://images.unsplash.com/photo-1534360662657-b2e1e31d3319?auto=format&fit=crop&w=800&q=80" alt="Alps Landscape">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Allg%C3%A4uer_Alpen_vom_Breitenberg.jpg/800px-Allg%C3%A4uer_Alpen_vom_Breitenberg.jpg" alt="Alps Landscape">
                 <div class="home-hero-text">ברוכים הבאים לאלגוי! 🌲</div>
             </div>
             
@@ -321,8 +323,8 @@
             </p>
 
             <div class="image-gallery">
-                <img src="https://images.unsplash.com/photo-1499696956799-a1fc137bd024?auto=format&fit=crop&w=400&q=80" alt="Cabin">
-                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=400&q=80" alt="Nature Walk">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Center_Parcs_Bostalsee_05.jpg/400px-Center_Parcs_Bostalsee_05.jpg" alt="Cabin">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Waldweg_im_Allg%C3%A4u.jpg/400px-Waldweg_im_Allg%C3%A4u.jpg" alt="Nature Walk">
             </div>
 
             <h3 style="color: var(--primary-green); margin-bottom: 10px; border-bottom: 2px solid var(--light-green); padding-bottom: 5px;">📍 מסלול הנסיעה (ציריך > אלגוי)</h3>
@@ -334,73 +336,24 @@
             </div>
         </div>
 
-        <!-- Tab 1: Itinerary -->
+        <!-- Tab 1: Itinerary (Now Dynamic!) -->
         <div id="tab-itinerary" class="tab-content">
             <h2>מסלול הטיול</h2>
             
-            <div class="card">
-                <label class="checkbox-row">
-                    <input type="checkbox" onchange="toggleStrike(this)">
-                    <span>25.04 - המראה מנתב"ג לציריך</span>
-                </label>
-                <div class="details">טיסת אל על LY343. המראה: 16:35, נחיתה: 19:55.</div>
+            <!-- טופס הוספת תחנה -->
+            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h3 style="font-size: 1.1rem; color: var(--primary-green); margin-bottom: 10px;">הוספת תחנה למסלול</h3>
+                <input type="text" id="itiTitle" placeholder="כותרת (למשל: 26.04 - עצירה לקפה)" style="margin-bottom: 10px;">
+                <input type="text" id="itiDesc" placeholder="פירוט / תיאור קצר" style="margin-bottom: 10px;">
+                <select id="itiInsertAfter" style="margin-bottom: 15px;">
+                    <option value="start">מקם בתחילת המסלול</option>
+                    <!-- האופציות כאן יתמלאו אוטומטית מהענן -->
+                </select>
+                <button class="action-btn" onclick="addItineraryItem()">הוסף תחנה</button>
             </div>
 
-            <div class="card">
-                <label class="checkbox-row">
-                    <input type="checkbox" onchange="toggleStrike(this)">
-                    <span>25.04 - הגעה למלון בציריך</span>
-                </label>
-                <div class="details">לינה ללילה אחד ב-Holiday Inn Express ציריך.</div>
-            </div>
-
-            <div class="card">
-                <label class="checkbox-row">
-                    <input type="checkbox" onchange="toggleStrike(this)">
-                    <span>26.04 - איסוף רכב</span>
-                </label>
-                <div class="details">שעה 09:00: איסוף רכב (VW Passat) משדה התעופה בציריך.</div>
-            </div>
-
-            <div class="card">
-                <label class="checkbox-row">
-                    <input type="checkbox" onchange="toggleStrike(this)">
-                    <span>26.04 - נסיעה לאוסטריה</span>
-                </label>
-                <div class="details">עצירה בדרך במיקום יפה + ארוחת צהריים.</div>
-            </div>
-
-            <div class="card">
-                <label class="checkbox-row">
-                    <input type="checkbox" onchange="toggleStrike(this)">
-                    <span>26.04 - הגעה לאלגוי</span>
-                </label>
-                <div class="details">קבלת הבקתה ב-Center Parcs Allgau.</div>
-            </div>
-            
-            <div class="card">
-                <label class="checkbox-row">
-                    <input type="checkbox" onchange="toggleStrike(this)">
-                    <span>27-29.04 - בילוי בפארק</span>
-                </label>
-                <div class="details">3 ימים מלאים של כיף משפחתי בפארק אלגוי.</div>
-            </div>
-
-            <div class="card">
-                <label class="checkbox-row">
-                    <input type="checkbox" onchange="toggleStrike(this)">
-                    <span>30.04 - החזרת רכב בציריך</span>
-                </label>
-                <div class="details">שעה 08:00: החזרת הרכב בשדה התעופה בציריך.</div>
-            </div>
-
-            <div class="card">
-                <label class="checkbox-row">
-                    <input type="checkbox" onchange="toggleStrike(this)">
-                    <span>30.04 - טיסה חזרה לישראל</span>
-                </label>
-                <div class="details">טיסת אל על LY348 מציריך. המראה ב-11:30.</div>
-            </div>
+            <!-- רשימת המסלול המלאה -->
+            <div id="itineraryListContainer"></div>
         </div>
 
         <!-- Tab 2: Packing List -->
@@ -410,9 +363,7 @@
                 <input type="text" id="newItemInput" placeholder="הוסף פריט חדש (למשל: דרכונים)...">
                 <button class="btn-add" onclick="addPackingItem()">הוסף</button>
             </div>
-            <div id="packingListContainer">
-                <!-- Items will be injected here via JS -->
-            </div>
+            <div id="packingListContainer"></div>
         </div>
 
         <!-- Tab 3: Expenses -->
@@ -447,6 +398,7 @@
             <button class="action-btn phone-btn" onclick="window.location.href='tel:+972500000000'">📞 התקשר לדרור</button>
             <button class="action-btn" style="background-color: #d32f2f;" onclick="window.location.href='tel:112'">🚨 חיוג חירום מקומי (112)</button>
         </div>
+
         <!-- Tab 5: Location -->
         <div id="tab-location" class="tab-content">
             <h2>המיקום הנוכחי שלי</h2>
@@ -454,11 +406,13 @@
                 שתף את המיקום שלך כדי ששאר בני המשפחה יוכלו לראות איפה אתה נמצא.
             </p>
             <button class="action-btn" onclick="shareMyLocation()">שתף מיקום עכשיו</button>
+            <p id="location-status" style="margin-top: 10px; text-align: center; font-weight: bold; color: var(--primary-green);"></p>
             
-            <div id="map-container" style="margin-top: 15px; border-radius: 10px; overflow: hidden; height: 350px; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <div id="shared-locations-list" style="margin-top: 20px;"></div>
+
+            <div id="map-container" style="margin-top: 15px; border-radius: 10px; overflow: hidden; height: 250px; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                 <iframe id="google-map-iframe" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
             </div>
-            <p id="location-status" style="margin-top: 10px; text-align: center; font-weight: bold; color: var(--primary-green);"></p>
         </div>
     </main>
 
@@ -528,14 +482,7 @@
             btnElement.classList.add('active');
         }
 
-        /* 4. Checkbox UI toggle (for Itinerary) */
-        function toggleStrike(checkbox) {
-            const span = checkbox.nextElementSibling;
-            if (checkbox.checked) span.classList.add('checked-text');
-            else span.classList.remove('checked-text');
-        }
-
-        /* 5. Countdown Timer */
+        /* 4. Countdown Timer */
         const flightDate = new Date("2027-04-25T16:35:00").getTime();
         setInterval(function() {
             const now = new Date().getTime();
@@ -551,7 +498,110 @@
         }, 1000);
 
         /* -----------------------
-           6. Packing List (100% Shared via Firebase)
+           5. Itinerary Logic (100% Shared)
+           ----------------------- */
+        let itineraryItems = [];
+
+        db.ref('itinerary').on('value', (snapshot) => {
+            itineraryItems = snapshot.val();
+            if (!itineraryItems) {
+                // רשימת הדיפולט למקרה שהענן ריק
+                itineraryItems = [
+                    { id: 101, title: '25.04 - המראה מנתב"ג לציריך', desc: 'טיסת אל על LY343. המראה: 16:35, נחיתה: 19:55.', checked: false },
+                    { id: 102, title: '25.04 - הגעה למלון בציריך', desc: 'לינה ללילה אחד ב-Holiday Inn Express ציריך.', checked: false },
+                    { id: 103, title: '26.04 - איסוף רכב', desc: 'שעה 09:00: איסוף רכב (VW Passat) משדה התעופה בציריך.', checked: false },
+                    { id: 104, title: '26.04 - נסיעה לאוסטריה', desc: 'עצירה בדרך במיקום יפה + ארוחת צהריים.', checked: false },
+                    { id: 105, title: '26.04 - הגעה לאלגוי', desc: 'קבלת הבקתה ב-Center Parcs Allgau.', checked: false },
+                    { id: 106, title: '27-29.04 - בילוי בפארק', desc: '3 ימים מלאים של כיף משפחתי בפארק אלגוי.', checked: false },
+                    { id: 107, title: '30.04 - החזרת רכב בציריך', desc: 'שעה 08:00: החזרת הרכב בשדה התעופה בציריך.', checked: false },
+                    { id: 108, title: '30.04 - טיסה חזרה לישראל', desc: 'טיסת אל על LY348 מציריך. המראה ב-11:30.', checked: false }
+                ];
+                db.ref('itinerary').set(itineraryItems);
+            } else {
+                itineraryItems = itineraryItems.filter(i => i !== null); // ניקוי באג מערכים של פיירבייס
+                renderItinerary();
+            }
+        });
+
+        function renderItinerary() {
+            const container = document.getElementById('itineraryListContainer');
+            const selectDropdown = document.getElementById('itiInsertAfter');
+            
+            container.innerHTML = '';
+            selectDropdown.innerHTML = '<option value="start">מקם בתחילת המסלול (ראשון)</option>';
+            
+            itineraryItems.forEach((item) => {
+                const checkedAttr = item.checked ? 'checked' : '';
+                const strikeClass = item.checked ? 'checked-text' : '';
+                
+                // הוספת הכרטיסייה למסך
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `
+                    <label class="checkbox-row" style="margin-bottom: 5px;">
+                        <input type="checkbox" onchange="toggleItineraryItem(${item.id})" ${checkedAttr}>
+                        <span class="${strikeClass}" style="font-weight: bold;">${item.title}</span>
+                        <button onclick="removeItineraryItem(${item.id})" style="background:none; border:none; color:red; font-size:1.1rem; cursor:pointer; margin-right:10px;">🗑️</button>
+                    </label>
+                    <div class="details ${strikeClass}">${item.desc}</div>
+                `;
+                container.appendChild(div);
+
+                // הוספת התחנה לתיבת הבחירה (כדי שיהיה אפשר למקם משהו אחריה)
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.innerText = `אחרי: ${item.title}`;
+                selectDropdown.appendChild(option);
+            });
+        }
+
+        function toggleItineraryItem(id) {
+            const item = itineraryItems.find(i => i.id === id);
+            if (item) {
+                item.checked = !item.checked;
+                db.ref('itinerary').set(itineraryItems);
+            }
+        }
+
+        function addItineraryItem() {
+            const title = document.getElementById('itiTitle').value.trim();
+            const desc = document.getElementById('itiDesc').value.trim();
+            const insertAfterId = document.getElementById('itiInsertAfter').value;
+
+            if (!title) return showAlert('חובה להזין כותרת לתחנה החדשה.');
+
+            const newItem = {
+                id: Date.now(),
+                title: title,
+                desc: desc,
+                checked: false
+            };
+
+            if (insertAfterId === 'start') {
+                itineraryItems.unshift(newItem); // הוספה להתחלה
+            } else {
+                const insertIndex = itineraryItems.findIndex(i => i.id == insertAfterId);
+                if (insertIndex > -1) {
+                    itineraryItems.splice(insertIndex + 1, 0, newItem); // הוספה אחרי האינדקס שנבחר
+                } else {
+                    itineraryItems.push(newItem);
+                }
+            }
+
+            db.ref('itinerary').set(itineraryItems);
+            
+            document.getElementById('itiTitle').value = '';
+            document.getElementById('itiDesc').value = '';
+            showAlert('התחנה נוספה למסלול בהצלחה!');
+        }
+
+        function removeItineraryItem(id) {
+            itineraryItems = itineraryItems.filter(i => i.id !== id);
+            db.ref('itinerary').set(itineraryItems);
+        }
+
+        /* -----------------------
+           6. Packing List (100% Shared)
            ----------------------- */
         let packingItems = [];
 
@@ -594,7 +644,7 @@
             const item = packingItems.find(i => i && i.id === id);
             if (item) {
                 item.checked = !item.checked;
-                savePackingListToCloud();
+                db.ref('packing').set(packingItems);
             }
         }
 
@@ -605,20 +655,16 @@
             
             packingItems.push({ id: Date.now(), text: text, checked: false });
             input.value = '';
-            savePackingListToCloud();
+            db.ref('packing').set(packingItems);
         }
 
         function removePackingItem(id) {
             packingItems = packingItems.filter(i => i && i.id !== id);
-            savePackingListToCloud();
-        }
-
-        function savePackingListToCloud() {
             db.ref('packing').set(packingItems);
         }
 
         /* -----------------------
-           7. Expenses (100% Shared via Firebase)
+           7. Expenses (100% Shared)
            ----------------------- */
         let expenses = [];
 
@@ -700,15 +746,24 @@
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
                     db.ref('locations/' + userName).set({
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
+                        lat: lat,
+                        lng: lng,
                         timestamp: new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
                     });
-                    status.innerText = "המיקום עודכן ושותף בהצלחה!";
+                    
+                    status.innerText = "המיקום שלך נשמר ושותף בהצלחה!";
+                    
+                    const mapContainer = document.getElementById('map-container');
+                    const mapIframe = document.getElementById('google-map-iframe');
+                    mapIframe.src = `https://maps.google.com/maps?q=${lat},${lng}&z=16&output=embed`;
+                    mapContainer.style.display = 'block';
                 },
                 (error) => {
-                    status.innerText = "שגיאה. ודא שאישרת גישה למיקום בדפדפן.";
+                    status.innerText = "שגיאה. ודא שאישרת גישה למיקום בהגדרות הטלפון/הדפדפן.";
                 },
                 { enableHighAccuracy: true }
             );
@@ -716,20 +771,20 @@
 
         db.ref('locations').on('value', (snapshot) => {
             const locations = snapshot.val();
-            const mapContainer = document.getElementById('map-container');
+            const listContainer = document.getElementById('shared-locations-list');
+            
             if (locations) {
-                let html = '<h3 style="margin-top: 20px;">מיקומי המשפחה:</h3><ul style="list-style: none; padding: 0;">';
+                let html = '<h3 style="margin-bottom: 10px; color: var(--primary-green); font-size: 1.2rem;">מיקומי המשפחה ששותפו:</h3><ul style="list-style: none; padding: 0;">';
                 for (let name in locations) {
                     const loc = locations[name];
                     const mapsLink = `https://maps.google.com/maps?q=${loc.lat},${loc.lng}`;
-                    html += `<li style="margin-bottom: 10px; background: #e8f5e9; padding: 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                                <strong>${name}</strong> (עודכן ב: ${loc.timestamp})<br>
-                                <a href="${mapsLink}" target="_blank" style="color: var(--primary-green); text-decoration: none; font-weight: bold; display: inline-block; margin-top: 5px;">🌍 פתח מפה</a>
+                    html += `<li style="margin-bottom: 10px; background: #e8f5e9; padding: 12px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;">
+                                <div><strong style="font-size: 1.1rem;">${name}</strong> <br><span style="font-size:0.85rem; color:#666;">(עודכן ב: ${loc.timestamp})</span></div>
+                                <a href="${mapsLink}" target="_blank" style="background: var(--primary-green); color: white; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem;">🌍 צפה במפה</a>
                              </li>`;
                 }
                 html += '</ul>';
-                mapContainer.innerHTML = html;
-                mapContainer.style.display = 'block';
+                listContainer.innerHTML = html;
             }
         });
     </script>
