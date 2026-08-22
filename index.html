@@ -84,6 +84,48 @@
             font-size: 1.4rem;
         }
 
+        /* Home Tab Specific Styling */
+        .home-hero {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        
+        .home-hero img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .home-hero-text {
+            position: absolute;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            width: 100%;
+            color: white;
+            padding: 25px 15px 15px;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .image-gallery img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
         /* Lists & Items styling */
         .card {
             background: var(--white);
@@ -203,15 +245,15 @@
         .nav-btn {
             background: none;
             border: none;
-            padding: 15px 5px;
+            padding: 12px 2px;
             flex-grow: 1;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #666;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             font-weight: bold;
         }
 
@@ -255,7 +297,6 @@
             font-size: 1rem;
             cursor: pointer;
         }
-
     </style>
 </head>
 <body>
@@ -268,8 +309,33 @@
 
     <!-- Main Content -->
     <main>
+        <!-- Tab 0: Home (New Default) -->
+        <div id="tab-home" class="tab-content active">
+            <div class="home-hero">
+                <img src="https://images.unsplash.com/photo-1534360662657-b2e1e31d3319?auto=format&fit=crop&w=800&q=80" alt="Alps Landscape">
+                <div class="home-hero-text">ברוכים הבאים לאלגוי! 🌲</div>
+            </div>
+            
+            <p style="text-align: center; margin-bottom: 20px; font-size: 1.1rem; color: var(--primary-brown); font-weight: bold;">
+                החופשה המשפחתית שלנו מתקרבת!
+            </p>
+
+            <div class="image-gallery">
+                <img src="https://images.unsplash.com/photo-1499696956799-a1fc137bd024?auto=format&fit=crop&w=400&q=80" alt="Cabin">
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=400&q=80" alt="Nature Walk">
+            </div>
+
+            <h3 style="color: var(--primary-green); margin-bottom: 10px; border-bottom: 2px solid var(--light-green); padding-bottom: 5px;">📍 מסלול הנסיעה (ציריך > אלגוי)</h3>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">
+                מרחק נסיעה של כ-170 ק"מ. מנמל התעופה בציריך (שווייץ) ועד לבקתה שלנו בפארק (גרמניה).
+            </p>
+            <div style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                <iframe src="https://maps.google.com/maps?saddr=Zurich+Airport,+Switzerland&daddr=Center+Parcs+Park+Allg%C3%A4u,+Germany&output=embed" width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div>
+        </div>
+
         <!-- Tab 1: Itinerary -->
-        <div id="tab-itinerary" class="tab-content active">
+        <div id="tab-itinerary" class="tab-content">
             <h2>מסלול הטיול</h2>
             
             <div class="card">
@@ -363,7 +429,7 @@
             </div>
 
             <div id="expenseList"></div>
-            <div id="expenseBalance" class="expense-result">מאזן: אין חובות עדיין.</div>
+            <div id="expenseBalance" class="expense-result">מאזן: טוען נתונים מהענן...</div>
             <button onclick="clearExpenses()" style="background:none; border:none; color:red; margin-top:15px; width:100%; font-size:1rem; cursor:pointer;">איפוס מחשבון הוצאות</button>
         </div>
 
@@ -398,24 +464,27 @@
 
     <!-- Bottom Navigation -->
     <nav>
-        <button class="nav-btn active" onclick="switchTab('itinerary', this)">
-            <span style="font-size: 1.5rem;">📅</span>מסלול
+        <button class="nav-btn active" onclick="switchTab('home', this)">
+            <span style="font-size: 1.4rem;">🏠</span>בית
+        </button>
+        <button class="nav-btn" onclick="switchTab('itinerary', this)">
+            <span style="font-size: 1.4rem;">📅</span>מסלול
         </button>
         <button class="nav-btn" onclick="switchTab('packing', this)">
-            <span style="font-size: 1.5rem;">🎒</span>רשימת ציוד
+            <span style="font-size: 1.4rem;">🎒</span>ציוד
         </button>
         <button class="nav-btn" onclick="switchTab('expenses', this)">
-            <span style="font-size: 1.5rem;">💶</span>הוצאות
+            <span style="font-size: 1.4rem;">💶</span>הוצאות
         </button>
         <button class="nav-btn" onclick="switchTab('info', this)">
-            <span style="font-size: 1.5rem;">ℹ️</span>מידע וניווט
+            <span style="font-size: 1.4rem;">ℹ️</span>מידע
         </button>
         <button class="nav-btn" onclick="switchTab('location', this)">
-            <span style="font-size: 1.5rem;">📍</span>מיקום
+            <span style="font-size: 1.4rem;">📍</span>מיקום
         </button>
     </nav>
 
-    <!-- Custom Modal instead of native Alert -->
+    <!-- Custom Modal -->
     <div id="customModal">
         <div class="modal-content">
             <p id="modalMessage">הודעה</p>
@@ -429,9 +498,7 @@
 
     <!-- Application Logic -->
     <script>
-        /* -----------------------
-           1. Firebase Initialization
-           ----------------------- */
+        /* 1. Firebase Initialization */
         const firebaseConfig = {
             apiKey: "AIzaSyAKlewYVxd7bWRRV-M8hs_YZKuYp1V0TQM",
             authDomain: "family-travel-app-d4710.firebaseapp.com",
@@ -441,13 +508,10 @@
             messagingSenderId: "843954095365",
             appId: "1:843954095365:web:d9687120c3987d3a7aa36c"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        /* -----------------------
-           2. Custom Alert (Modal)
-           ----------------------- */
+        /* 2. Custom Modal */
         function showAlert(msg) {
             document.getElementById('modalMessage').innerText = msg;
             document.getElementById('customModal').style.display = 'flex';
@@ -456,125 +520,112 @@
             document.getElementById('customModal').style.display = 'none';
         }
 
-        /* -----------------------
-           3. Tabs Logic
-           ----------------------- */
+        /* 3. Tabs Logic */
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            
             document.getElementById('tab-' + tabId).classList.add('active');
             btnElement.classList.add('active');
         }
 
-        /* -----------------------
-           4. Checkbox UI toggle
-           ----------------------- */
+        /* 4. Checkbox UI toggle (for Itinerary) */
         function toggleStrike(checkbox) {
             const span = checkbox.nextElementSibling;
-            if (checkbox.checked) {
-                span.classList.add('checked-text');
-            } else {
-                span.classList.remove('checked-text');
-            }
+            if (checkbox.checked) span.classList.add('checked-text');
+            else span.classList.remove('checked-text');
         }
 
-        /* -----------------------
-           5. Countdown Timer
-           ----------------------- */
+        /* 5. Countdown Timer */
         const flightDate = new Date("2027-04-25T16:35:00").getTime();
-        
         setInterval(function() {
             const now = new Date().getTime();
             const distance = flightDate - now;
-
             if (distance < 0) {
                 document.getElementById("countdown").innerHTML = "✈️ חופשה נעימה!";
                 return;
             }
-
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-            document.getElementById("countdown").innerHTML = 
-                `עוד ${days} ימים, ${hours} שעות ו-${minutes} דקות!`;
+            document.getElementById("countdown").innerHTML = `עוד ${days} ימים, ${hours} שעות ו-${minutes} דקות!`;
         }, 1000);
 
         /* -----------------------
-           6. Packing List Logic (LocalStorage)
+           6. Packing List (100% Shared via Firebase)
            ----------------------- */
-        let packingItems = JSON.parse(localStorage.getItem('travel_packing')) || [
-            { id: 1, text: 'דרכונים לכולם', checked: false },
-            { id: 2, text: 'רישיון נהיגה בינלאומי', checked: false },
-            { id: 3, text: 'בגדים לרום ושוהם', checked: false },
-            { id: 4, text: 'תרופות ועזרה ראשונה', checked: false }
-        ];
+        let packingItems = [];
+
+        db.ref('packing').on('value', (snapshot) => {
+            packingItems = snapshot.val();
+            if (!packingItems) {
+                packingItems = [
+                    { id: 1, text: 'דרכונים לכולם', checked: false },
+                    { id: 2, text: 'רישיון נהיגה בינלאומי', checked: false },
+                    { id: 3, text: 'בגדים', checked: false },
+                    { id: 4, text: 'תרופות ועזרה ראשונה', checked: false }
+                ];
+            }
+            renderPackingList();
+        });
 
         function renderPackingList() {
             const container = document.getElementById('packingListContainer');
             container.innerHTML = '';
             
             packingItems.forEach(item => {
-                const checkedAttr = item.checked ? 'checked' : '';
-                const strikeClass = item.checked ? 'checked-text' : '';
-                
-                const div = document.createElement('div');
-                div.className = 'card';
-                div.innerHTML = `
-                    <label class="checkbox-row">
-                        <input type="checkbox" onchange="togglePackingItem(${item.id})" ${checkedAttr}>
-                        <span class="${strikeClass}">${item.text}</span>
-                        <button onclick="removePackingItem(${item.id})" style="background:none; border:none; color:red; font-size:1.2rem; cursor:pointer; margin-right:10px;">🗑️</button>
-                    </label>
-                `;
-                container.appendChild(div);
+                if (item) {
+                    const checkedAttr = item.checked ? 'checked' : '';
+                    const strikeClass = item.checked ? 'checked-text' : '';
+                    const div = document.createElement('div');
+                    div.className = 'card';
+                    div.innerHTML = `
+                        <label class="checkbox-row">
+                            <input type="checkbox" onchange="togglePackingItem(${item.id})" ${checkedAttr}>
+                            <span class="${strikeClass}">${item.text}</span>
+                            <button onclick="removePackingItem(${item.id})" style="background:none; border:none; color:red; font-size:1.2rem; cursor:pointer; margin-right:10px;">🗑️</button>
+                        </label>
+                    `;
+                    container.appendChild(div);
+                }
             });
         }
 
         function togglePackingItem(id) {
-            const item = packingItems.find(i => i.id === id);
-            if(item) {
+            const item = packingItems.find(i => i && i.id === id);
+            if (item) {
                 item.checked = !item.checked;
-                savePackingList();
-                renderPackingList();
+                savePackingListToCloud();
             }
         }
 
         function addPackingItem() {
             const input = document.getElementById('newItemInput');
             const text = input.value.trim();
-            if (text === '') {
-                showAlert('יש להזין שם פריט');
-                return;
-            }
+            if (text === '') return showAlert('יש להזין שם פריט');
             
-            packingItems.push({
-                id: Date.now(),
-                text: text,
-                checked: false
-            });
-            
+            packingItems.push({ id: Date.now(), text: text, checked: false });
             input.value = '';
-            savePackingList();
-            renderPackingList();
-            showAlert('הפריט נוסף בהצלחה!');
+            savePackingListToCloud();
         }
 
         function removePackingItem(id) {
-            packingItems = packingItems.filter(i => i.id !== id);
-            savePackingList();
-            renderPackingList();
+            packingItems = packingItems.filter(i => i && i.id !== id);
+            savePackingListToCloud();
         }
 
-        function savePackingList() {
-            localStorage.setItem('travel_packing', JSON.stringify(packingItems));
+        function savePackingListToCloud() {
+            db.ref('packing').set(packingItems);
         }
 
         /* -----------------------
-           7. Expenses Logic (LocalStorage)
+           7. Expenses (100% Shared via Firebase)
            ----------------------- */
-        let expenses = JSON.parse(localStorage.getItem('travel_expenses')) || [];
+        let expenses = [];
+
+        db.ref('expenses').on('value', (snapshot) => {
+            expenses = snapshot.val() || [];
+            renderExpenses();
+        });
 
         function renderExpenses() {
             const list = document.getElementById('expenseList');
@@ -583,19 +634,20 @@
             let totalDror = 0;
 
             expenses.forEach(exp => {
-                const payerName = exp.payer === 'eliran' ? 'אלירן' : 'דרור';
-                if (exp.payer === 'eliran') totalEliran += exp.amount;
-                if (exp.payer === 'dror') totalDror += exp.amount;
+                if (exp) {
+                    const payerName = exp.payer === 'eliran' ? 'אלירן' : 'דרור';
+                    if (exp.payer === 'eliran') totalEliran += exp.amount;
+                    if (exp.payer === 'dror') totalDror += exp.amount;
 
-                const div = document.createElement('div');
-                div.className = 'expense-item';
-                div.innerHTML = `
-                    <span><strong>${payerName}</strong>: ${exp.desc}</span>
-                    <span style="color:var(--primary-brown); font-weight:bold;">€${exp.amount}</span>
-                `;
-                list.appendChild(div);
+                    const div = document.createElement('div');
+                    div.className = 'expense-item';
+                    div.innerHTML = `
+                        <span><strong>${payerName}</strong>: ${exp.desc}</span>
+                        <span style="color:var(--primary-brown); font-weight:bold;">€${exp.amount}</span>
+                    `;
+                    list.appendChild(div);
+                }
             });
-
             calculateBalance(totalEliran, totalDror);
         }
 
@@ -604,47 +656,35 @@
             const amount = parseFloat(document.getElementById('expAmount').value);
             const payer = document.getElementById('expPayer').value;
 
-            if (!desc || isNaN(amount) || amount <= 0) {
-                showAlert('יש להזין תיאור וסכום תקין.');
-                return;
-            }
+            if (!desc || isNaN(amount) || amount <= 0) return showAlert('יש להזין תיאור וסכום תקין.');
 
             expenses.push({ desc, amount, payer });
-            localStorage.setItem('travel_expenses', JSON.stringify(expenses));
+            db.ref('expenses').set(expenses);
             
             document.getElementById('expDesc').value = '';
             document.getElementById('expAmount').value = '';
-            
-            renderExpenses();
-            showAlert('ההוצאה נשמרה!');
         }
 
         function calculateBalance(eliranTotal, drorTotal) {
             const balanceDiv = document.getElementById('expenseBalance');
-            
             if (eliranTotal === drorTotal) {
                 balanceDiv.innerHTML = "מאזן: אין חובות! שילמתם שווה בשווה.";
                 return;
             }
-
             if (eliranTotal > drorTotal) {
-                const diff = (eliranTotal - drorTotal) / 2;
-                balanceDiv.innerHTML = `דרור חייב/ת לאלירן: €${diff.toFixed(2)}`;
+                balanceDiv.innerHTML = `דרור חייב/ת לאלירן: €${((eliranTotal - drorTotal) / 2).toFixed(2)}`;
             } else {
-                const diff = (drorTotal - eliranTotal) / 2;
-                balanceDiv.innerHTML = `אלירן חייב לדרור: €${diff.toFixed(2)}`;
+                balanceDiv.innerHTML = `אלירן חייב לדרור: €${((drorTotal - eliranTotal) / 2).toFixed(2)}`;
             }
         }
 
         function clearExpenses() {
-            expenses = [];
-            localStorage.setItem('travel_expenses', JSON.stringify(expenses));
-            renderExpenses();
-            showAlert('ההוצאות אופסו.');
+            db.ref('expenses').set([]);
+            showAlert('מחשבון ההוצאות אופס לכולם.');
         }
 
         /* -----------------------
-           8. Firebase Location Sharing Logic
+           8. Firebase Location Sharing
            ----------------------- */
         function shareMyLocation() {
             const status = document.getElementById('location-status');
@@ -660,30 +700,23 @@
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    
-                    // שמירה למסד הנתונים בענן
                     db.ref('locations/' + userName).set({
-                        lat: lat,
-                        lng: lng,
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
                         timestamp: new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
                     });
-                    
                     status.innerText = "המיקום עודכן ושותף בהצלחה!";
                 },
                 (error) => {
-                    status.innerText = "שגיאה בקבלת המיקום. ודא שאישרת גישה למיקום בדפדפן.";
+                    status.innerText = "שגיאה. ודא שאישרת גישה למיקום בדפדפן.";
                 },
                 { enableHighAccuracy: true }
             );
         }
 
-        // האזנה אונליין לכל מיקומי המשפחה שמחוברים למערכת
         db.ref('locations').on('value', (snapshot) => {
             const locations = snapshot.val();
             const mapContainer = document.getElementById('map-container');
-            
             if (locations) {
                 let html = '<h3 style="margin-top: 20px;">מיקומי המשפחה:</h3><ul style="list-style: none; padding: 0;">';
                 for (let name in locations) {
@@ -699,13 +732,6 @@
                 mapContainer.style.display = 'block';
             }
         });
-
-        // Initialize lists on load
-        window.onload = () => {
-            renderPackingList();
-            renderExpenses();
-        };
-
     </script>
 </body>
 </html>
