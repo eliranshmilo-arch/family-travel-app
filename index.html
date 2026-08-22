@@ -59,7 +59,8 @@
             flex-grow: 1;
             overflow-y: auto;
             padding: 20px 15px;
-            padding-bottom: 120px; 
+            /* הגדלנו ל-160 פיקסלים כדי שהכפתור התחתון לא ייחתך בטלפון */
+            padding-bottom: 160px; 
         }
 
         .tab-content {
@@ -314,7 +315,8 @@
         <!-- Tab 0: Home -->
         <div id="tab-home" class="tab-content active">
             <div class="home-hero">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Allg%C3%A4uer_Alpen_vom_Breitenberg.jpg/800px-Allg%C3%A4uer_Alpen_vom_Breitenberg.jpg" alt="Alps Landscape">
+                <!-- הקישורים עודכנו לתמונות ישירות ובטוחות ללא תווים מיוחדים -->
+                <img src="https://images.unsplash.com/photo-1472712739516-7ad2b786e1f7?auto=format&fit=crop&w=800&q=80" alt="Alps Landscape">
                 <div class="home-hero-text">ברוכים הבאים לאלגוי! 🌲</div>
             </div>
             
@@ -323,8 +325,8 @@
             </p>
 
             <div class="image-gallery">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Center_Parcs_Bostalsee_05.jpg/400px-Center_Parcs_Bostalsee_05.jpg" alt="Cabin">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Waldweg_im_Allg%C3%A4u.jpg/400px-Waldweg_im_Allg%C3%A4u.jpg" alt="Nature Walk">
+                <img src="https://images.unsplash.com/photo-1542668595-fa939beceecb?auto=format&fit=crop&w=400&q=80" alt="Cabin">
+                <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=400&q=80" alt="Nature Walk">
             </div>
 
             <h3 style="color: var(--primary-green); margin-bottom: 10px; border-bottom: 2px solid var(--light-green); padding-bottom: 5px;">📍 מסלול הנסיעה (ציריך > אלגוי)</h3>
@@ -336,7 +338,7 @@
             </div>
         </div>
 
-        <!-- Tab 1: Itinerary (Now Dynamic!) -->
+        <!-- Tab 1: Itinerary -->
         <div id="tab-itinerary" class="tab-content">
             <h2>מסלול הטיול</h2>
             
@@ -396,7 +398,8 @@
             <h3 style="margin-top: 25px; margin-bottom: 10px; color: var(--primary-brown);">חיוג מהיר</h3>
             <button class="action-btn phone-btn" onclick="window.location.href='tel:+972500000000'">📞 התקשר לאלירן</button>
             <button class="action-btn phone-btn" onclick="window.location.href='tel:+972500000000'">📞 התקשר לדרור</button>
-            <button class="action-btn" style="background-color: #d32f2f;" onclick="window.location.href='tel:112'">🚨 חיוג חירום מקומי (112)</button>
+            <!-- הוספתי שוליים תחתונים ספציפית לכפתור הזה כדי לוודא ששום דבר לא מסתיר אותו -->
+            <button class="action-btn" style="background-color: #d32f2f; margin-bottom: 50px;" onclick="window.location.href='tel:112'">🚨 חיוג חירום מקומי (112)</button>
         </div>
 
         <!-- Tab 5: Location -->
@@ -498,29 +501,32 @@
         }, 1000);
 
         /* -----------------------
-           5. Itinerary Logic (100% Shared)
+           5. Itinerary Logic (Restored Default Stations)
            ----------------------- */
         let itineraryItems = [];
+        
+        // התחנות המקוריות נשמרות כאן למקרה שהענן ריק
+        const defaultItinerary = [
+            { id: 101, title: '25.04 - המראה מנתב"ג לציריך', desc: 'טיסת אל על LY343. המראה: 16:35, נחיתה: 19:55.', checked: false },
+            { id: 102, title: '25.04 - הגעה למלון בציריך', desc: 'לינה ללילה אחד ב-Holiday Inn Express ציריך.', checked: false },
+            { id: 103, title: '26.04 - איסוף רכב', desc: 'שעה 09:00: איסוף רכב (VW Passat) משדה התעופה בציריך.', checked: false },
+            { id: 104, title: '26.04 - נסיעה לאוסטריה', desc: 'עצירה בדרך במיקום יפה + ארוחת צהריים.', checked: false },
+            { id: 105, title: '26.04 - הגעה לאלגוי', desc: 'קבלת הבקתה ב-Center Parcs Allgau.', checked: false },
+            { id: 106, title: '27-29.04 - בילוי בפארק', desc: '3 ימים מלאים של כיף משפחתי בפארק אלגוי.', checked: false },
+            { id: 107, title: '30.04 - החזרת רכב בציריך', desc: 'שעה 08:00: החזרת הרכב בשדה התעופה בציריך.', checked: false },
+            { id: 108, title: '30.04 - טיסה חזרה לישראל', desc: 'טיסת אל על LY348 מציריך. המראה ב-11:30.', checked: false }
+        ];
 
         db.ref('itinerary').on('value', (snapshot) => {
-            itineraryItems = snapshot.val();
-            if (!itineraryItems) {
-                // רשימת הדיפולט למקרה שהענן ריק
-                itineraryItems = [
-                    { id: 101, title: '25.04 - המראה מנתב"ג לציריך', desc: 'טיסת אל על LY343. המראה: 16:35, נחיתה: 19:55.', checked: false },
-                    { id: 102, title: '25.04 - הגעה למלון בציריך', desc: 'לינה ללילה אחד ב-Holiday Inn Express ציריך.', checked: false },
-                    { id: 103, title: '26.04 - איסוף רכב', desc: 'שעה 09:00: איסוף רכב (VW Passat) משדה התעופה בציריך.', checked: false },
-                    { id: 104, title: '26.04 - נסיעה לאוסטריה', desc: 'עצירה בדרך במיקום יפה + ארוחת צהריים.', checked: false },
-                    { id: 105, title: '26.04 - הגעה לאלגוי', desc: 'קבלת הבקתה ב-Center Parcs Allgau.', checked: false },
-                    { id: 106, title: '27-29.04 - בילוי בפארק', desc: '3 ימים מלאים של כיף משפחתי בפארק אלגוי.', checked: false },
-                    { id: 107, title: '30.04 - החזרת רכב בציריך', desc: 'שעה 08:00: החזרת הרכב בשדה התעופה בציריך.', checked: false },
-                    { id: 108, title: '30.04 - טיסה חזרה לישראל', desc: 'טיסת אל על LY348 מציריך. המראה ב-11:30.', checked: false }
-                ];
+            const data = snapshot.val();
+            // אם המאגר בענן ריק לגמרי (או שמחקת בטעות את הכל) - אנחנו משחזרים את המקור
+            if (!data || data.length === 0) {
+                itineraryItems = [...defaultItinerary];
                 db.ref('itinerary').set(itineraryItems);
             } else {
-                itineraryItems = itineraryItems.filter(i => i !== null); // ניקוי באג מערכים של פיירבייס
-                renderItinerary();
+                itineraryItems = data.filter(i => i !== null);
             }
+            renderItinerary();
         });
 
         function renderItinerary() {
@@ -534,7 +540,6 @@
                 const checkedAttr = item.checked ? 'checked' : '';
                 const strikeClass = item.checked ? 'checked-text' : '';
                 
-                // הוספת הכרטיסייה למסך
                 const div = document.createElement('div');
                 div.className = 'card';
                 div.innerHTML = `
@@ -547,7 +552,6 @@
                 `;
                 container.appendChild(div);
 
-                // הוספת התחנה לתיבת הבחירה (כדי שיהיה אפשר למקם משהו אחריה)
                 const option = document.createElement('option');
                 option.value = item.id;
                 option.innerText = `אחרי: ${item.title}`;
@@ -578,11 +582,11 @@
             };
 
             if (insertAfterId === 'start') {
-                itineraryItems.unshift(newItem); // הוספה להתחלה
+                itineraryItems.unshift(newItem); 
             } else {
                 const insertIndex = itineraryItems.findIndex(i => i.id == insertAfterId);
                 if (insertIndex > -1) {
-                    itineraryItems.splice(insertIndex + 1, 0, newItem); // הוספה אחרי האינדקס שנבחר
+                    itineraryItems.splice(insertIndex + 1, 0, newItem); 
                 } else {
                     itineraryItems.push(newItem);
                 }
@@ -601,7 +605,7 @@
         }
 
         /* -----------------------
-           6. Packing List (100% Shared)
+           6. Packing List 
            ----------------------- */
         let packingItems = [];
 
@@ -664,7 +668,7 @@
         }
 
         /* -----------------------
-           7. Expenses (100% Shared)
+           7. Expenses 
            ----------------------- */
         let expenses = [];
 
