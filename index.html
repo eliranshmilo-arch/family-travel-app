@@ -423,9 +423,30 @@
         </div>
     </div>
 
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+
+    <!-- Application Logic -->
     <script>
         /* -----------------------
-           Custom Alert (Modal)
+           1. Firebase Initialization
+           ----------------------- */
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKlewYVxd7bWRRV-M8hs_YZKuYp1V0TQM",
+            authDomain: "family-travel-app-d4710.firebaseapp.com",
+            databaseURL: "https://family-travel-app-d4710-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "family-travel-app-d4710",
+            storageBucket: "family-travel-app-d4710.firebasestorage.app",
+            messagingSenderId: "843954095365",
+            appId: "1:843954095365:web:d9687120c3987d3a7aa36c"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        /* -----------------------
+           2. Custom Alert (Modal)
            ----------------------- */
         function showAlert(msg) {
             document.getElementById('modalMessage').innerText = msg;
@@ -436,7 +457,7 @@
         }
 
         /* -----------------------
-           Tabs Logic
+           3. Tabs Logic
            ----------------------- */
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -447,7 +468,7 @@
         }
 
         /* -----------------------
-           Checkbox UI toggle
+           4. Checkbox UI toggle
            ----------------------- */
         function toggleStrike(checkbox) {
             const span = checkbox.nextElementSibling;
@@ -459,9 +480,8 @@
         }
 
         /* -----------------------
-           Countdown Timer
+           5. Countdown Timer
            ----------------------- */
-        // Flight departure: 25.04.2027 16:35 Israel Time
         const flightDate = new Date("2027-04-25T16:35:00").getTime();
         
         setInterval(function() {
@@ -482,7 +502,7 @@
         }, 1000);
 
         /* -----------------------
-           Packing List Logic (LocalStorage)
+           6. Packing List Logic (LocalStorage)
            ----------------------- */
         let packingItems = JSON.parse(localStorage.getItem('travel_packing')) || [
             { id: 1, text: 'דרכונים לכולם', checked: false },
@@ -552,7 +572,7 @@
         }
 
         /* -----------------------
-           Expenses Logic (LocalStorage)
+           7. Expenses Logic (LocalStorage)
            ----------------------- */
         let expenses = JSON.parse(localStorage.getItem('travel_expenses')) || [];
 
@@ -617,27 +637,20 @@
         }
 
         function clearExpenses() {
-            // Using custom modal for confirmation logic is complex, 
-            // replacing with clear immediately to avoid standard alerts.
             expenses = [];
             localStorage.setItem('travel_expenses', JSON.stringify(expenses));
             renderExpenses();
             showAlert('ההוצאות אופסו.');
         }
 
-        // Initialize on load
-        window.onload = () => {
-            renderPackingList();
-            renderExpenses();
-        };
-       /* -----------------------
-           Location Sharing Logic
+        /* -----------------------
+           8. Firebase Location Sharing Logic
            ----------------------- */
         function shareMyLocation() {
             const status = document.getElementById('location-status');
-            const mapContainer = document.getElementById('map-container');
-            const mapIframe = document.getElementById('google-map-iframe');
-
+            const userName = prompt("מי משתף את המיקום עכשיו? (הכנס את שמך)");
+            
+            if (!userName) return;
             status.innerText = "מחפש מיקום...";
 
             if (!navigator.geolocation) {
@@ -650,17 +663,49 @@
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
                     
-                    status.innerText = "המיקום עודכן בהצלחה!";
+                    // שמירה למסד הנתונים בענן
+                    db.ref('locations/' + userName).set({
+                        lat: lat,
+                        lng: lng,
+                        timestamp: new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
+                    });
                     
-                    mapIframe.src = `https://maps.google.com/maps?q=${lat},${lng}&z=16&output=embed`;
-                    mapContainer.style.display = 'block';
+                    status.innerText = "המיקום עודכן ושותף בהצלחה!";
                 },
                 (error) => {
                     status.innerText = "שגיאה בקבלת המיקום. ודא שאישרת גישה למיקום בדפדפן.";
                 },
                 { enableHighAccuracy: true }
             );
-        } 
+        }
+
+        // האזנה אונליין לכל מיקומי המשפחה שמחוברים למערכת
+        db.ref('locations').on('value', (snapshot) => {
+            const locations = snapshot.val();
+            const mapContainer = document.getElementById('map-container');
+            
+            if (locations) {
+                let html = '<h3 style="margin-top: 20px;">מיקומי המשפחה:</h3><ul style="list-style: none; padding: 0;">';
+                for (let name in locations) {
+                    const loc = locations[name];
+                    const mapsLink = `https://maps.google.com/maps?q=${loc.lat},${loc.lng}`;
+                    html += `<li style="margin-bottom: 10px; background: #e8f5e9; padding: 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                <strong>${name}</strong> (עודכן ב: ${loc.timestamp})<br>
+                                <a href="${mapsLink}" target="_blank" style="color: var(--primary-green); text-decoration: none; font-weight: bold; display: inline-block; margin-top: 5px;">🌍 פתח מפה</a>
+                             </li>`;
+                }
+                html += '</ul>';
+                mapContainer.innerHTML = html;
+                mapContainer.style.display = 'block';
+            }
+        });
+
+        // Initialize lists on load
+        window.onload = () => {
+            renderPackingList();
+            renderExpenses();
+        };
+
     </script>
 </body>
 </html>
