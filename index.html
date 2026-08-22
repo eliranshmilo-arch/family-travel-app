@@ -262,7 +262,7 @@
 
     <!-- Header & Countdown -->
     <header>
-        <h1>הטיול של אלירן, דרור, רום ושוהם!</h1>
+        <h1>טיול משפחתי לסנטר פארקס אלגוי , גרמניה</h1>
         <div id="countdown">טוען שעון...</div>
     </header>
 
@@ -381,6 +381,19 @@
             <button class="action-btn phone-btn" onclick="window.location.href='tel:+972500000000'">📞 התקשר לדרור</button>
             <button class="action-btn" style="background-color: #d32f2f;" onclick="window.location.href='tel:112'">🚨 חיוג חירום מקומי (112)</button>
         </div>
+        <!-- Tab 5: Location -->
+        <div id="tab-location" class="tab-content">
+            <h2>המיקום הנוכחי שלי</h2>
+            <p style="margin-bottom: 15px; color: #666; font-size: 0.9rem;">
+                שתף את המיקום שלך כדי ששאר בני המשפחה יוכלו לראות איפה אתה נמצא.
+            </p>
+            <button class="action-btn" onclick="shareMyLocation()">שתף מיקום עכשיו</button>
+            
+            <div id="map-container" style="margin-top: 15px; border-radius: 10px; overflow: hidden; height: 350px; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <iframe id="google-map-iframe" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div>
+            <p id="location-status" style="margin-top: 10px; text-align: center; font-weight: bold; color: var(--primary-green);"></p>
+        </div>
     </main>
 
     <!-- Bottom Navigation -->
@@ -396,6 +409,9 @@
         </button>
         <button class="nav-btn" onclick="switchTab('info', this)">
             <span style="font-size: 1.5rem;">ℹ️</span>מידע וניווט
+        </button>
+        <button class="nav-btn" onclick="switchTab('location', this)">
+            <span style="font-size: 1.5rem;">📍</span>מיקום
         </button>
     </nav>
 
@@ -614,6 +630,37 @@
             renderPackingList();
             renderExpenses();
         };
+       /* -----------------------
+           Location Sharing Logic
+           ----------------------- */
+        function shareMyLocation() {
+            const status = document.getElementById('location-status');
+            const mapContainer = document.getElementById('map-container');
+            const mapIframe = document.getElementById('google-map-iframe');
+
+            status.innerText = "מחפש מיקום...";
+
+            if (!navigator.geolocation) {
+                status.innerText = "הדפדפן שלך לא תומך בשיתוף מיקום.";
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    status.innerText = "המיקום עודכן בהצלחה!";
+                    
+                    mapIframe.src = `https://maps.google.com/maps?q=${lat},${lng}&z=16&output=embed`;
+                    mapContainer.style.display = 'block';
+                },
+                (error) => {
+                    status.innerText = "שגיאה בקבלת המיקום. ודא שאישרת גישה למיקום בדפדפן.";
+                },
+                { enableHighAccuracy: true }
+            );
+        } 
     </script>
 </body>
 </html>
