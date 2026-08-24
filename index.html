@@ -43,7 +43,7 @@
         header h1 {
             font-size: 1.2rem;
             margin-bottom: 5px;
-            padding: 0 30px; /* מפנה מקום לכפתור ההגדרות */
+            padding: 0 30px;
         }
 
         .settings-icon {
@@ -325,7 +325,6 @@
             color: var(--primary-green);
         }
         
-        /* עיצוב שדות לפאנל ההגדרות */
         .settings-label {
             font-size: 0.9rem;
             font-weight: bold;
@@ -339,7 +338,6 @@
 <body>
 
     <header>
-        <!-- כפתור הגדרות חדש בפינה -->
         <button class="settings-icon" onclick="switchTab('settings', null)" title="הגדרות אפליקציה">⚙️</button>
         <h1 id="dyn-main-title">טוען נתונים...</h1>
         <div id="countdown">טוען שעון...</div>
@@ -401,7 +399,7 @@
             <div id="packingListContainer"></div>
         </div>
 
-        <!-- Tab 3: Expenses -->
+        <!-- Tab 3: Expenses (Password Protected) -->
         <div id="tab-expenses" class="tab-content">
             <h2>הוצאות משפחתיות</h2>
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
@@ -497,15 +495,19 @@
                 <input type="text" id="set-routeTitle">
                 <label class="settings-label">תיאור קצר מתחת לכותרת:</label>
                 <input type="text" id="set-routeDesc">
-                <label class="settings-label">קישור (URL Embed) מ-Google Maps:</label>
-                <input type="text" id="set-routeMapUrl" dir="ltr" style="font-size: 0.8rem;">
+                
+                <!-- שדות חדשים למפה האוטומטית -->
+                <label class="settings-label">נקודת התחלה במסלול (למשל: נתב"ג, שדה"ת לרנקה):</label>
+                <input type="text" id="set-routeStart" placeholder="הכנס עיר, שדה תעופה או כתובת">
+                <label class="settings-label">נקודת סיום במסלול (למשל: מלון, ריזורט):</label>
+                <input type="text" id="set-routeEnd" placeholder="הכנס את שם המלון או היעד">
             </div>
 
             <div class="card">
                 <h3 style="color: var(--primary-green); margin-bottom: 10px;">אתרי ניווט מהיר</h3>
                 <label class="settings-label">אתר 1 (כותרת וקישור מלא):</label>
-                <input type="text" id="set-nav1Title" placeholder="למשל: מלון ציריך">
-                <input type="text" id="set-nav1Url" dir="ltr" style="margin-top:5px; font-size: 0.8rem;">
+                <input type="text" id="set-nav1Title" placeholder="למשל: מלון בציריך">
+                <input type="text" id="set-nav1Url" dir="ltr" style="margin-top:5px; font-size: 0.8rem;" placeholder="https://maps.google.com/...">
                 
                 <label class="settings-label">אתר 2 (כותרת וקישור מלא):</label>
                 <input type="text" id="set-nav2Title">
@@ -597,14 +599,14 @@
             
             document.getElementById('tab-' + tabId).classList.add('active');
             if (btnElement) {
-                btnElement.classList.add('active'); // מסמן את הכפתור רק אם באנו מהסרגל התחתון
+                btnElement.classList.add('active'); 
             }
         }
 
         /* -----------------------
            Dynamic Settings Logic
            ----------------------- */
-        let targetFlightDate = new Date("2027-04-25T16:35:00").getTime(); // ברירת מחדל עד שהענן יטען
+        let targetFlightDate = new Date("2027-04-25T16:35:00").getTime(); 
         
         const defaultSettings = {
             mainTitle: "טיול משפחתי לסנטר פארקס אלגוי , גרמניה",
@@ -612,7 +614,8 @@
             flightDateTime: "2027-04-25T16:35",
             routeTitle: "📍 מסלול הנסיעה (ציריך > אלגוי)",
             routeDesc: 'מרחק נסיעה של כ-170 ק"מ. מנמל התעופה בציריך (שווייץ) ועד לבקתה שלנו בפארק (גרמניה).',
-            routeMapUrl: "https://maps.google.com/maps?saddr=Zurich+Airport,+Switzerland&daddr=Center+Parcs+Park+Allg%C3%A4u,+Germany&output=embed",
+            routeStart: "Zurich Airport, Switzerland",
+            routeEnd: "Center Parcs Park Allgäu, Germany",
             nav1Title: "מלון ציריך - Holiday Inn Express",
             nav1Url: "https://maps.google.com/?q=Hofwisenstrasse+30,+8153+Rümlang,+Switzerland",
             nav2Title: "פארק אלגוי (Center Parcs)",
@@ -625,52 +628,58 @@
 
         db.ref('settings').on('value', (snapshot) => {
             let config = snapshot.val();
-            // אתחול הגדרות בסיס אם הענן ריק
+            // אם המאגר בענן ריק - עדיין עובדים עם התבנית המקורית כדי לא למחוק נתונים מהעבר
             if (!config) {
                 config = defaultSettings;
                 db.ref('settings').set(config);
             }
             
-            // עדכון חזותי של האפליקציה כולה!
-            document.getElementById('dyn-main-title').innerText = config.mainTitle;
-            document.getElementById('dyn-hero-text').innerText = config.heroText;
-            document.getElementById('dyn-route-title').innerText = config.routeTitle;
-            document.getElementById('dyn-route-desc').innerText = config.routeDesc;
-            document.getElementById('dyn-route-map').src = config.routeMapUrl;
+            document.getElementById('dyn-main-title').innerText = config.mainTitle || defaultSettings.mainTitle;
+            document.getElementById('dyn-hero-text').innerText = config.heroText || defaultSettings.heroText;
+            document.getElementById('dyn-route-title').innerText = config.routeTitle || defaultSettings.routeTitle;
+            document.getElementById('dyn-route-desc').innerText = config.routeDesc || defaultSettings.routeDesc;
             
-            document.getElementById('dyn-nav1-link').href = config.nav1Url;
-            document.getElementById('dyn-nav1-link').innerHTML = `📍 ${config.nav1Title}`;
-            document.getElementById('dyn-nav2-link').href = config.nav2Url;
-            document.getElementById('dyn-nav2-link').innerHTML = `📍 ${config.nav2Title}`;
-            document.getElementById('dyn-nav3-link').href = config.nav3Url;
-            document.getElementById('dyn-nav3-link').innerHTML = `📍 ${config.nav3Title}`;
+            // בנייה דינמית ואוטומטית של מפת גוגל לפי שתי נקודות הטקסט שהזנת
+            const startP = config.routeStart || defaultSettings.routeStart;
+            const endP = config.routeEnd || defaultSettings.routeEnd;
+            const autoMapUrl = `https://maps.google.com/maps?saddr=${encodeURIComponent(startP)}&daddr=${encodeURIComponent(endP)}&output=embed`;
+            document.getElementById('dyn-route-map').src = autoMapUrl;
             
-            document.getElementById('dyn-emergency-btn').onclick = () => window.location.href = `tel:${config.emergencyNum}`;
-            document.getElementById('dyn-emergency-btn').innerHTML = `🚨 ${config.emergencyText} (${config.emergencyNum})`;
+            document.getElementById('dyn-nav1-link').href = config.nav1Url || defaultSettings.nav1Url;
+            document.getElementById('dyn-nav1-link').innerHTML = `📍 ${config.nav1Title || defaultSettings.nav1Title}`;
+            document.getElementById('dyn-nav2-link').href = config.nav2Url || defaultSettings.nav2Url;
+            document.getElementById('dyn-nav2-link').innerHTML = `📍 ${config.nav2Title || defaultSettings.nav2Title}`;
+            document.getElementById('dyn-nav3-link').href = config.nav3Url || defaultSettings.nav3Url;
+            document.getElementById('dyn-nav3-link').innerHTML = `📍 ${config.nav3Title || defaultSettings.nav3Title}`;
+            
+            const eNum = config.emergencyNum || defaultSettings.emergencyNum;
+            const eText = config.emergencyText || defaultSettings.emergencyText;
+            document.getElementById('dyn-emergency-btn').onclick = () => window.location.href = `tel:${eNum}`;
+            document.getElementById('dyn-emergency-btn').innerHTML = `🚨 ${eText} (${eNum})`;
 
-            // עדכון תאריך שעון העצר
             if(config.flightDateTime) {
                 targetFlightDate = new Date(config.flightDateTime).getTime();
             }
 
-            // עדכון שדות טופס הניהול (כדי שיראו מה קיים כרגע בענן)
-            document.getElementById('set-mainTitle').value = config.mainTitle;
-            document.getElementById('set-heroText').value = config.heroText;
-            document.getElementById('set-flightDateTime').value = config.flightDateTime;
-            document.getElementById('set-routeTitle').value = config.routeTitle;
-            document.getElementById('set-routeDesc').value = config.routeDesc;
-            document.getElementById('set-routeMapUrl').value = config.routeMapUrl;
-            document.getElementById('set-nav1Title').value = config.nav1Title;
-            document.getElementById('set-nav1Url').value = config.nav1Url;
-            document.getElementById('set-nav2Title').value = config.nav2Title;
-            document.getElementById('set-nav2Url').value = config.nav2Url;
-            document.getElementById('set-nav3Title').value = config.nav3Title;
-            document.getElementById('set-nav3Url').value = config.nav3Url;
-            document.getElementById('set-emergencyNum').value = config.emergencyNum;
-            document.getElementById('set-emergencyText').value = config.emergencyText;
+            // הזנה אוטומטית של פאנל ההגדרות בנתונים הקיימים (כולל תמיכה לאחור בנתונים ישנים)
+            document.getElementById('set-mainTitle').value = config.mainTitle || defaultSettings.mainTitle;
+            document.getElementById('set-heroText').value = config.heroText || defaultSettings.heroText;
+            document.getElementById('set-flightDateTime').value = config.flightDateTime || defaultSettings.flightDateTime;
+            document.getElementById('set-routeTitle').value = config.routeTitle || defaultSettings.routeTitle;
+            document.getElementById('set-routeDesc').value = config.routeDesc || defaultSettings.routeDesc;
+            document.getElementById('set-routeStart').value = config.routeStart || defaultSettings.routeStart;
+            document.getElementById('set-routeEnd').value = config.routeEnd || defaultSettings.routeEnd;
+            document.getElementById('set-nav1Title').value = config.nav1Title || defaultSettings.nav1Title;
+            document.getElementById('set-nav1Url').value = config.nav1Url || defaultSettings.nav1Url;
+            document.getElementById('set-nav2Title').value = config.nav2Title || defaultSettings.nav2Title;
+            document.getElementById('set-nav2Url').value = config.nav2Url || defaultSettings.nav2Url;
+            document.getElementById('set-nav3Title').value = config.nav3Title || defaultSettings.nav3Title;
+            document.getElementById('set-nav3Url').value = config.nav3Url || defaultSettings.nav3Url;
+            document.getElementById('set-emergencyNum').value = config.emergencyNum || defaultSettings.emergencyNum;
+            document.getElementById('set-emergencyText').value = config.emergencyText || defaultSettings.emergencyText;
         });
 
-        // פונקציית שמירת ההגדרות מהפאנל
+        // שמירת ההגדרות מהפאנל
         function saveSettings() {
             db.ref('settings').set({
                 mainTitle: document.getElementById('set-mainTitle').value.trim(),
@@ -678,7 +687,8 @@
                 flightDateTime: document.getElementById('set-flightDateTime').value,
                 routeTitle: document.getElementById('set-routeTitle').value.trim(),
                 routeDesc: document.getElementById('set-routeDesc').value.trim(),
-                routeMapUrl: document.getElementById('set-routeMapUrl').value.trim(),
+                routeStart: document.getElementById('set-routeStart').value.trim(),
+                routeEnd: document.getElementById('set-routeEnd').value.trim(),
                 nav1Title: document.getElementById('set-nav1Title').value.trim(),
                 nav1Url: document.getElementById('set-nav1Url').value.trim(),
                 nav2Title: document.getElementById('set-nav2Title').value.trim(),
@@ -688,13 +698,11 @@
                 emergencyNum: document.getElementById('set-emergencyNum').value.trim(),
                 emergencyText: document.getElementById('set-emergencyText').value.trim()
             });
-            showAlert('ההגדרות נשמרו! האפליקציה עודכנה בהצלחה לכולם.');
-            
-            // מחזיר אותנו לדף הבית כדי לראות את השינוי
+            showAlert('ההגדרות נשמרו! האפליקציה בונה את המפה ומעדכנת את המסכים...');
             switchTab('home', document.querySelector('.nav-btn'));
         }
 
-        /* מנוע שעון העצר (משתמש במשתנה הדינמי targetFlightDate) */
+        /* מנוע שעון העצר */
         setInterval(function() {
             const now = new Date().getTime();
             const distance = targetFlightDate - now;
