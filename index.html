@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>החופשה המשפחתית באלגוי</title>
+    <title>החופשה המשפחתית</title>
     <style>
         :root {
             --primary-green: #3a5a40;
@@ -37,11 +37,24 @@
             padding: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             z-index: 10;
+            position: relative;
         }
 
         header h1 {
             font-size: 1.2rem;
             margin-bottom: 5px;
+            padding: 0 30px; /* מפנה מקום לכפתור ההגדרות */
+        }
+
+        .settings-icon {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
         }
 
         #countdown {
@@ -171,7 +184,7 @@
             margin-bottom: 20px;
         }
 
-        input[type="text"], input[type="number"], select, input[type="date"], input[type="time"] {
+        input[type="text"], input[type="number"], select, input[type="date"], input[type="time"], input[type="datetime-local"] {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -294,7 +307,6 @@
             cursor: pointer;
         }
 
-        /* עיצוב משופר לשדות הטיסות */
         .flight-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -312,12 +324,24 @@
             font-weight: bold;
             color: var(--primary-green);
         }
+        
+        /* עיצוב שדות לפאנל ההגדרות */
+        .settings-label {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #555;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            display: block;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>טיול משפחתי לסנטר פארקס אלגוי , גרמניה</h1>
+        <!-- כפתור הגדרות חדש בפינה -->
+        <button class="settings-icon" onclick="switchTab('settings', null)" title="הגדרות אפליקציה">⚙️</button>
+        <h1 id="dyn-main-title">טוען נתונים...</h1>
         <div id="countdown">טוען שעון...</div>
     </header>
 
@@ -325,8 +349,8 @@
         <!-- Tab 0: Home -->
         <div id="tab-home" class="tab-content active">
             <div class="home-hero">
-                <img src="hero.jpg" alt="Alps Landscape" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'16\'>העלה תמונה בשם hero.jpg</text></svg>'">
-                <div class="home-hero-text">ברוכים הבאים לאלגוי! 🌲</div>
+                <img src="hero.jpg" alt="Hero Image" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'16\'>העלה תמונה בשם hero.jpg</text></svg>'">
+                <div class="home-hero-text" id="dyn-hero-text">...</div>
             </div>
             
             <p style="text-align: center; margin-bottom: 20px; font-size: 1.1rem; color: var(--primary-brown); font-weight: bold;">
@@ -334,16 +358,15 @@
             </p>
 
             <div class="image-gallery">
-                <img src="cabin.jpg" alt="Cabin" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'130\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'14\'>cabin.jpg</text></svg>'">
-                <img src="nature.jpg" alt="Nature Walk" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'130\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'14\'>nature.jpg</text></svg>'">
+                <img src="cabin.jpg" alt="Image 1" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'130\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'14\'>cabin.jpg</text></svg>'">
+                <img src="nature.jpg" alt="Image 2" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'130\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'14\'>nature.jpg</text></svg>'">
             </div>
 
-            <h3 style="color: var(--primary-green); margin-bottom: 10px; border-bottom: 2px solid var(--light-green); padding-bottom: 5px;">📍 מסלול הנסיעה (ציריך > אלגוי)</h3>
-            <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">
-                מרחק נסיעה של כ-170 ק"מ. מנמל התעופה בציריך (שווייץ) ועד לבקתה שלנו בפארק (גרמניה).
-            </p>
+            <h3 id="dyn-route-title" style="color: var(--primary-green); margin-bottom: 10px; border-bottom: 2px solid var(--light-green); padding-bottom: 5px;">...</h3>
+            <p id="dyn-route-desc" style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">...</p>
+            
             <div style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;">
-                <iframe src="https://maps.google.com/maps?saddr=Zurich+Airport,+Switzerland&daddr=Center+Parcs+Park+Allg%C3%A4u,+Germany&output=embed" width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
+                <iframe id="dyn-route-map" src="" width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
             </div>
         </div>
 
@@ -378,12 +401,12 @@
             <div id="packingListContainer"></div>
         </div>
 
-        <!-- Tab 3: Expenses (Password Protected) -->
+        <!-- Tab 3: Expenses -->
         <div id="tab-expenses" class="tab-content">
             <h2>הוצאות משפחתיות</h2>
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
                 <input type="text" id="expDesc" placeholder="על מה שילמנו? (למשל: מסעדה)" style="margin-bottom: 10px;">
-                <input type="number" id="expAmount" placeholder="סכום (באירו)" style="margin-bottom: 10px;">
+                <input type="number" id="expAmount" placeholder="סכום" style="margin-bottom: 10px;">
                 <select id="expPayer" style="margin-bottom: 10px;">
                     <option value="eliran">אלירן שילם</option>
                     <option value="dror">דרור שילם/ה</option>
@@ -400,78 +423,41 @@
         <div id="tab-info" class="tab-content">
             <h2>מידע, ניווט וטלפונים</h2>
             
-            <!-- פרטי טיסות משופרים -->
             <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--primary-brown);">✈️ פרטי טיסות</h3>
             
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                 <h4 style="margin-bottom: 10px; color: var(--primary-green);">טיסה הלוך</h4>
                 <div class="flight-grid">
-                    <div class="flight-field">
-                        <label>תאריך טיסה</label>
-                        <input type="date" id="f1_date" onchange="saveFlights()">
-                    </div>
-                    <div class="flight-field">
-                        <label>מספר טיסה</label>
-                        <input type="text" id="f1_num" placeholder="למשל LY343" onchange="saveFlights()">
-                    </div>
-                    <div class="flight-field">
-                        <label>המראה מ-</label>
-                        <input type="text" id="f1_from" placeholder="למשל נתב״ג" onchange="saveFlights()">
-                    </div>
-                    <div class="flight-field">
-                        <label>שעת המראה</label>
-                        <input type="time" id="f1_dep_time" onchange="saveFlights()">
-                    </div>
-                    <div class="flight-field">
-                        <label>נחיתה ב-</label>
-                        <input type="text" id="f1_to" placeholder="למשל ציריך" onchange="saveFlights()">
-                    </div>
-                    <div class="flight-field">
-                        <label>שעת נחיתה</label>
-                        <input type="time" id="f1_arr_time" onchange="saveFlights()">
-                    </div>
+                    <div class="flight-field"><label>תאריך טיסה</label><input type="date" id="f1_date" onchange="saveFlights()"></div>
+                    <div class="flight-field"><label>מספר טיסה</label><input type="text" id="f1_num" placeholder="למשל LY343" onchange="saveFlights()"></div>
+                    <div class="flight-field"><label>המראה מ-</label><input type="text" id="f1_from" placeholder="למשל נתב״ג" onchange="saveFlights()"></div>
+                    <div class="flight-field"><label>שעת המראה</label><input type="time" id="f1_dep_time" onchange="saveFlights()"></div>
+                    <div class="flight-field"><label>נחיתה ב-</label><input type="text" id="f1_to" placeholder="למשל ציריך" onchange="saveFlights()"></div>
+                    <div class="flight-field"><label>שעת נחיתה</label><input type="time" id="f1_arr_time" onchange="saveFlights()"></div>
                 </div>
             </div>
 
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                 <h4 style="margin-bottom: 10px; color: var(--primary-green);">טיסה חזור</h4>
                 <div class="flight-grid">
-                    <div class="flight-field">
-                        <label>תאריך טיסה</label>
-                        <input type="date" id="f2_date" onchange="saveFlights()">
-                    </div>
-                    <div class="flight-field">
-                        <label>מספר טיסה</label>
-                        <input type="text" id="f2_num" placeholder="למשל LY348" onchange="saveFlights()">
-                    </div>
-                    <div class="flight-field">
-                        <label>המראה מ-</label>
-                        <input type="text" id="f2_from" placeholder="למשל ציריך" onchange="saveFlights()">
-                    </div>
-                    <div class="flight-field">
-                        <label>שעת המראה</label>
-                        <input type="time" id="f2_dep_time" onchange="saveFlights()">
-                    </div>
-                    <div class="flight-field">
-                        <label>נחיתה ב-</label>
-                        <input type="text" id="f2_to" placeholder="למשל נתב״ג" onchange="saveFlights()">
-                    </div>
-                    <div class="flight-field">
-                        <label>שעת נחיתה</label>
-                        <input type="time" id="f2_arr_time" onchange="saveFlights()">
-                    </div>
+                    <div class="flight-field"><label>תאריך טיסה</label><input type="date" id="f2_date" onchange="saveFlights()"></div>
+                    <div class="flight-field"><label>מספר טיסה</label><input type="text" id="f2_num" placeholder="למשל LY348" onchange="saveFlights()"></div>
+                    <div class="flight-field"><label>המראה מ-</label><input type="text" id="f2_from" placeholder="למשל ציריך" onchange="saveFlights()"></div>
+                    <div class="flight-field"><label>שעת המראה</label><input type="time" id="f2_dep_time" onchange="saveFlights()"></div>
+                    <div class="flight-field"><label>נחיתה ב-</label><input type="text" id="f2_to" placeholder="למשל נתב״ג" onchange="saveFlights()"></div>
+                    <div class="flight-field"><label>שעת נחיתה</label><input type="time" id="f2_arr_time" onchange="saveFlights()"></div>
                 </div>
             </div>
 
             <h3 style="margin-bottom: 10px; color: var(--primary-brown);">ניווט מהיר (Google Maps)</h3>
-            <a href="https://maps.google.com/?q=Hofwisenstrasse+30,+8153+Rümlang,+Switzerland" target="_blank" class="action-btn">📍 מלון ציריך - Holiday Inn Express</a>
-            <a href="https://maps.google.com/?q=Allgauallee+40,+Leutkirch,+Germany" target="_blank" class="action-btn">📍 פארק אלגוי (Center Parcs)</a>
-            <a href="https://maps.google.com/?q=Zurich+Airport+Car+Rental" target="_blank" class="action-btn">📍 החזרת רכב - שדה"ת ציריך</a>
+            <a id="dyn-nav1-link" href="#" target="_blank" class="action-btn">📍 טוען...</a>
+            <a id="dyn-nav2-link" href="#" target="_blank" class="action-btn">📍 טוען...</a>
+            <a id="dyn-nav3-link" href="#" target="_blank" class="action-btn">📍 טוען...</a>
 
             <h3 style="margin-top: 25px; margin-bottom: 10px; color: var(--primary-brown);">חיוג מהיר</h3>
             <button class="action-btn phone-btn" onclick="window.location.href='tel:+972504039236'">📞 התקשר לאלירן</button>
             <button class="action-btn phone-btn" onclick="window.location.href='tel:+972542420007'">📞 התקשר לדרור</button>
-            <button class="action-btn" style="background-color: #d32f2f; margin-bottom: 50px;" onclick="window.location.href='tel:112'">🚨 חיוג חירום מקומי (112)</button>
+            <button id="dyn-emergency-btn" class="action-btn" style="background-color: #d32f2f; margin-bottom: 50px;">🚨 טוען...</button>
         </div>
 
         <!-- Tab 5: Location -->
@@ -488,6 +474,57 @@
             <div id="map-container" style="margin-top: 15px; border-radius: 10px; overflow: hidden; height: 250px; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                 <iframe id="google-map-iframe" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
             </div>
+        </div>
+
+        <!-- Tab 6: App Settings (Hidden / Password Protected) -->
+        <div id="tab-settings" class="tab-content">
+            <h2>⚙️ פאנל ניהול אפליקציה</h2>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">עדכן כאן את פרטי הטיול החדש. שמירה תעדכן אוטומטית את האפליקציה אצל כולם!</p>
+            
+            <div class="card">
+                <h3 style="color: var(--primary-green); margin-bottom: 10px;">עיצוב כללי ושעון עצר</h3>
+                <label class="settings-label">כותרת ראשית של האפליקציה:</label>
+                <input type="text" id="set-mainTitle">
+                <label class="settings-label">טקסט על תמונת הנוף:</label>
+                <input type="text" id="set-heroText">
+                <label class="settings-label">תאריך ושעת טיסה (מכוון את השעון):</label>
+                <input type="datetime-local" id="set-flightDateTime" dir="ltr">
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--primary-green); margin-bottom: 10px;">מפת אזור הטיול (דף הבית)</h3>
+                <label class="settings-label">כותרת למפה:</label>
+                <input type="text" id="set-routeTitle">
+                <label class="settings-label">תיאור קצר מתחת לכותרת:</label>
+                <input type="text" id="set-routeDesc">
+                <label class="settings-label">קישור (URL Embed) מ-Google Maps:</label>
+                <input type="text" id="set-routeMapUrl" dir="ltr" style="font-size: 0.8rem;">
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--primary-green); margin-bottom: 10px;">אתרי ניווט מהיר</h3>
+                <label class="settings-label">אתר 1 (כותרת וקישור מלא):</label>
+                <input type="text" id="set-nav1Title" placeholder="למשל: מלון ציריך">
+                <input type="text" id="set-nav1Url" dir="ltr" style="margin-top:5px; font-size: 0.8rem;">
+                
+                <label class="settings-label">אתר 2 (כותרת וקישור מלא):</label>
+                <input type="text" id="set-nav2Title">
+                <input type="text" id="set-nav2Url" dir="ltr" style="margin-top:5px; font-size: 0.8rem;">
+                
+                <label class="settings-label">אתר 3 (כותרת וקישור מלא):</label>
+                <input type="text" id="set-nav3Title">
+                <input type="text" id="set-nav3Url" dir="ltr" style="margin-top:5px; font-size: 0.8rem;">
+            </div>
+
+            <div class="card" style="margin-bottom: 25px;">
+                <h3 style="color: var(--primary-green); margin-bottom: 10px;">חירום מקומי</h3>
+                <label class="settings-label">מספר החירום ביעד:</label>
+                <input type="text" id="set-emergencyNum" dir="ltr">
+                <label class="settings-label">טקסט על הכפתור:</label>
+                <input type="text" id="set-emergencyText" placeholder="למשל: חיוג חירום בגרמניה">
+            </div>
+
+            <button class="action-btn" onclick="saveSettings()" style="background-color: var(--primary-brown);">💾 שמור והחל על האפליקציה</button>
         </div>
     </main>
 
@@ -544,28 +581,125 @@
             document.getElementById('customModal').style.display = 'none';
         }
 
+        // ניהול הרשאות ולשוניות
         function switchTab(tabId, btnElement) {
-            if (tabId === 'expenses' && sessionStorage.getItem('expenses_unlocked') !== 'true') {
-                const pass = prompt("הכנס סיסמה כדי לגשת למחשבון ההוצאות:");
+            if ((tabId === 'expenses' || tabId === 'settings') && sessionStorage.getItem('app_unlocked') !== 'true') {
+                const pass = prompt("הכנס סיסמה לגישה לאזור זה:");
                 if (pass !== "1981") {
                     showAlert("סיסמה שגויה. הגישה נדחתה.");
                     return; 
                 }
-                sessionStorage.setItem('expenses_unlocked', 'true');
+                sessionStorage.setItem('app_unlocked', 'true');
             }
 
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
             document.getElementById('tab-' + tabId).classList.add('active');
-            btnElement.classList.add('active');
+            if (btnElement) {
+                btnElement.classList.add('active'); // מסמן את הכפתור רק אם באנו מהסרגל התחתון
+            }
         }
 
-        const flightDate = new Date("2027-04-25T16:35:00").getTime();
+        /* -----------------------
+           Dynamic Settings Logic
+           ----------------------- */
+        let targetFlightDate = new Date("2027-04-25T16:35:00").getTime(); // ברירת מחדל עד שהענן יטען
+        
+        const defaultSettings = {
+            mainTitle: "טיול משפחתי לסנטר פארקס אלגוי , גרמניה",
+            heroText: "ברוכים הבאים לאלגוי! 🌲",
+            flightDateTime: "2027-04-25T16:35",
+            routeTitle: "📍 מסלול הנסיעה (ציריך > אלגוי)",
+            routeDesc: 'מרחק נסיעה של כ-170 ק"מ. מנמל התעופה בציריך (שווייץ) ועד לבקתה שלנו בפארק (גרמניה).',
+            routeMapUrl: "https://maps.google.com/maps?saddr=Zurich+Airport,+Switzerland&daddr=Center+Parcs+Park+Allg%C3%A4u,+Germany&output=embed",
+            nav1Title: "מלון ציריך - Holiday Inn Express",
+            nav1Url: "https://maps.google.com/?q=Hofwisenstrasse+30,+8153+Rümlang,+Switzerland",
+            nav2Title: "פארק אלגוי (Center Parcs)",
+            nav2Url: "https://maps.google.com/?q=Allgauallee+40,+Leutkirch,+Germany",
+            nav3Title: "החזרת רכב - שדה\"ת ציריך",
+            nav3Url: "https://maps.google.com/?q=Zurich+Airport+Car+Rental",
+            emergencyNum: "112",
+            emergencyText: "חיוג חירום מקומי"
+        };
+
+        db.ref('settings').on('value', (snapshot) => {
+            let config = snapshot.val();
+            // אתחול הגדרות בסיס אם הענן ריק
+            if (!config) {
+                config = defaultSettings;
+                db.ref('settings').set(config);
+            }
+            
+            // עדכון חזותי של האפליקציה כולה!
+            document.getElementById('dyn-main-title').innerText = config.mainTitle;
+            document.getElementById('dyn-hero-text').innerText = config.heroText;
+            document.getElementById('dyn-route-title').innerText = config.routeTitle;
+            document.getElementById('dyn-route-desc').innerText = config.routeDesc;
+            document.getElementById('dyn-route-map').src = config.routeMapUrl;
+            
+            document.getElementById('dyn-nav1-link').href = config.nav1Url;
+            document.getElementById('dyn-nav1-link').innerHTML = `📍 ${config.nav1Title}`;
+            document.getElementById('dyn-nav2-link').href = config.nav2Url;
+            document.getElementById('dyn-nav2-link').innerHTML = `📍 ${config.nav2Title}`;
+            document.getElementById('dyn-nav3-link').href = config.nav3Url;
+            document.getElementById('dyn-nav3-link').innerHTML = `📍 ${config.nav3Title}`;
+            
+            document.getElementById('dyn-emergency-btn').onclick = () => window.location.href = `tel:${config.emergencyNum}`;
+            document.getElementById('dyn-emergency-btn').innerHTML = `🚨 ${config.emergencyText} (${config.emergencyNum})`;
+
+            // עדכון תאריך שעון העצר
+            if(config.flightDateTime) {
+                targetFlightDate = new Date(config.flightDateTime).getTime();
+            }
+
+            // עדכון שדות טופס הניהול (כדי שיראו מה קיים כרגע בענן)
+            document.getElementById('set-mainTitle').value = config.mainTitle;
+            document.getElementById('set-heroText').value = config.heroText;
+            document.getElementById('set-flightDateTime').value = config.flightDateTime;
+            document.getElementById('set-routeTitle').value = config.routeTitle;
+            document.getElementById('set-routeDesc').value = config.routeDesc;
+            document.getElementById('set-routeMapUrl').value = config.routeMapUrl;
+            document.getElementById('set-nav1Title').value = config.nav1Title;
+            document.getElementById('set-nav1Url').value = config.nav1Url;
+            document.getElementById('set-nav2Title').value = config.nav2Title;
+            document.getElementById('set-nav2Url').value = config.nav2Url;
+            document.getElementById('set-nav3Title').value = config.nav3Title;
+            document.getElementById('set-nav3Url').value = config.nav3Url;
+            document.getElementById('set-emergencyNum').value = config.emergencyNum;
+            document.getElementById('set-emergencyText').value = config.emergencyText;
+        });
+
+        // פונקציית שמירת ההגדרות מהפאנל
+        function saveSettings() {
+            db.ref('settings').set({
+                mainTitle: document.getElementById('set-mainTitle').value.trim(),
+                heroText: document.getElementById('set-heroText').value.trim(),
+                flightDateTime: document.getElementById('set-flightDateTime').value,
+                routeTitle: document.getElementById('set-routeTitle').value.trim(),
+                routeDesc: document.getElementById('set-routeDesc').value.trim(),
+                routeMapUrl: document.getElementById('set-routeMapUrl').value.trim(),
+                nav1Title: document.getElementById('set-nav1Title').value.trim(),
+                nav1Url: document.getElementById('set-nav1Url').value.trim(),
+                nav2Title: document.getElementById('set-nav2Title').value.trim(),
+                nav2Url: document.getElementById('set-nav2Url').value.trim(),
+                nav3Title: document.getElementById('set-nav3Title').value.trim(),
+                nav3Url: document.getElementById('set-nav3Url').value.trim(),
+                emergencyNum: document.getElementById('set-emergencyNum').value.trim(),
+                emergencyText: document.getElementById('set-emergencyText').value.trim()
+            });
+            showAlert('ההגדרות נשמרו! האפליקציה עודכנה בהצלחה לכולם.');
+            
+            // מחזיר אותנו לדף הבית כדי לראות את השינוי
+            switchTab('home', document.querySelector('.nav-btn'));
+        }
+
+        /* מנוע שעון העצר (משתמש במשתנה הדינמי targetFlightDate) */
         setInterval(function() {
             const now = new Date().getTime();
-            const distance = flightDate - now;
-            if (distance < 0) {
-                document.getElementById("countdown").innerHTML = "✈️ חופשה נעימה!";
+            const distance = targetFlightDate - now;
+            if (distance < 0 || isNaN(distance)) {
+                document.getElementById("countdown").innerHTML = "✈️ הגענו ליעד!";
                 return;
             }
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -618,7 +752,6 @@
            Itinerary Logic
            ----------------------- */
         let itineraryItems = [];
-        
         const defaultItinerary = [
             { id: 101, title: '25.04 - המראה מנתב"ג לציריך', desc: 'טיסת אל על LY343. המראה: 16:35, נחיתה: 19:55.', checked: false },
             { id: 102, title: '25.04 - הגעה למלון בציריך', desc: 'לינה ללילה אחד ב-Holiday Inn Express ציריך.', checked: false },
@@ -643,14 +776,11 @@
         function renderItinerary() {
             const container = document.getElementById('itineraryListContainer');
             const selectDropdown = document.getElementById('itiInsertAfter');
-            
             container.innerHTML = '';
-            selectDropdown.innerHTML = '<option value="start">מקם בתחילת המסלול (ראשון)</option>';
-            
+            selectDropdown.innerHTML = '<option value="start">מקם בתחילת המסלול</option>';
             itineraryItems.forEach((item) => {
                 const checkedAttr = item.checked ? 'checked' : '';
                 const strikeClass = item.checked ? 'checked-text' : '';
-                
                 const div = document.createElement('div');
                 div.className = 'card';
                 div.innerHTML = `
@@ -662,7 +792,6 @@
                     <div class="details ${strikeClass}">${item.desc}</div>
                 `;
                 container.appendChild(div);
-
                 const option = document.createElement('option');
                 option.value = item.id;
                 option.innerText = `אחרי: ${item.title}`;
@@ -682,29 +811,16 @@
             const title = document.getElementById('itiTitle').value.trim();
             const desc = document.getElementById('itiDesc').value.trim();
             const insertAfterId = document.getElementById('itiInsertAfter').value;
-
             if (!title) return showAlert('חובה להזין כותרת לתחנה החדשה.');
-
-            const newItem = {
-                id: Date.now(),
-                title: title,
-                desc: desc,
-                checked: false
-            };
-
+            const newItem = { id: Date.now(), title: title, desc: desc, checked: false };
             if (insertAfterId === 'start') {
                 itineraryItems.unshift(newItem); 
             } else {
                 const insertIndex = itineraryItems.findIndex(i => i.id == insertAfterId);
-                if (insertIndex > -1) {
-                    itineraryItems.splice(insertIndex + 1, 0, newItem); 
-                } else {
-                    itineraryItems.push(newItem);
-                }
+                if (insertIndex > -1) itineraryItems.splice(insertIndex + 1, 0, newItem); 
+                else itineraryItems.push(newItem);
             }
-
             db.ref('itinerary').set(itineraryItems);
-            
             document.getElementById('itiTitle').value = '';
             document.getElementById('itiDesc').value = '';
             showAlert('התחנה נוספה למסלול בהצלחה!');
@@ -724,24 +840,17 @@
            Packing List 
            ----------------------- */
         let packingItems = [];
-
         db.ref('packing').on('value', (snapshot) => {
-            packingItems = snapshot.val();
-            if (!packingItems) {
-                packingItems = [
-                    { id: 1, text: 'דרכונים לכולם', checked: false },
-                    { id: 2, text: 'רישיון נהיגה בינלאומי', checked: false },
-                    { id: 3, text: 'בגדים', checked: false },
-                    { id: 4, text: 'תרופות ועזרה ראשונה', checked: false }
-                ];
-            }
+            packingItems = snapshot.val() || [
+                { id: 1, text: 'דרכונים לכולם', checked: false },
+                { id: 2, text: 'רישיון נהיגה בינלאומי', checked: false }
+            ];
             renderPackingList();
         });
 
         function renderPackingList() {
             const container = document.getElementById('packingListContainer');
             container.innerHTML = '';
-            
             packingItems.forEach(item => {
                 if (item) {
                     const checkedAttr = item.checked ? 'checked' : '';
@@ -770,10 +879,8 @@
 
         function addPackingItem() {
             const input = document.getElementById('newItemInput');
-            const text = input.value.trim();
-            if (text === '') return showAlert('יש להזין שם פריט');
-            
-            packingItems.push({ id: Date.now(), text: text, checked: false });
+            if (input.value.trim() === '') return showAlert('יש להזין שם פריט');
+            packingItems.push({ id: Date.now(), text: input.value.trim(), checked: false });
             input.value = '';
             db.ref('packing').set(packingItems);
         }
@@ -787,7 +894,6 @@
            Expenses 
            ----------------------- */
         let expenses = [];
-
         db.ref('expenses').on('value', (snapshot) => {
             expenses = snapshot.val() || [];
             renderExpenses();
@@ -796,15 +902,12 @@
         function renderExpenses() {
             const list = document.getElementById('expenseList');
             list.innerHTML = '';
-            let totalEliran = 0;
-            let totalDror = 0;
-
+            let totalEliran = 0, totalDror = 0;
             expenses.forEach(exp => {
                 if (exp) {
                     const payerName = exp.payer === 'eliran' ? 'אלירן' : 'דרור';
                     if (exp.payer === 'eliran') totalEliran += exp.amount;
                     if (exp.payer === 'dror') totalDror += exp.amount;
-
                     const div = document.createElement('div');
                     div.className = 'expense-item';
                     div.innerHTML = `
@@ -814,34 +917,21 @@
                     list.appendChild(div);
                 }
             });
-            calculateBalance(totalEliran, totalDror);
+            const balanceDiv = document.getElementById('expenseBalance');
+            if (totalEliran === totalDror) balanceDiv.innerHTML = "מאזן: אין חובות! שילמתם שווה בשווה.";
+            else if (totalEliran > totalDror) balanceDiv.innerHTML = `דרור חייב/ת לאלירן: €${((totalEliran - totalDror) / 2).toFixed(2)}`;
+            else balanceDiv.innerHTML = `אלירן חייב לדרור: €${((totalDror - totalEliran) / 2).toFixed(2)}`;
         }
 
         function addExpense() {
             const desc = document.getElementById('expDesc').value.trim();
             const amount = parseFloat(document.getElementById('expAmount').value);
             const payer = document.getElementById('expPayer').value;
-
             if (!desc || isNaN(amount) || amount <= 0) return showAlert('יש להזין תיאור וסכום תקין.');
-
             expenses.push({ desc, amount, payer });
             db.ref('expenses').set(expenses);
-            
             document.getElementById('expDesc').value = '';
             document.getElementById('expAmount').value = '';
-        }
-
-        function calculateBalance(eliranTotal, drorTotal) {
-            const balanceDiv = document.getElementById('expenseBalance');
-            if (eliranTotal === drorTotal) {
-                balanceDiv.innerHTML = "מאזן: אין חובות! שילמתם שווה בשווה.";
-                return;
-            }
-            if (eliranTotal > drorTotal) {
-                balanceDiv.innerHTML = `דרור חייב/ת לאלירן: €${((eliranTotal - drorTotal) / 2).toFixed(2)}`;
-            } else {
-                balanceDiv.innerHTML = `אלירן חייב לדרור: €${((drorTotal - eliranTotal) / 2).toFixed(2)}`;
-            }
         }
 
         function clearExpenses() {
@@ -855,41 +945,24 @@
         function shareMyLocation() {
             const status = document.getElementById('location-status');
             const userName = prompt("מי משתף את המיקום עכשיו? (הכנס את שמך)");
-            
             if (!userName) return;
             status.innerText = "מחפש מיקום...";
-
-            if (!navigator.geolocation) {
-                status.innerText = "הדפדפן שלך לא תומך בשיתוף מיקום.";
-                return;
-            }
+            if (!navigator.geolocation) return status.innerText = "הדפדפן שלך לא תומך בשיתוף מיקום.";
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    
                     const now = new Date();
-                    const timeString = now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
-                    const dateString = now.toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: '2-digit' });
-                    const fullTimestamp = `${timeString} - ${dateString}`;
-                    
                     db.ref('locations/' + userName).set({
-                        lat: lat,
-                        lng: lng,
-                        timestamp: fullTimestamp
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                        timestamp: `${now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })} - ${now.toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: '2-digit' })}`
                     });
-                    
                     status.innerText = "המיקום שלך נשמר ושותף בהצלחה!";
-                    
-                    const mapContainer = document.getElementById('map-container');
                     const mapIframe = document.getElementById('google-map-iframe');
-                    mapIframe.src = `https://maps.google.com/maps?q=${lat},${lng}&z=16&output=embed`;
-                    mapContainer.style.display = 'block';
+                    mapIframe.src = `https://maps.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}&z=16&output=embed`;
+                    document.getElementById('map-container').style.display = 'block';
                 },
-                (error) => {
-                    status.innerText = "שגיאה. ודא שאישרת גישה למיקום בהגדרות הטלפון/הדפדפן.";
-                },
+                (error) => { status.innerText = "שגיאה. ודא שאישרת גישה למיקום בהגדרות הטלפון/הדפדפן."; },
                 { enableHighAccuracy: true }
             );
         }
@@ -897,19 +970,16 @@
         db.ref('locations').on('value', (snapshot) => {
             const locations = snapshot.val();
             const listContainer = document.getElementById('shared-locations-list');
-            
             if (locations) {
                 let html = '<h3 style="margin-bottom: 10px; color: var(--primary-green); font-size: 1.2rem;">מיקומי המשפחה ששותפו:</h3><ul style="list-style: none; padding: 0;">';
                 for (let name in locations) {
                     const loc = locations[name];
-                    const mapsLink = `https://maps.google.com/maps?q=${loc.lat},${loc.lng}`;
                     html += `<li style="margin-bottom: 10px; background: #e8f5e9; padding: 12px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;">
                                 <div><strong style="font-size: 1.1rem;">${name}</strong> <br><span style="font-size:0.85rem; color:#666;">(עודכן ב: ${loc.timestamp})</span></div>
-                                <a href="${mapsLink}" target="_blank" style="background: var(--primary-green); color: white; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem;">🌍 צפה במפה</a>
+                                <a href="https://maps.google.com/maps?q=${loc.lat},${loc.lng}" target="_blank" style="background: var(--primary-green); color: white; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem;">🌍 צפה במפה</a>
                              </li>`;
                 }
-                html += '</ul>';
-                listContainer.innerHTML = html;
+                listContainer.innerHTML = html + '</ul>';
             }
         });
     </script>
