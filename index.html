@@ -219,6 +219,7 @@
             justify-content: space-between;
             padding: 10px 0;
             border-bottom: 1px solid #eee;
+            align-items: center;
         }
 
         .action-btn {
@@ -333,6 +334,39 @@
             margin-bottom: 5px;
             display: block;
         }
+
+        /* עיצוב התחזית מזג אוויר */
+        .weather-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding-bottom: 10px;
+            scrollbar-width: thin;
+        }
+        .weather-day {
+            background: var(--white);
+            min-width: 90px;
+            text-align: center;
+            padding: 12px 5px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            flex-shrink: 0;
+        }
+        .weather-icon {
+            font-size: 2rem;
+            margin: 5px 0;
+        }
+        .weather-temp {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--primary-green);
+        }
+        .weather-date {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -399,12 +433,45 @@
             <div id="packingListContainer"></div>
         </div>
 
-        <!-- Tab 3: Expenses (Password Protected) -->
+        <!-- Tab 3: Expenses (Password Protected & Currency Updated) -->
         <div id="tab-expenses" class="tab-content">
             <h2>הוצאות משפחתיות</h2>
+            
+            <!-- המרת מטבע בזמן אמת -->
+            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h3 style="color: var(--primary-green); margin-bottom: 10px; font-size: 1.1rem;">💱 מחשבון המרות (שער חי)</h3>
+                <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                    <input type="number" id="convAmount" placeholder="סכום" style="flex-grow: 1;">
+                    <select id="convFrom" style="width: auto; padding: 5px;">
+                        <option value="EUR">אירו (€)</option>
+                        <option value="ILS">שקל (₪)</option>
+                        <option value="CHF">פרנק (CHF)</option>
+                        <option value="USD">דולר ($)</option>
+                    </select>
+                    <span style="align-self: center; font-weight:bold;">ל-</span>
+                    <select id="convTo" style="width: auto; padding: 5px;">
+                        <option value="ILS">שקל (₪)</option>
+                        <option value="EUR">אירו (€)</option>
+                        <option value="CHF">פרנק (CHF)</option>
+                        <option value="USD">דולר ($)</option>
+                    </select>
+                </div>
+                <button class="action-btn" onclick="convertCurrency()" style="background-color: var(--primary-brown); padding: 8px;">חשב</button>
+                <div id="convResult" style="text-align: center; margin-top: 10px; font-size: 1.1rem; color: var(--primary-green);"></div>
+            </div>
+
+            <!-- הוספת הוצאה עם בחירת מטבע -->
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
                 <input type="text" id="expDesc" placeholder="על מה שילמנו? (למשל: מסעדה)" style="margin-bottom: 10px;">
-                <input type="number" id="expAmount" placeholder="סכום" style="margin-bottom: 10px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <input type="number" id="expAmount" placeholder="סכום" style="flex-grow: 1; margin: 0;">
+                    <select id="expCurrency" style="width: auto; margin: 0;">
+                        <option value="EUR">אירו (€)</option>
+                        <option value="ILS">שקל (₪)</option>
+                        <option value="CHF">פרנק (CHF)</option>
+                        <option value="USD">דולר ($)</option>
+                    </select>
+                </div>
                 <select id="expPayer" style="margin-bottom: 10px;">
                     <option value="eliran">אלירן שילם</option>
                     <option value="dror">דרור שילם/ה</option>
@@ -417,10 +484,16 @@
             <button onclick="clearExpenses()" style="background:none; border:none; color:red; margin-top:15px; width:100%; font-size:1rem; cursor:pointer;">איפוס מחשבון הוצאות</button>
         </div>
 
-        <!-- Tab 4: Info & Phones -->
+        <!-- Tab 4: Info & Phones (Weather Added) -->
         <div id="tab-info" class="tab-content">
             <h2>מידע, ניווט וטלפונים</h2>
             
+            <!-- תחזית מזג אוויר חיה -->
+            <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--primary-brown);">🌤️ תחזית מזג אוויר (7 ימים)</h3>
+            <div id="weather-container" style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05); overflow: hidden;">
+                <div style="text-align: center; color: #666;">טוען תחזית מזג אוויר ליעד... ⏳</div>
+            </div>
+
             <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--primary-brown);">✈️ פרטי טיסות</h3>
             
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
@@ -490,24 +563,27 @@
             </div>
 
             <div class="card">
-                <h3 style="color: var(--primary-green); margin-bottom: 10px;">מפת אזור הטיול (דף הבית)</h3>
+                <h3 style="color: var(--primary-green); margin-bottom: 10px;">מפות ותחזית</h3>
+                
                 <label class="settings-label">כותרת למפה:</label>
                 <input type="text" id="set-routeTitle">
                 <label class="settings-label">תיאור קצר מתחת לכותרת:</label>
                 <input type="text" id="set-routeDesc">
                 
-                <!-- שדות חדשים למפה האוטומטית -->
-                <label class="settings-label">נקודת התחלה במסלול (למשל: נתב"ג, שדה"ת לרנקה):</label>
-                <input type="text" id="set-routeStart" placeholder="הכנס עיר, שדה תעופה או כתובת">
-                <label class="settings-label">נקודת סיום במסלול (למשל: מלון, ריזורט):</label>
-                <input type="text" id="set-routeEnd" placeholder="הכנס את שם המלון או היעד">
+                <label class="settings-label">נקודת התחלה במסלול (למשל: שדה"ת לרנקה):</label>
+                <input type="text" id="set-routeStart">
+                <label class="settings-label">נקודת סיום במסלול (למשל: שם המלון/ריזורט):</label>
+                <input type="text" id="set-routeEnd">
+
+                <label class="settings-label">עיר לתחזית מזג אוויר (חובה באנגלית, למשל: Protaras, Leutkirch):</label>
+                <input type="text" id="set-weatherLoc" placeholder="City name for weather">
             </div>
 
             <div class="card">
                 <h3 style="color: var(--primary-green); margin-bottom: 10px;">אתרי ניווט מהיר</h3>
                 <label class="settings-label">אתר 1 (כותרת וקישור מלא):</label>
-                <input type="text" id="set-nav1Title" placeholder="למשל: מלון בציריך">
-                <input type="text" id="set-nav1Url" dir="ltr" style="margin-top:5px; font-size: 0.8rem;" placeholder="https://maps.google.com/...">
+                <input type="text" id="set-nav1Title">
+                <input type="text" id="set-nav1Url" dir="ltr" style="margin-top:5px; font-size: 0.8rem;">
                 
                 <label class="settings-label">אתר 2 (כותרת וקישור מלא):</label>
                 <input type="text" id="set-nav2Title">
@@ -583,7 +659,6 @@
             document.getElementById('customModal').style.display = 'none';
         }
 
-        // ניהול הרשאות ולשוניות
         function switchTab(tabId, btnElement) {
             if ((tabId === 'expenses' || tabId === 'settings') && sessionStorage.getItem('app_unlocked') !== 'true') {
                 const pass = prompt("הכנס סיסמה לגישה לאזור זה:");
@@ -604,6 +679,91 @@
         }
 
         /* -----------------------
+           Live Exchange Rates (NEW)
+           ----------------------- */
+        let exchangeRates = { EUR: 1, ILS: 4.0, CHF: 0.95, USD: 1.1 }; // שערי גיבוי למקרה שאין אינטרנט
+        
+        async function initLiveRates() {
+            try {
+                // משיכת שערי מטבע חיים (הבסיס הוא יורו)
+                const res = await fetch('https://open.er-api.com/v6/latest/EUR');
+                const data = await res.json();
+                exchangeRates = data.rates;
+                renderExpenses(); // מרענן את ההוצאות עם השערים המדויקים של הרגע
+            } catch(e) { console.log('Error fetching live rates', e); }
+        }
+        initLiveRates();
+
+        function convertCurrency() {
+            const amount = parseFloat(document.getElementById('convAmount').value);
+            const from = document.getElementById('convFrom').value;
+            const to = document.getElementById('convTo').value;
+            if(isNaN(amount)) return showAlert('יש להזין סכום תקין.');
+
+            // ממיר ליורו ואז ליעד כדי שיהיה אוניברסלי
+            const amountEur = amount / exchangeRates[from];
+            const result = amountEur * exchangeRates[to];
+
+            const symbols = { EUR: '€', ILS: '₪', CHF: 'CHF', USD: '$' };
+            document.getElementById('convResult').innerHTML = 
+                `${amount}${symbols[from]} = <strong style="color:var(--primary-brown); font-size:1.3rem;">${result.toFixed(2)}${symbols[to]}</strong>`;
+        }
+
+        /* -----------------------
+           Live Weather Forecast (NEW)
+           ----------------------- */
+        async function loadWeatherForecast(city) {
+            const container = document.getElementById('weather-container');
+            if(!city) {
+                container.innerHTML = 'יש להגדיר עיר לתחזית בפאנל ההגדרות.';
+                return;
+            }
+            try {
+                // המרת שם העיר לקואורדינטות (GPS)
+                const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`);
+                const geoData = await geoRes.json();
+                if (!geoData.results || geoData.results.length === 0) {
+                    container.innerHTML = `לא נמצאו נתונים עבור העיר "${city}". ודא שהיא רשומה נכון באנגלית.`;
+                    return;
+                }
+                const { latitude, longitude, name } = geoData.results[0];
+
+                // משיכת התחזית ל-7 ימים
+                const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`);
+                const weatherData = await weatherRes.json();
+
+                let html = `<div class="weather-grid">`;
+                const days = weatherData.daily.time;
+                for(let i=0; i<days.length; i++) {
+                    const dateObj = new Date(days[i]);
+                    const dateStr = dateObj.toLocaleDateString('he-IL', {weekday: 'short', day: '2-digit', month: '2-digit'});
+                    const max = Math.round(weatherData.daily.temperature_2m_max[i]);
+                    const min = Math.round(weatherData.daily.temperature_2m_min[i]);
+                    const code = weatherData.daily.weathercode[i];
+                    
+                    // התאמת אימוג'י לפי קוד מזג האוויר של המטאורולוגיה
+                    let emoji = '☀️';
+                    if([1,2,3].includes(code)) emoji = '⛅';
+                    else if([45,48].includes(code)) emoji = '🌫️';
+                    else if([51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code)) emoji = '🌧️';
+                    else if([71,73,75,77,85,86].includes(code)) emoji = '❄️';
+                    else if([95,96,99].includes(code)) emoji = '⛈️';
+
+                    html += `<div class="weather-day">
+                                <div class="weather-date">${dateStr}</div>
+                                <div class="weather-icon">${emoji}</div>
+                                <div class="weather-temp">${max}° / ${min}°</div>
+                             </div>`;
+                }
+                html += `</div><div style="font-size:0.8rem; color:#888; text-align:center; margin-top:5px;">מציג תחזית עבור: ${name}</div>`;
+                container.innerHTML = html;
+            } catch(e) {
+                container.innerHTML = 'אירעה שגיאה בטעינת מזג האוויר. בדוק חיבור אינטרנט.';
+            }
+        }
+
+
+        /* -----------------------
            Dynamic Settings Logic
            ----------------------- */
         let targetFlightDate = new Date("2027-04-25T16:35:00").getTime(); 
@@ -616,6 +776,7 @@
             routeDesc: 'מרחק נסיעה של כ-170 ק"מ. מנמל התעופה בציריך (שווייץ) ועד לבקתה שלנו בפארק (גרמניה).',
             routeStart: "Zurich Airport, Switzerland",
             routeEnd: "Center Parcs Park Allgäu, Germany",
+            weatherLoc: "Leutkirch", // הגדרת ברירת מחדל לאלגוי
             nav1Title: "מלון ציריך - Holiday Inn Express",
             nav1Url: "https://maps.google.com/?q=Hofwisenstrasse+30,+8153+Rümlang,+Switzerland",
             nav2Title: "פארק אלגוי (Center Parcs)",
@@ -628,7 +789,6 @@
 
         db.ref('settings').on('value', (snapshot) => {
             let config = snapshot.val();
-            // אם המאגר בענן ריק - עדיין עובדים עם התבנית המקורית כדי לא למחוק נתונים מהעבר
             if (!config) {
                 config = defaultSettings;
                 db.ref('settings').set(config);
@@ -639,7 +799,6 @@
             document.getElementById('dyn-route-title').innerText = config.routeTitle || defaultSettings.routeTitle;
             document.getElementById('dyn-route-desc').innerText = config.routeDesc || defaultSettings.routeDesc;
             
-            // בנייה דינמית ואוטומטית של מפת גוגל לפי שתי נקודות הטקסט שהזנת
             const startP = config.routeStart || defaultSettings.routeStart;
             const endP = config.routeEnd || defaultSettings.routeEnd;
             const autoMapUrl = `https://maps.google.com/maps?saddr=${encodeURIComponent(startP)}&daddr=${encodeURIComponent(endP)}&output=embed`;
@@ -661,7 +820,10 @@
                 targetFlightDate = new Date(config.flightDateTime).getTime();
             }
 
-            // הזנה אוטומטית של פאנל ההגדרות בנתונים הקיימים (כולל תמיכה לאחור בנתונים ישנים)
+            // קריאה לתחזית בהתבסס על העיר המוגדרת
+            loadWeatherForecast(config.weatherLoc || defaultSettings.weatherLoc);
+
+            // טעינת הנתונים לתוך טופס ההגדרות
             document.getElementById('set-mainTitle').value = config.mainTitle || defaultSettings.mainTitle;
             document.getElementById('set-heroText').value = config.heroText || defaultSettings.heroText;
             document.getElementById('set-flightDateTime').value = config.flightDateTime || defaultSettings.flightDateTime;
@@ -669,6 +831,7 @@
             document.getElementById('set-routeDesc').value = config.routeDesc || defaultSettings.routeDesc;
             document.getElementById('set-routeStart').value = config.routeStart || defaultSettings.routeStart;
             document.getElementById('set-routeEnd').value = config.routeEnd || defaultSettings.routeEnd;
+            document.getElementById('set-weatherLoc').value = config.weatherLoc || defaultSettings.weatherLoc;
             document.getElementById('set-nav1Title').value = config.nav1Title || defaultSettings.nav1Title;
             document.getElementById('set-nav1Url').value = config.nav1Url || defaultSettings.nav1Url;
             document.getElementById('set-nav2Title').value = config.nav2Title || defaultSettings.nav2Title;
@@ -679,7 +842,6 @@
             document.getElementById('set-emergencyText').value = config.emergencyText || defaultSettings.emergencyText;
         });
 
-        // שמירת ההגדרות מהפאנל
         function saveSettings() {
             db.ref('settings').set({
                 mainTitle: document.getElementById('set-mainTitle').value.trim(),
@@ -689,6 +851,7 @@
                 routeDesc: document.getElementById('set-routeDesc').value.trim(),
                 routeStart: document.getElementById('set-routeStart').value.trim(),
                 routeEnd: document.getElementById('set-routeEnd').value.trim(),
+                weatherLoc: document.getElementById('set-weatherLoc').value.trim(), // שמירת עיר לתחזית
                 nav1Title: document.getElementById('set-nav1Title').value.trim(),
                 nav1Url: document.getElementById('set-nav1Url').value.trim(),
                 nav2Title: document.getElementById('set-nav2Title').value.trim(),
@@ -698,11 +861,10 @@
                 emergencyNum: document.getElementById('set-emergencyNum').value.trim(),
                 emergencyText: document.getElementById('set-emergencyText').value.trim()
             });
-            showAlert('ההגדרות נשמרו! האפליקציה בונה את המפה ומעדכנת את המסכים...');
+            showAlert('ההגדרות נשמרו! האפליקציה מתעדכנת...');
             switchTab('home', document.querySelector('.nav-btn'));
         }
 
-        /* מנוע שעון העצר */
         setInterval(function() {
             const now = new Date().getTime();
             const distance = targetFlightDate - now;
@@ -727,7 +889,6 @@
                 f1_dep_time: document.getElementById('f1_dep_time').value,
                 f1_to: document.getElementById('f1_to').value,
                 f1_arr_time: document.getElementById('f1_arr_time').value,
-                
                 f2_date: document.getElementById('f2_date').value,
                 f2_num: document.getElementById('f2_num').value,
                 f2_from: document.getElementById('f2_from').value,
@@ -746,7 +907,6 @@
                 document.getElementById('f1_dep_time').value = data.f1_dep_time || '';
                 document.getElementById('f1_to').value = data.f1_to || '';
                 document.getElementById('f1_arr_time').value = data.f1_arr_time || '';
-                
                 document.getElementById('f2_date').value = data.f2_date || '';
                 document.getElementById('f2_num').value = data.f2_num || '';
                 document.getElementById('f2_from').value = data.f2_from || '';
@@ -910,34 +1070,56 @@
         function renderExpenses() {
             const list = document.getElementById('expenseList');
             list.innerHTML = '';
-            let totalEliran = 0, totalDror = 0;
+            let totalEliranEur = 0, totalDrorEur = 0;
+            
             expenses.forEach(exp => {
                 if (exp) {
                     const payerName = exp.payer === 'eliran' ? 'אלירן' : 'דרור';
-                    if (exp.payer === 'eliran') totalEliran += exp.amount;
-                    if (exp.payer === 'dror') totalDror += exp.amount;
+                    
+                    // המרה חכמה ליורו עבור חישוב המאזן הכללי
+                    const curr = exp.currency || 'EUR';
+                    const rate = exchangeRates[curr] || 1;
+                    const amountInEur = curr === 'EUR' ? parseFloat(exp.amount) : parseFloat(exp.amount) / rate;
+                    
+                    if (exp.payer === 'eliran') totalEliranEur += amountInEur;
+                    if (exp.payer === 'dror') totalDrorEur += amountInEur;
+                    
+                    let sym = '€';
+                    if(curr === 'ILS') sym = '₪';
+                    if(curr === 'CHF') sym = 'CHF';
+                    if(curr === 'USD') sym = '$';
+
                     const div = document.createElement('div');
                     div.className = 'expense-item';
                     div.innerHTML = `
                         <span><strong>${payerName}</strong>: ${exp.desc}</span>
-                        <span style="color:var(--primary-brown); font-weight:bold;">€${exp.amount}</span>
+                        <span style="color:var(--primary-brown); font-weight:bold;">${exp.amount}${sym}</span>
                     `;
                     list.appendChild(div);
                 }
             });
+            
             const balanceDiv = document.getElementById('expenseBalance');
-            if (totalEliran === totalDror) balanceDiv.innerHTML = "מאזן: אין חובות! שילמתם שווה בשווה.";
-            else if (totalEliran > totalDror) balanceDiv.innerHTML = `דרור חייב/ת לאלירן: €${((totalEliran - totalDror) / 2).toFixed(2)}`;
-            else balanceDiv.innerHTML = `אלירן חייב לדרור: €${((totalDror - totalEliran) / 2).toFixed(2)}`;
+            if (Math.abs(totalEliranEur - totalDrorEur) < 0.01) {
+                balanceDiv.innerHTML = "מאזן: אין חובות! שילמתם שווה בשווה.";
+            } else if (totalEliranEur > totalDrorEur) {
+                balanceDiv.innerHTML = `דרור חייב/ת לאלירן: <br><strong style="font-size:1.4rem;">€${((totalEliranEur - totalDrorEur) / 2).toFixed(2)}</strong><br><span style="font-size:0.8rem; font-weight:normal;">(כל המטבעות הומרו ליורו לפי שער חי)</span>`;
+            } else {
+                balanceDiv.innerHTML = `אלירן חייב לדרור: <br><strong style="font-size:1.4rem;">€${((totalDrorEur - totalEliranEur) / 2).toFixed(2)}</strong><br><span style="font-size:0.8rem; font-weight:normal;">(כל המטבעות הומרו ליורו לפי שער חי)</span>`;
+            }
         }
 
         function addExpense() {
             const desc = document.getElementById('expDesc').value.trim();
             const amount = parseFloat(document.getElementById('expAmount').value);
+            const currency = document.getElementById('expCurrency').value;
             const payer = document.getElementById('expPayer').value;
+            
             if (!desc || isNaN(amount) || amount <= 0) return showAlert('יש להזין תיאור וסכום תקין.');
-            expenses.push({ desc, amount, payer });
+            
+            expenses.push({ desc, amount, payer, currency });
             db.ref('expenses').set(expenses);
+            
             document.getElementById('expDesc').value = '';
             document.getElementById('expAmount').value = '';
         }
