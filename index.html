@@ -293,6 +293,12 @@
             font-size: 1rem;
             cursor: pointer;
         }
+
+        .flight-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
@@ -346,7 +352,6 @@
 
             <div id="itineraryListContainer"></div>
             
-            <!-- כפתור חדש לשחזור המסלול -->
             <button onclick="restoreDefaultItinerary()" style="background:none; border:none; color:var(--primary-brown); margin-top:20px; margin-bottom:20px; width:100%; font-size:1rem; cursor:pointer; text-decoration:underline; font-weight:bold;">
                 🔄 שחזר מסלול מקורי
             </button>
@@ -362,7 +367,7 @@
             <div id="packingListContainer"></div>
         </div>
 
-        <!-- Tab 3: Expenses -->
+        <!-- Tab 3: Expenses (Password Protected) -->
         <div id="tab-expenses" class="tab-content">
             <h2>הוצאות משפחתיות</h2>
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
@@ -384,14 +389,39 @@
         <div id="tab-info" class="tab-content">
             <h2>מידע, ניווט וטלפונים</h2>
             
+            <!-- פרטי טיסות -->
+            <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--primary-brown);">✈️ פרטי טיסות</h3>
+            
+            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="margin-bottom: 10px; color: var(--primary-green);">טיסה הלוך</h4>
+                <div class="flight-grid">
+                    <input type="text" id="f1_num" placeholder="מספר טיסה" onchange="saveFlights()">
+                    <input type="text" id="f1_from" placeholder="המראה מ-" onchange="saveFlights()">
+                    <input type="text" id="f1_dep_time" placeholder="בשעה (המראה)" onchange="saveFlights()">
+                    <input type="text" id="f1_to" placeholder="נחיתה ב-" onchange="saveFlights()">
+                    <input type="text" id="f1_arr_time" placeholder="בשעה (נחיתה)" onchange="saveFlights()" style="grid-column: span 2;">
+                </div>
+            </div>
+
+            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="margin-bottom: 10px; color: var(--primary-green);">טיסה חזור</h4>
+                <div class="flight-grid">
+                    <input type="text" id="f2_num" placeholder="מספר טיסה" onchange="saveFlights()">
+                    <input type="text" id="f2_from" placeholder="המראה מ-" onchange="saveFlights()">
+                    <input type="text" id="f2_dep_time" placeholder="בשעה (המראה)" onchange="saveFlights()">
+                    <input type="text" id="f2_to" placeholder="נחיתה ב-" onchange="saveFlights()">
+                    <input type="text" id="f2_arr_time" placeholder="בשעה (נחיתה)" onchange="saveFlights()" style="grid-column: span 2;">
+                </div>
+            </div>
+
             <h3 style="margin-bottom: 10px; color: var(--primary-brown);">ניווט מהיר (Google Maps)</h3>
             <a href="https://maps.google.com/?q=Hofwisenstrasse+30,+8153+Rümlang,+Switzerland" target="_blank" class="action-btn">📍 מלון ציריך - Holiday Inn Express</a>
             <a href="https://maps.google.com/?q=Allgauallee+40,+Leutkirch,+Germany" target="_blank" class="action-btn">📍 פארק אלגוי (Center Parcs)</a>
             <a href="https://maps.google.com/?q=Zurich+Airport+Car+Rental" target="_blank" class="action-btn">📍 החזרת רכב - שדה"ת ציריך</a>
 
             <h3 style="margin-top: 25px; margin-bottom: 10px; color: var(--primary-brown);">חיוג מהיר</h3>
-            <button class="action-btn phone-btn" onclick="window.location.href='tel:+972500000000'">📞 התקשר לאלירן</button>
-            <button class="action-btn phone-btn" onclick="window.location.href='tel:+972500000000'">📞 התקשר לדרור</button>
+            <button class="action-btn phone-btn" onclick="window.location.href='tel:+972504039236'">📞 התקשר לאלירן</button>
+            <button class="action-btn phone-btn" onclick="window.location.href='tel:+972542420007'">📞 התקשר לדרור</button>
             <button class="action-btn" style="background-color: #d32f2f; margin-bottom: 50px;" onclick="window.location.href='tel:112'">🚨 חיוג חירום מקומי (112)</button>
         </div>
 
@@ -466,6 +496,17 @@
         }
 
         function switchTab(tabId, btnElement) {
+            // הגנת סיסמה ללשונית ההוצאות
+            if (tabId === 'expenses' && sessionStorage.getItem('expenses_unlocked') !== 'true') {
+                const pass = prompt("הכנס סיסמה כדי לגשת למחשבון ההוצאות:");
+                if (pass !== "1981") {
+                    showAlert("סיסמה שגויה. הגישה נדחתה.");
+                    return; // עוצר את מעבר הלשונית
+                }
+                // שומר את האישור בזיכרון הזמני של הדפדפן כדי לא לשגע אתכם כל רגע
+                sessionStorage.setItem('expenses_unlocked', 'true');
+            }
+
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
@@ -485,6 +526,40 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             document.getElementById("countdown").innerHTML = `עוד ${days} ימים, ${hours} שעות ו-${minutes} דקות!`;
         }, 1000);
+
+        /* -----------------------
+           Flights Logic
+           ----------------------- */
+        function saveFlights() {
+            db.ref('flights').set({
+                f1_num: document.getElementById('f1_num').value,
+                f1_from: document.getElementById('f1_from').value,
+                f1_dep_time: document.getElementById('f1_dep_time').value,
+                f1_to: document.getElementById('f1_to').value,
+                f1_arr_time: document.getElementById('f1_arr_time').value,
+                f2_num: document.getElementById('f2_num').value,
+                f2_from: document.getElementById('f2_from').value,
+                f2_dep_time: document.getElementById('f2_dep_time').value,
+                f2_to: document.getElementById('f2_to').value,
+                f2_arr_time: document.getElementById('f2_arr_time').value
+            });
+        }
+
+        db.ref('flights').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById('f1_num').value = data.f1_num || '';
+                document.getElementById('f1_from').value = data.f1_from || '';
+                document.getElementById('f1_dep_time').value = data.f1_dep_time || '';
+                document.getElementById('f1_to').value = data.f1_to || '';
+                document.getElementById('f1_arr_time').value = data.f1_arr_time || '';
+                document.getElementById('f2_num').value = data.f2_num || '';
+                document.getElementById('f2_from').value = data.f2_from || '';
+                document.getElementById('f2_dep_time').value = data.f2_dep_time || '';
+                document.getElementById('f2_to').value = data.f2_to || '';
+                document.getElementById('f2_arr_time').value = data.f2_arr_time || '';
+            }
+        });
 
         /* -----------------------
            Itinerary Logic
@@ -587,7 +662,6 @@
             db.ref('itinerary').set(itineraryItems);
         }
 
-        // פונקציה חדשה לשחזור המסלול המקורי בלחיצת כפתור
         function restoreDefaultItinerary() {
             db.ref('itinerary').set(defaultItinerary);
             showAlert('המסלול המקורי שוחזר בהצלחה לכולם!');
@@ -742,10 +816,16 @@
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
                     
+                    // יצירת תאריך ושעה מדויקים
+                    const now = new Date();
+                    const timeString = now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+                    const dateString = now.toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: '2-digit' });
+                    const fullTimestamp = `${timeString} - ${dateString}`;
+                    
                     db.ref('locations/' + userName).set({
                         lat: lat,
                         lng: lng,
-                        timestamp: new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
+                        timestamp: fullTimestamp
                     });
                     
                     status.innerText = "המיקום שלך נשמר ושותף בהצלחה!";
