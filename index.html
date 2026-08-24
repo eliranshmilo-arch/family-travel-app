@@ -70,7 +70,7 @@
             flex-grow: 1;
             overflow-y: auto;
             padding: 20px 15px;
-            padding-bottom: 160px; 
+            padding-bottom: 180px; /* הוגדל כדי למנוע הסתרה של כפתורים בתחתית המסך */
         }
 
         .tab-content {
@@ -437,19 +437,19 @@
         <div id="tab-expenses" class="tab-content">
             <h2>הוצאות משפחתיות</h2>
             
-            <!-- המרת מטבע בזמן אמת -->
+            <!-- המרת מטבע בזמן אמת - תיקון שדות למובייל -->
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                 <h3 style="color: var(--primary-green); margin-bottom: 10px; font-size: 1.1rem;">💱 מחשבון המרות (שער חי)</h3>
-                <div style="display: flex; gap: 5px; margin-bottom: 10px;">
-                    <input type="number" id="convAmount" placeholder="סכום" style="flex-grow: 1;">
-                    <select id="convFrom" style="width: auto; padding: 5px;">
+                <div style="display: flex; gap: 5px; margin-bottom: 10px; align-items: center;">
+                    <input type="number" id="convAmount" placeholder="סכום" style="width: 40%; font-size: 1.1rem; font-weight: bold;">
+                    <select id="convFrom" style="width: 25%; padding: 8px;">
                         <option value="EUR">אירו (€)</option>
                         <option value="ILS">שקל (₪)</option>
                         <option value="CHF">פרנק (CHF)</option>
                         <option value="USD">דולר ($)</option>
                     </select>
-                    <span style="align-self: center; font-weight:bold;">ל-</span>
-                    <select id="convTo" style="width: auto; padding: 5px;">
+                    <span style="font-weight:bold;">ל-</span>
+                    <select id="convTo" style="width: 25%; padding: 8px;">
                         <option value="ILS">שקל (₪)</option>
                         <option value="EUR">אירו (€)</option>
                         <option value="CHF">פרנק (CHF)</option>
@@ -460,12 +460,12 @@
                 <div id="convResult" style="text-align: center; margin-top: 10px; font-size: 1.1rem; color: var(--primary-green);"></div>
             </div>
 
-            <!-- הוספת הוצאה עם בחירת מטבע -->
+            <!-- הוספת הוצאה עם בחירת מטבע - תיקון שדות למובייל -->
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
                 <input type="text" id="expDesc" placeholder="על מה שילמנו? (למשל: מסעדה)" style="margin-bottom: 10px;">
                 <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                    <input type="number" id="expAmount" placeholder="סכום" style="flex-grow: 1; margin: 0;">
-                    <select id="expCurrency" style="width: auto; margin: 0;">
+                    <input type="number" id="expAmount" placeholder="סכום" style="width: 65%; font-size: 1.1rem; font-weight: bold; margin: 0;">
+                    <select id="expCurrency" style="width: 35%; margin: 0; padding: 10px;">
                         <option value="EUR">אירו (€)</option>
                         <option value="ILS">שקל (₪)</option>
                         <option value="CHF">פרנק (CHF)</option>
@@ -481,7 +481,11 @@
 
             <div id="expenseList"></div>
             <div id="expenseBalance" class="expense-result">מאזן: טוען נתונים מהענן...</div>
-            <button onclick="clearExpenses()" style="background:none; border:none; color:red; margin-top:15px; width:100%; font-size:1rem; cursor:pointer;">איפוס מחשבון הוצאות</button>
+            
+            <!-- כפתור איפוס הוצאות תוקן לעיצוב ברור עם מרווח תחתון גדול למובייל -->
+            <button onclick="clearExpenses()" style="background:#ffebee; border:1px solid #ffcdd2; color:#d32f2f; margin-top:25px; margin-bottom:50px; padding:15px; width:100%; border-radius:8px; font-size:1.1rem; cursor:pointer; font-weight:bold;">
+                🗑️ איפוס מחשבון הוצאות
+            </button>
         </div>
 
         <!-- Tab 4: Info & Phones (Weather Added) -->
@@ -679,17 +683,16 @@
         }
 
         /* -----------------------
-           Live Exchange Rates (NEW)
+           Live Exchange Rates 
            ----------------------- */
-        let exchangeRates = { EUR: 1, ILS: 4.0, CHF: 0.95, USD: 1.1 }; // שערי גיבוי למקרה שאין אינטרנט
+        let exchangeRates = { EUR: 1, ILS: 4.0, CHF: 0.95, USD: 1.1 }; 
         
         async function initLiveRates() {
             try {
-                // משיכת שערי מטבע חיים (הבסיס הוא יורו)
                 const res = await fetch('https://open.er-api.com/v6/latest/EUR');
                 const data = await res.json();
                 exchangeRates = data.rates;
-                renderExpenses(); // מרענן את ההוצאות עם השערים המדויקים של הרגע
+                renderExpenses(); 
             } catch(e) { console.log('Error fetching live rates', e); }
         }
         initLiveRates();
@@ -700,7 +703,6 @@
             const to = document.getElementById('convTo').value;
             if(isNaN(amount)) return showAlert('יש להזין סכום תקין.');
 
-            // ממיר ליורו ואז ליעד כדי שיהיה אוניברסלי
             const amountEur = amount / exchangeRates[from];
             const result = amountEur * exchangeRates[to];
 
@@ -710,7 +712,7 @@
         }
 
         /* -----------------------
-           Live Weather Forecast (NEW)
+           Live Weather Forecast 
            ----------------------- */
         async function loadWeatherForecast(city) {
             const container = document.getElementById('weather-container');
@@ -719,7 +721,6 @@
                 return;
             }
             try {
-                // המרת שם העיר לקואורדינטות (GPS)
                 const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`);
                 const geoData = await geoRes.json();
                 if (!geoData.results || geoData.results.length === 0) {
@@ -728,7 +729,6 @@
                 }
                 const { latitude, longitude, name } = geoData.results[0];
 
-                // משיכת התחזית ל-7 ימים
                 const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`);
                 const weatherData = await weatherRes.json();
 
@@ -741,7 +741,6 @@
                     const min = Math.round(weatherData.daily.temperature_2m_min[i]);
                     const code = weatherData.daily.weathercode[i];
                     
-                    // התאמת אימוג'י לפי קוד מזג האוויר של המטאורולוגיה
                     let emoji = '☀️';
                     if([1,2,3].includes(code)) emoji = '⛅';
                     else if([45,48].includes(code)) emoji = '🌫️';
@@ -776,7 +775,7 @@
             routeDesc: 'מרחק נסיעה של כ-170 ק"מ. מנמל התעופה בציריך (שווייץ) ועד לבקתה שלנו בפארק (גרמניה).',
             routeStart: "Zurich Airport, Switzerland",
             routeEnd: "Center Parcs Park Allgäu, Germany",
-            weatherLoc: "Leutkirch", // הגדרת ברירת מחדל לאלגוי
+            weatherLoc: "Leutkirch", 
             nav1Title: "מלון ציריך - Holiday Inn Express",
             nav1Url: "https://maps.google.com/?q=Hofwisenstrasse+30,+8153+Rümlang,+Switzerland",
             nav2Title: "פארק אלגוי (Center Parcs)",
@@ -820,10 +819,8 @@
                 targetFlightDate = new Date(config.flightDateTime).getTime();
             }
 
-            // קריאה לתחזית בהתבסס על העיר המוגדרת
             loadWeatherForecast(config.weatherLoc || defaultSettings.weatherLoc);
 
-            // טעינת הנתונים לתוך טופס ההגדרות
             document.getElementById('set-mainTitle').value = config.mainTitle || defaultSettings.mainTitle;
             document.getElementById('set-heroText').value = config.heroText || defaultSettings.heroText;
             document.getElementById('set-flightDateTime').value = config.flightDateTime || defaultSettings.flightDateTime;
@@ -851,7 +848,7 @@
                 routeDesc: document.getElementById('set-routeDesc').value.trim(),
                 routeStart: document.getElementById('set-routeStart').value.trim(),
                 routeEnd: document.getElementById('set-routeEnd').value.trim(),
-                weatherLoc: document.getElementById('set-weatherLoc').value.trim(), // שמירת עיר לתחזית
+                weatherLoc: document.getElementById('set-weatherLoc').value.trim(), 
                 nav1Title: document.getElementById('set-nav1Title').value.trim(),
                 nav1Url: document.getElementById('set-nav1Url').value.trim(),
                 nav2Title: document.getElementById('set-nav2Title').value.trim(),
@@ -1076,7 +1073,6 @@
                 if (exp) {
                     const payerName = exp.payer === 'eliran' ? 'אלירן' : 'דרור';
                     
-                    // המרה חכמה ליורו עבור חישוב המאזן הכללי
                     const curr = exp.currency || 'EUR';
                     const rate = exchangeRates[curr] || 1;
                     const amountInEur = curr === 'EUR' ? parseFloat(exp.amount) : parseFloat(exp.amount) / rate;
