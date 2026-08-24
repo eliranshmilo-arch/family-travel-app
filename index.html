@@ -171,7 +171,7 @@
             margin-bottom: 20px;
         }
 
-        input[type="text"], input[type="number"], select {
+        input[type="text"], input[type="number"], select, input[type="date"], input[type="time"] {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -294,10 +294,23 @@
             cursor: pointer;
         }
 
+        /* עיצוב משופר לשדות הטיסות */
         .flight-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
+        }
+        
+        .flight-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .flight-field label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--primary-green);
         }
     </style>
 </head>
@@ -312,7 +325,6 @@
         <!-- Tab 0: Home -->
         <div id="tab-home" class="tab-content active">
             <div class="home-hero">
-                <!-- קריאה לתמונה מקומית 1 -->
                 <img src="hero.jpg" alt="Alps Landscape" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'16\'>העלה תמונה בשם hero.jpg</text></svg>'">
                 <div class="home-hero-text">ברוכים הבאים לאלגוי! 🌲</div>
             </div>
@@ -322,7 +334,6 @@
             </p>
 
             <div class="image-gallery">
-                <!-- קריאה לתמונות מקומיות 2 ו-3 -->
                 <img src="cabin.jpg" alt="Cabin" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'130\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'14\'>cabin.jpg</text></svg>'">
                 <img src="nature.jpg" alt="Nature Walk" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'130\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'14\'>nature.jpg</text></svg>'">
             </div>
@@ -389,28 +400,66 @@
         <div id="tab-info" class="tab-content">
             <h2>מידע, ניווט וטלפונים</h2>
             
-            <!-- פרטי טיסות -->
+            <!-- פרטי טיסות משופרים -->
             <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--primary-brown);">✈️ פרטי טיסות</h3>
             
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                 <h4 style="margin-bottom: 10px; color: var(--primary-green);">טיסה הלוך</h4>
                 <div class="flight-grid">
-                    <input type="text" id="f1_num" placeholder="מספר טיסה" onchange="saveFlights()">
-                    <input type="text" id="f1_from" placeholder="המראה מ-" onchange="saveFlights()">
-                    <input type="text" id="f1_dep_time" placeholder="בשעה (המראה)" onchange="saveFlights()">
-                    <input type="text" id="f1_to" placeholder="נחיתה ב-" onchange="saveFlights()">
-                    <input type="text" id="f1_arr_time" placeholder="בשעה (נחיתה)" onchange="saveFlights()" style="grid-column: span 2;">
+                    <div class="flight-field">
+                        <label>תאריך טיסה</label>
+                        <input type="date" id="f1_date" onchange="saveFlights()">
+                    </div>
+                    <div class="flight-field">
+                        <label>מספר טיסה</label>
+                        <input type="text" id="f1_num" placeholder="למשל LY343" onchange="saveFlights()">
+                    </div>
+                    <div class="flight-field">
+                        <label>המראה מ-</label>
+                        <input type="text" id="f1_from" placeholder="למשל נתב״ג" onchange="saveFlights()">
+                    </div>
+                    <div class="flight-field">
+                        <label>שעת המראה</label>
+                        <input type="time" id="f1_dep_time" onchange="saveFlights()">
+                    </div>
+                    <div class="flight-field">
+                        <label>נחיתה ב-</label>
+                        <input type="text" id="f1_to" placeholder="למשל ציריך" onchange="saveFlights()">
+                    </div>
+                    <div class="flight-field">
+                        <label>שעת נחיתה</label>
+                        <input type="time" id="f1_arr_time" onchange="saveFlights()">
+                    </div>
                 </div>
             </div>
 
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                 <h4 style="margin-bottom: 10px; color: var(--primary-green);">טיסה חזור</h4>
                 <div class="flight-grid">
-                    <input type="text" id="f2_num" placeholder="מספר טיסה" onchange="saveFlights()">
-                    <input type="text" id="f2_from" placeholder="המראה מ-" onchange="saveFlights()">
-                    <input type="text" id="f2_dep_time" placeholder="בשעה (המראה)" onchange="saveFlights()">
-                    <input type="text" id="f2_to" placeholder="נחיתה ב-" onchange="saveFlights()">
-                    <input type="text" id="f2_arr_time" placeholder="בשעה (נחיתה)" onchange="saveFlights()" style="grid-column: span 2;">
+                    <div class="flight-field">
+                        <label>תאריך טיסה</label>
+                        <input type="date" id="f2_date" onchange="saveFlights()">
+                    </div>
+                    <div class="flight-field">
+                        <label>מספר טיסה</label>
+                        <input type="text" id="f2_num" placeholder="למשל LY348" onchange="saveFlights()">
+                    </div>
+                    <div class="flight-field">
+                        <label>המראה מ-</label>
+                        <input type="text" id="f2_from" placeholder="למשל ציריך" onchange="saveFlights()">
+                    </div>
+                    <div class="flight-field">
+                        <label>שעת המראה</label>
+                        <input type="time" id="f2_dep_time" onchange="saveFlights()">
+                    </div>
+                    <div class="flight-field">
+                        <label>נחיתה ב-</label>
+                        <input type="text" id="f2_to" placeholder="למשל נתב״ג" onchange="saveFlights()">
+                    </div>
+                    <div class="flight-field">
+                        <label>שעת נחיתה</label>
+                        <input type="time" id="f2_arr_time" onchange="saveFlights()">
+                    </div>
                 </div>
             </div>
 
@@ -496,14 +545,12 @@
         }
 
         function switchTab(tabId, btnElement) {
-            // הגנת סיסמה ללשונית ההוצאות
             if (tabId === 'expenses' && sessionStorage.getItem('expenses_unlocked') !== 'true') {
                 const pass = prompt("הכנס סיסמה כדי לגשת למחשבון ההוצאות:");
                 if (pass !== "1981") {
                     showAlert("סיסמה שגויה. הגישה נדחתה.");
-                    return; // עוצר את מעבר הלשונית
+                    return; 
                 }
-                // שומר את האישור בזיכרון הזמני של הדפדפן כדי לא לשגע אתכם כל רגע
                 sessionStorage.setItem('expenses_unlocked', 'true');
             }
 
@@ -532,11 +579,14 @@
            ----------------------- */
         function saveFlights() {
             db.ref('flights').set({
+                f1_date: document.getElementById('f1_date').value,
                 f1_num: document.getElementById('f1_num').value,
                 f1_from: document.getElementById('f1_from').value,
                 f1_dep_time: document.getElementById('f1_dep_time').value,
                 f1_to: document.getElementById('f1_to').value,
                 f1_arr_time: document.getElementById('f1_arr_time').value,
+                
+                f2_date: document.getElementById('f2_date').value,
                 f2_num: document.getElementById('f2_num').value,
                 f2_from: document.getElementById('f2_from').value,
                 f2_dep_time: document.getElementById('f2_dep_time').value,
@@ -548,11 +598,14 @@
         db.ref('flights').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
+                document.getElementById('f1_date').value = data.f1_date || '';
                 document.getElementById('f1_num').value = data.f1_num || '';
                 document.getElementById('f1_from').value = data.f1_from || '';
                 document.getElementById('f1_dep_time').value = data.f1_dep_time || '';
                 document.getElementById('f1_to').value = data.f1_to || '';
                 document.getElementById('f1_arr_time').value = data.f1_arr_time || '';
+                
+                document.getElementById('f2_date').value = data.f2_date || '';
                 document.getElementById('f2_num').value = data.f2_num || '';
                 document.getElementById('f2_from').value = data.f2_from || '';
                 document.getElementById('f2_dep_time').value = data.f2_dep_time || '';
@@ -816,7 +869,6 @@
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
                     
-                    // יצירת תאריך ושעה מדויקים
                     const now = new Date();
                     const timeString = now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
                     const dateString = now.toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: '2-digit' });
