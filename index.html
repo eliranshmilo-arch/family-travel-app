@@ -190,7 +190,7 @@
         }
         
         .card.mandatory {
-            border-right: 5px solid #d35400; /* משימות חובה בצבע כתום-אדום להבלטה */
+            border-right: 5px solid #d35400;
         }
 
         .checkbox-row {
@@ -227,7 +227,6 @@
             line-height: 1.4;
         }
 
-        /* עיצוב שדות קלט מודרניים */
         .input-group {
             display: flex;
             gap: 10px;
@@ -254,7 +253,6 @@
             box-shadow: 0 0 0 3px rgba(58, 90, 64, 0.15);
         }
 
-        /* כפתורים עם מיקרו-אנימציה */
         .action-btn, .btn-add {
             display: block;
             width: 100%;
@@ -288,6 +286,10 @@
             background-color: var(--primary-brown);
         }
 
+        .doc-btn {
+            background-color: #2b6777; /* צבע מיוחד למסמכים */
+        }
+
         .action-btn:active, .btn-add:active, .settings-icon:active {
             transform: scale(0.96);
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -311,7 +313,6 @@
             font-size: 1.05rem;
         }
 
-        /* סרגל ניווט "נייטיב" אלגנטי */
         nav {
             position: fixed;
             bottom: 0;
@@ -370,7 +371,6 @@
             filter: drop-shadow(0 2px 4px rgba(58, 90, 64, 0.3));
         }
 
-        /* מודל שקוף */
         #customModal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -413,7 +413,6 @@
             box-shadow: 0 4px 10px rgba(58, 90, 64, 0.3);
         }
 
-        /* עיצוב שדות הטיסות */
         .flight-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -441,7 +440,6 @@
             display: block;
         }
 
-        /* עיצוב התחזית מזג אוויר מזכוכית */
         .weather-grid {
             display: flex;
             overflow-x: auto;
@@ -515,7 +513,6 @@
             
             <div id="itineraryListContainer"></div>
             
-            <!-- אזור הוספת התחנה הועבר למטה -->
             <div class="glass-panel" style="padding: 20px; margin-bottom: 25px; margin-top: 15px;">
                 <h3 style="font-size: 1.2rem; color: var(--primary-green); margin-bottom: 15px; font-weight:800;">הוספת תחנה למסלול</h3>
                 <input type="text" id="itiTitle" placeholder="כותרת (למשל: 26.04 - עצירה לקפה)" style="margin-bottom: 12px;">
@@ -554,8 +551,6 @@
             
             <div class="glass-panel" style="padding: 20px; margin-bottom: 25px;">
                 <h3 style="color: var(--primary-green); margin-bottom: 15px; font-size: 1.2rem; font-weight:800;">💱 מחשבון המרות (שער חי)</h3>
-                
-                <!-- סידור המחשבון למובייל באחוזים גמישים -->
                 <div style="display: flex; gap: 8px; margin-bottom: 15px; align-items: center; justify-content: space-between;">
                     <input type="number" id="convAmount" placeholder="סכום" style="width: 32%; font-size: 1.1rem; font-weight: 800; padding: 12px 5px;">
                     <select id="convFrom" style="width: 27%; padding: 12px 2px; font-size: 0.95rem;">
@@ -604,9 +599,16 @@
 
         <!-- Tab 4: Info & Phones -->
         <div id="tab-info" class="tab-content">
-            <h2>מידע, ניווט וטלפונים</h2>
+            <h2>מידע, מסמכים וטלפונים</h2>
             
-            <h3 style="margin-top: 15px; margin-bottom: 12px; color: var(--primary-brown); font-weight:800;">🌤️ תחזית מזג אוויר (7 ימים)</h3>
+            <!-- אזור מסמכים מדרייב החדש -->
+            <h3 style="margin-top: 15px; margin-bottom: 12px; color: var(--primary-brown); font-weight:800;">📄 מסמכי נסיעה (Google Drive)</h3>
+            <a id="dyn-doc-flights" href="#" target="_blank" class="action-btn doc-btn">✈️ כרטיסי טיסה</a>
+            <a id="dyn-doc-hotel" href="#" target="_blank" class="action-btn doc-btn">🏨 ואוצ'ר למלון / פארק</a>
+            <a id="dyn-doc-car" href="#" target="_blank" class="action-btn doc-btn">🚗 ואוצ'ר השכרת רכב</a>
+            <a id="dyn-doc-insurance" href="#" target="_blank" class="action-btn doc-btn">🛡️ פוליסת ביטוח</a>
+
+            <h3 style="margin-top: 25px; margin-bottom: 12px; color: var(--primary-brown); font-weight:800;">🌤️ תחזית מזג אוויר (7 ימים)</h3>
             <div id="weather-container" class="glass-panel" style="padding: 20px; margin-bottom: 30px; overflow: hidden;">
                 <div style="text-align: center; color: #555; font-weight:600;">טוען תחזית מזג אוויר ליעד... ⏳</div>
             </div>
@@ -677,6 +679,20 @@
                 <input type="text" id="set-heroText">
                 <label class="settings-label">תאריך ושעת טיסה (מכוון את השעון):</label>
                 <input type="datetime-local" id="set-flightDateTime" dir="ltr">
+            </div>
+
+            <!-- הוספת שדות הדרייב בפאנל ההגדרות -->
+            <div class="glass-panel" style="padding: 20px; margin-bottom: 20px;">
+                <h3 style="color: var(--primary-green); margin-bottom: 10px; font-weight:800;">📄 מסמכי נסיעה (קישורים לדרייב)</h3>
+                <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">העלה את המסמכים ל-Google Drive, הגדר שיתוף ל"כל מי שקישור זה ברשותו" והדבק כאן.</p>
+                <label class="settings-label">כרטיסי טיסה:</label>
+                <input type="text" id="set-docFlights" dir="ltr" placeholder="הדבק קישור כאן">
+                <label class="settings-label">ואוצ'ר למלון / פארק:</label>
+                <input type="text" id="set-docHotel" dir="ltr" placeholder="הדבק קישור כאן">
+                <label class="settings-label">ואוצ'ר רכב:</label>
+                <input type="text" id="set-docCar" dir="ltr" placeholder="הדבק קישור כאן">
+                <label class="settings-label">פוליסת ביטוח:</label>
+                <input type="text" id="set-docInsurance" dir="ltr" placeholder="הדבק קישור כאן">
             </div>
 
             <div class="glass-panel" style="padding: 20px; margin-bottom: 20px;">
@@ -790,8 +806,6 @@
             if (btnElement) {
                 btnElement.classList.add('active'); 
             }
-
-            // גלילה אוטומטית לראש העמוד במעבר בין לשוניות (תיקון למובייל)
             document.querySelector('main').scrollTop = 0;
         }
 
@@ -799,7 +813,6 @@
            Live Exchange Rates 
            ----------------------- */
         let exchangeRates = { EUR: 1, ILS: 4.0, CHF: 0.95, USD: 1.1 }; 
-        
         async function initLiveRates() {
             try {
                 const res = await fetch('https://open.er-api.com/v6/latest/EUR');
@@ -815,10 +828,8 @@
             const from = document.getElementById('convFrom').value;
             const to = document.getElementById('convTo').value;
             if(isNaN(amount)) return showAlert('יש להזין סכום תקין.');
-
             const amountEur = amount / exchangeRates[from];
             const result = amountEur * exchangeRates[to];
-
             const symbols = { EUR: '€', ILS: '₪', CHF: 'CHF', USD: '$' };
             document.getElementById('convResult').innerHTML = 
                 `${amount}${symbols[from]} = <strong style="color:var(--primary-brown); font-size:1.4rem;">${result.toFixed(2)}${symbols[to]}</strong>`;
@@ -876,7 +887,7 @@
 
 
         /* -----------------------
-           Dynamic Settings Logic
+           Dynamic Settings Logic (Now includes Documents)
            ----------------------- */
         let targetFlightDate = new Date("2027-04-25T16:35:00").getTime(); 
         
@@ -896,8 +907,26 @@
             nav3Title: "החזרת רכב - שדה\"ת ציריך",
             nav3Url: "https://maps.google.com/?q=Zurich+Airport+Car+Rental",
             emergencyNum: "112",
-            emergencyText: "חיוג חירום מקומי"
+            emergencyText: "חיוג חירום מקומי",
+            docFlights: "",
+            docHotel: "",
+            docCar: "",
+            docInsurance: ""
         };
+
+        function setupDocLink(elementId, url) {
+            const el = document.getElementById(elementId);
+            if (url && url.trim() !== '') {
+                el.href = url;
+                el.onclick = null; // מסיר את התראת ה"טרם הוזן"
+            } else {
+                el.href = '#';
+                el.onclick = (e) => { 
+                    e.preventDefault(); 
+                    showAlert('טרם הוזן קישור למסמך זה בפאנל ההגדרות.'); 
+                };
+            }
+        }
 
         db.ref('settings').on('value', (snapshot) => {
             let config = snapshot.val();
@@ -928,12 +957,19 @@
             document.getElementById('dyn-emergency-btn').onclick = () => window.location.href = `tel:${eNum}`;
             document.getElementById('dyn-emergency-btn').innerHTML = `🚨 ${eText} (${eNum})`;
 
+            // הגדרת הקישורים למסמכים
+            setupDocLink('dyn-doc-flights', config.docFlights);
+            setupDocLink('dyn-doc-hotel', config.docHotel);
+            setupDocLink('dyn-doc-car', config.docCar);
+            setupDocLink('dyn-doc-insurance', config.docInsurance);
+
             if(config.flightDateTime) {
                 targetFlightDate = new Date(config.flightDateTime).getTime();
             }
 
             loadWeatherForecast(config.weatherLoc || defaultSettings.weatherLoc);
 
+            // טעינת הנתונים לפאנל הניהול
             document.getElementById('set-mainTitle').value = config.mainTitle || defaultSettings.mainTitle;
             document.getElementById('set-heroText').value = config.heroText || defaultSettings.heroText;
             document.getElementById('set-flightDateTime').value = config.flightDateTime || defaultSettings.flightDateTime;
@@ -950,6 +986,10 @@
             document.getElementById('set-nav3Url').value = config.nav3Url || defaultSettings.nav3Url;
             document.getElementById('set-emergencyNum').value = config.emergencyNum || defaultSettings.emergencyNum;
             document.getElementById('set-emergencyText').value = config.emergencyText || defaultSettings.emergencyText;
+            document.getElementById('set-docFlights').value = config.docFlights || '';
+            document.getElementById('set-docHotel').value = config.docHotel || '';
+            document.getElementById('set-docCar').value = config.docCar || '';
+            document.getElementById('set-docInsurance').value = config.docInsurance || '';
         });
 
         function saveSettings() {
@@ -969,7 +1009,11 @@
                 nav3Title: document.getElementById('set-nav3Title').value.trim(),
                 nav3Url: document.getElementById('set-nav3Url').value.trim(),
                 emergencyNum: document.getElementById('set-emergencyNum').value.trim(),
-                emergencyText: document.getElementById('set-emergencyText').value.trim()
+                emergencyText: document.getElementById('set-emergencyText').value.trim(),
+                docFlights: document.getElementById('set-docFlights').value.trim(),
+                docHotel: document.getElementById('set-docHotel').value.trim(),
+                docCar: document.getElementById('set-docCar').value.trim(),
+                docInsurance: document.getElementById('set-docInsurance').value.trim()
             });
             showAlert('ההגדרות נשמרו! האפליקציה מתעדכנת...');
             switchTab('home', document.querySelector('.nav-btn'));
@@ -1115,7 +1159,7 @@
         }
 
         /* -----------------------
-           Mandatory Tasks (NEW)
+           Mandatory Tasks 
            ----------------------- */
         let mandatoryTasks = [];
         const defaultMandatoryTasks = [
@@ -1229,7 +1273,6 @@
             expenses.forEach(exp => {
                 if (exp) {
                     const payerName = exp.payer === 'eliran' ? 'אלירן' : 'דרור';
-                    
                     const curr = exp.currency || 'EUR';
                     const rate = exchangeRates[curr] || 1;
                     const amountInEur = curr === 'EUR' ? parseFloat(exp.amount) : parseFloat(exp.amount) / rate;
@@ -1269,7 +1312,6 @@
             const payer = document.getElementById('expPayer').value;
             
             if (!desc || isNaN(amount) || amount <= 0) return showAlert('יש להזין תיאור וסכום תקין.');
-            
             expenses.push({ desc, amount, payer, currency });
             db.ref('expenses').set(expenses);
             
