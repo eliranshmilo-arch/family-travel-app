@@ -27,11 +27,10 @@
             font-family: 'Heebo', sans-serif;
             margin: 0;
             padding: 0;
-            -webkit-tap-highlight-color: transparent; /* מסיר את הריבוע הכחול בלחיצה במובייל */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            /* רקע שמייצר עומק לאפקט הזכוכית */
             background: linear-gradient(135deg, var(--bg-color) 0%, #e9edc9 50%, #d4dbb9 100%);
             background-attachment: fixed;
             color: var(--text-dark);
@@ -41,7 +40,7 @@
             overflow: hidden;
         }
 
-        /* ----- תבנית ה-Glassmorphism (זכוכית) ----- */
+        /* ----- תבנית ה-Glassmorphism ----- */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
@@ -186,8 +185,12 @@
         .card {
             padding: 15px;
             margin-bottom: 15px;
-            border-right: 5px solid var(--primary-green); /* הדגשה ירוקה קלאסית */
+            border-right: 5px solid var(--primary-green);
             transition: transform 0.2s ease;
+        }
+        
+        .card.mandatory {
+            border-right: 5px solid #d35400; /* משימות חובה בצבע כתום-אדום להבלטה */
         }
 
         .checkbox-row {
@@ -321,7 +324,7 @@
             justify-content: space-around;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
             z-index: 10;
-            padding-bottom: env(safe-area-inset-bottom); /* מונע הסתרה באייפונים חדשים */
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         .nav-btn {
@@ -510,29 +513,35 @@
         <div id="tab-itinerary" class="tab-content">
             <h2>מסלול הטיול</h2>
             
-            <div class="glass-panel" style="padding: 20px; margin-bottom: 25px;">
+            <div id="itineraryListContainer"></div>
+            
+            <!-- אזור הוספת התחנה הועבר למטה -->
+            <div class="glass-panel" style="padding: 20px; margin-bottom: 25px; margin-top: 15px;">
                 <h3 style="font-size: 1.2rem; color: var(--primary-green); margin-bottom: 15px; font-weight:800;">הוספת תחנה למסלול</h3>
                 <input type="text" id="itiTitle" placeholder="כותרת (למשל: 26.04 - עצירה לקפה)" style="margin-bottom: 12px;">
                 <input type="text" id="itiDesc" placeholder="פירוט / תיאור קצר" style="margin-bottom: 12px;">
                 <select id="itiInsertAfter" style="margin-bottom: 18px;">
-                    <option value="start">מקם בתחילת המסלול</option>
+                    <option value="start">מיקום במסלול (ראשון)</option>
                 </select>
                 <button class="action-btn" onclick="addItineraryItem()">הוסף תחנה</button>
             </div>
-
-            <div id="itineraryListContainer"></div>
             
-            <button onclick="restoreDefaultItinerary()" style="background:none; border:none; color:var(--primary-brown); margin-top:20px; margin-bottom:20px; width:100%; font-size:1.1rem; cursor:pointer; text-decoration:underline; font-weight:800; transition: transform 0.2s;">
+            <button onclick="restoreDefaultItinerary()" style="background:none; border:none; color:var(--primary-brown); margin-top:10px; margin-bottom:20px; width:100%; font-size:1.1rem; cursor:pointer; text-decoration:underline; font-weight:800; transition: transform 0.2s;">
                 🔄 שחזר מסלול מקורי
             </button>
         </div>
 
         <!-- Tab 2: Packing List -->
         <div id="tab-packing" class="tab-content">
-            <h2>רשימת ציוד</h2>
+            <h2>ציוד והכנות</h2>
+            
+            <h3 style="margin-top: 10px; margin-bottom: 12px; color: var(--primary-brown); font-weight:800;">✅ משימות חובה לפני הטיסה</h3>
+            <div id="mandatoryTasksContainer"></div>
+            
+            <h3 style="margin-top: 25px; margin-bottom: 12px; color: var(--primary-brown); font-weight:800;">🎒 רשימת ציוד לטיול</h3>
             <div class="glass-panel" style="padding: 15px; margin-bottom: 20px;">
                 <div class="input-group" style="margin-bottom: 0;">
-                    <input type="text" id="newItemInput" placeholder="הוסף פריט חדש (למשל: דרכונים)...">
+                    <input type="text" id="newItemInput" placeholder="הוסף פריט חדש...">
                     <button class="btn-add" onclick="addPackingItem()">הוסף</button>
                 </div>
             </div>
@@ -545,19 +554,21 @@
             
             <div class="glass-panel" style="padding: 20px; margin-bottom: 25px;">
                 <h3 style="color: var(--primary-green); margin-bottom: 15px; font-size: 1.2rem; font-weight:800;">💱 מחשבון המרות (שער חי)</h3>
-                <div style="display: flex; gap: 8px; margin-bottom: 15px; align-items: center;">
-                    <input type="number" id="convAmount" placeholder="סכום" style="width: 40%; font-size: 1.2rem; font-weight: 800;">
-                    <select id="convFrom" style="width: 25%; padding: 12px;">
+                
+                <!-- סידור המחשבון למובייל באחוזים גמישים -->
+                <div style="display: flex; gap: 8px; margin-bottom: 15px; align-items: center; justify-content: space-between;">
+                    <input type="number" id="convAmount" placeholder="סכום" style="width: 32%; font-size: 1.1rem; font-weight: 800; padding: 12px 5px;">
+                    <select id="convFrom" style="width: 27%; padding: 12px 2px; font-size: 0.95rem;">
                         <option value="EUR">אירו (€)</option>
                         <option value="ILS">שקל (₪)</option>
-                        <option value="CHF">פרנק (CHF)</option>
+                        <option value="CHF">פרנק</option>
                         <option value="USD">דולר ($)</option>
                     </select>
-                    <span style="font-weight:800; color:var(--primary-brown);">ל-</span>
-                    <select id="convTo" style="width: 25%; padding: 12px;">
+                    <span style="font-weight:800; color:var(--primary-brown); font-size: 1rem;">ל-</span>
+                    <select id="convTo" style="width: 27%; padding: 12px 2px; font-size: 0.95rem;">
                         <option value="ILS">שקל (₪)</option>
                         <option value="EUR">אירו (€)</option>
-                        <option value="CHF">פרנק (CHF)</option>
+                        <option value="CHF">פרנק</option>
                         <option value="USD">דולר ($)</option>
                     </select>
                 </div>
@@ -568,8 +579,8 @@
             <div class="glass-panel" style="padding: 20px; margin-bottom: 25px;">
                 <input type="text" id="expDesc" placeholder="על מה שילמנו? (למשל: מסעדה)" style="margin-bottom: 12px;">
                 <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-                    <input type="number" id="expAmount" placeholder="סכום" style="width: 65%; font-size: 1.2rem; font-weight: 800; margin: 0;">
-                    <select id="expCurrency" style="width: 35%; margin: 0;">
+                    <input type="number" id="expAmount" placeholder="סכום" style="width: 60%; font-size: 1.2rem; font-weight: 800; margin: 0;">
+                    <select id="expCurrency" style="width: 40%; margin: 0; font-size: 0.95rem; padding: 12px 5px;">
                         <option value="EUR">אירו (€)</option>
                         <option value="ILS">שקל (₪)</option>
                         <option value="CHF">פרנק (CHF)</option>
@@ -779,6 +790,9 @@
             if (btnElement) {
                 btnElement.classList.add('active'); 
             }
+
+            // גלילה אוטומטית לראש העמוד במעבר בין לשוניות (תיקון למובייל)
+            document.querySelector('main').scrollTop = 0;
         }
 
         /* -----------------------
@@ -1041,7 +1055,7 @@
             const container = document.getElementById('itineraryListContainer');
             const selectDropdown = document.getElementById('itiInsertAfter');
             container.innerHTML = '';
-            selectDropdown.innerHTML = '<option value="start">מקם בתחילת המסלול</option>';
+            selectDropdown.innerHTML = '<option value="start">מיקום במסלול (ראשון)</option>';
             itineraryItems.forEach((item) => {
                 const checkedAttr = item.checked ? 'checked' : '';
                 const strikeClass = item.checked ? 'checked-text' : '';
@@ -1101,13 +1115,57 @@
         }
 
         /* -----------------------
+           Mandatory Tasks (NEW)
+           ----------------------- */
+        let mandatoryTasks = [];
+        const defaultMandatoryTasks = [
+            { id: 't1', text: 'בדוק דרכונים בתוקף', checked: false },
+            { id: 't2', text: 'ביטוח נסיעות לחו"ל', checked: false },
+            { id: 't3', text: 'הצטיידות בכסף מקומי', checked: false },
+            { id: 't4', text: 'הפקת רישיון נהיגה בינ"ל', checked: false },
+            { id: 't5', text: 'מסמכים מודפסים (צילום דרכון, כרטיסי טיסה, שובר למלון)', checked: false }
+        ];
+
+        db.ref('mandatoryTasks').on('value', (snapshot) => {
+            const data = snapshot.val();
+            mandatoryTasks = data || defaultMandatoryTasks;
+            if(!data) db.ref('mandatoryTasks').set(mandatoryTasks);
+            renderMandatoryTasks();
+        });
+
+        function renderMandatoryTasks() {
+            const container = document.getElementById('mandatoryTasksContainer');
+            container.innerHTML = '';
+            mandatoryTasks.forEach(item => {
+                const checkedAttr = item.checked ? 'checked' : '';
+                const strikeClass = item.checked ? 'checked-text' : '';
+                const div = document.createElement('div');
+                div.className = 'glass-panel card mandatory';
+                div.innerHTML = `
+                    <label class="checkbox-row">
+                        <input type="checkbox" onchange="toggleMandatoryTask('${item.id}')" ${checkedAttr}>
+                        <span class="${strikeClass}">${item.text}</span>
+                    </label>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function toggleMandatoryTask(id) {
+            const item = mandatoryTasks.find(i => i.id === id);
+            if (item) {
+                item.checked = !item.checked;
+                db.ref('mandatoryTasks').set(mandatoryTasks);
+            }
+        }
+
+        /* -----------------------
            Packing List 
            ----------------------- */
         let packingItems = [];
         db.ref('packing').on('value', (snapshot) => {
             packingItems = snapshot.val() || [
-                { id: 1, text: 'דרכונים לכולם', checked: false },
-                { id: 2, text: 'רישיון נהיגה בינלאומי', checked: false }
+                { id: 1, text: 'ביגוד ארוך', checked: false }
             ];
             renderPackingList();
         });
@@ -1225,7 +1283,7 @@
         }
 
         /* -----------------------
-           Location Sharing
+           Location Sharing & Deleting
            ----------------------- */
         function shareMyLocation() {
             const status = document.getElementById('location-status');
@@ -1252,6 +1310,12 @@
             );
         }
 
+        function deleteLocation(name) {
+            if(confirm(`האם אתה בטוח שברצונך למחוק את המיקום של ${name}?`)) {
+                db.ref('locations/' + name).remove();
+            }
+        }
+
         db.ref('locations').on('value', (snapshot) => {
             const locations = snapshot.val();
             const listContainer = document.getElementById('shared-locations-list');
@@ -1261,10 +1325,15 @@
                     const loc = locations[name];
                     html += `<li class="glass-panel" style="margin-bottom: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
                                 <div><strong style="font-size: 1.1rem;">${name}</strong> <br><span style="font-size:0.85rem; color:#555; font-weight:600;">(עודכן ב: ${loc.timestamp})</span></div>
-                                <a href="https://maps.google.com/maps?q=${loc.lat},${loc.lng}" target="_blank" style="background: var(--primary-green); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 800; font-size: 0.95rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">🌍 צפה במפה</a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <a href="https://maps.google.com/maps?q=${loc.lat},${loc.lng}" target="_blank" style="background: var(--primary-green); color: white; padding: 10px 12px; border-radius: 8px; text-decoration: none; font-weight: 800; font-size: 0.95rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); white-space: nowrap;">🌍 צפה במפה</a>
+                                    <button onclick="deleteLocation('${name}')" style="background: rgba(211, 47, 47, 0.1); border: 1px solid #ffcdd2; color: #d32f2f; padding: 8px; border-radius: 8px; font-size: 1rem; cursor: pointer;">🗑️</button>
+                                </div>
                              </li>`;
                 }
                 listContainer.innerHTML = html + '</ul>';
+            } else {
+                listContainer.innerHTML = '';
             }
         });
     </script>
