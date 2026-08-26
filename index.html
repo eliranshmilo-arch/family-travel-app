@@ -134,33 +134,50 @@
             position: relative;
         }
         header h1 {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             font-weight: 800;
             margin-bottom: 5px;
-            padding: 0 45px;
+            margin-top: 35px; /* מוריד את הכותרת למטה כדי לפנות מקום לכפתורים */
+            padding: 0 10px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+        
+        /* כפתור הלובי המעוצב */
         .back-btn {
             position: absolute;
             top: 15px;
             right: 15px;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            width: 35px; height: 35px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; cursor: pointer; color: white;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            color: white;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
+        .back-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
         .settings-icon {
             position: absolute;
             top: 15px;
             left: 15px;
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            width: 35px; height: 35px;
+            border-radius: 12px;
+            width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.2rem; cursor: pointer; color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
         #countdown {
             font-size: 1.1rem;
@@ -274,8 +291,11 @@
     <!-- מסך הטיול (פנים האפליקציה) -->
     <div id="trip-view">
         <header>
-            <button class="back-btn" onclick="returnToLobby()" title="חזור ללובי">🔙</button>
+            <button class="back-btn" onclick="returnToLobby()" title="חזור ללובי">
+                <span style="font-size: 1.2rem;">🏨</span> חזרה ללובי
+            </button>
             <button class="settings-icon admin-only" onclick="switchTab('settings', null)" title="הגדרות טיול">⚙️</button>
+            
             <h1 id="dyn-main-title">טוען נתונים...</h1>
             <div id="countdown">טוען שעון...</div>
         </header>
@@ -284,7 +304,6 @@
             <!-- Tab 0: Home -->
             <div id="tab-home" class="tab-content active">
                 <div class="home-hero">
-                    <!-- תמונת נוף דינמית -->
                     <img id="dyn-hero-img" src="hero.jpg" alt="Hero Image" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'16\'>חסרה תמונת נוף</text></svg>'">
                     <div class="home-hero-text" id="dyn-hero-text">...</div>
                 </div>
@@ -294,7 +313,6 @@
                 </p>
 
                 <div class="image-gallery">
-                    <!-- תמונות גלריה דינמיות -->
                     <img id="dyn-gallery-img1" src="cabin.jpg" alt="Image 1" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'130\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'14\'>תמונה 1</text></svg>'">
                     <img id="dyn-gallery-img2" src="nature.jpg" alt="Image 2" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'130\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'14\'>תמונה 2</text></svg>'">
                 </div>
@@ -577,7 +595,7 @@
         // --- State Management ---
         let currentTripId = null;
         let isAdmin = false;
-        let globalAdminPin = "1981"; // ברירת מחדל עד שייטען מהענן
+        let globalAdminPin = "1981"; 
         let countdownInterval = null;
 
         // --- Core Functions ---
@@ -589,7 +607,6 @@
             document.getElementById('customModal').style.display = 'none';
         }
 
-        // טעינת הגדרות גלובליות מ-Firebase
         db.ref('Global').on('value', snap => {
             const data = snap.val();
             if (data && data.adminPin) {
@@ -597,8 +614,6 @@
             } else {
                 db.ref('Global').set({ adminPin: "1981" }); 
             }
-            
-            // שחזור סשן מנהל
             if (sessionStorage.getItem('is_admin') === 'true') {
                 setAdminMode(true);
             }
@@ -641,7 +656,6 @@
             });
         }
 
-        // טעינת כל הטיולים למסך הלובי
         db.ref('Trips').on('value', snap => {
             const trips = snap.val();
             const container = document.getElementById('trips-container');
@@ -741,11 +755,9 @@
 
                 const config = tripData.settings || {};
                 
-                // 1. Settings Population (Images included)
                 document.getElementById('dyn-main-title').innerText = config.mainTitle || "כותרת ראשית";
                 document.getElementById('dyn-hero-text').innerText = config.heroText || "...";
                 
-                // עדכון התמונות הדינמיות
                 document.getElementById('dyn-hero-img').src = config.heroImg || "hero.jpg";
                 document.getElementById('dyn-gallery-img1').src = config.gallery1 || "cabin.jpg";
                 document.getElementById('dyn-gallery-img2').src = config.gallery2 || "nature.jpg";
@@ -777,7 +789,6 @@
                 setupDocLink('dyn-doc-car', config.docCar);
                 setupDocLink('dyn-doc-insurance', config.docInsurance);
 
-                // Admin Panel Population
                 document.getElementById('set-lobbyTitle').value = config.lobbyTitle || '';
                 document.getElementById('set-lobbyColor').value = config.lobbyColor || '#3a5a40';
                 document.getElementById('set-adminPin').value = globalAdminPin;
@@ -785,7 +796,6 @@
                 document.getElementById('set-mainTitle').value = config.mainTitle || '';
                 document.getElementById('set-heroText').value = config.heroText || '';
                 
-                // אכלוס שדות התמונות בהגדרות
                 document.getElementById('set-heroImg').value = config.heroImg || '';
                 document.getElementById('set-gallery1').value = config.gallery1 || '';
                 document.getElementById('set-gallery2').value = config.gallery2 || '';
@@ -812,11 +822,9 @@
                 document.getElementById('set-docCar').value = config.docCar || '';
                 document.getElementById('set-docInsurance').value = config.docInsurance || '';
 
-                // Weather & Timer
                 loadWeatherForecast(config.weatherLoc);
                 startTimer(config.flightDateTime);
 
-                // 2. Render Tabs
                 renderItinerary(tripData.itinerary || []);
                 renderMandatoryTasks(tripData.mandatoryTasks || []);
                 renderPackingList(tripData.packing || []);
@@ -852,7 +860,6 @@
                 mainTitle: document.getElementById('set-mainTitle').value.trim(),
                 heroText: document.getElementById('set-heroText').value.trim(),
                 
-                // שמירת התמונות החדשות למסד הנתונים
                 heroImg: document.getElementById('set-heroImg').value.trim(),
                 gallery1: document.getElementById('set-gallery1').value.trim(),
                 gallery2: document.getElementById('set-gallery2').value.trim(),
@@ -968,11 +975,14 @@
 
         // --- Mandatory Tasks ---
         let currentMandatory = [];
-        const defaultMandatory = [
-            { id: 't1', text: 'בדוק דרכונים בתוקף', checked: false },
-            { id: 't2', text: 'ביטוח נסיעות לחו"ל', checked: false },
-            { id: 't3', text: 'הצטיידות בכסף מקומי', checked: false }
-        ];
+const defaultMandatory = [
+    { id: 't1', text: 'בדוק דרכונים בתוקף', checked: false },
+    { id: 't2', text: 'ביטוח נסיעות לחו"ל', checked: false },
+    { id: 't3', text: 'הצטיידות בכסף מקומי', checked: false },
+    { id: 't4', text: 'הפקת רישיון נהיגה בינ"ל', checked: false },
+    { id: 't5', text: 'מסמכים מודפסים (צילום דרכון, כרטיסי טיסה, שובר למלון)', checked: false }
+];
+
         function renderMandatoryTasks(items) {
             currentMandatory = items.length > 0 ? items : defaultMandatory;
             const container = document.getElementById('mandatoryTasksContainer');
