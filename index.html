@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>פורטל הטיולים המשפחתי</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     
     <style>
         :root {
@@ -56,11 +59,12 @@
         .lobby-header {
             text-align: center;
             margin-bottom: 30px;
-            margin-top: 20px;
+            margin-top: 15px;
             position: relative;
         }
         .lobby-header h1 {
-            font-size: 2.2rem;
+            font-size: 1.7rem;
+            line-height: 1.3;
             color: var(--primary-green);
             font-weight: 800;
         }
@@ -68,6 +72,7 @@
             color: var(--primary-brown);
             font-size: 1.1rem;
             font-weight: 600;
+            margin-top: 8px;
         }
         .admin-login-btn {
             position: absolute;
@@ -133,7 +138,6 @@
             z-index: 10;
             position: relative;
         }
-        
         header h1 {
             font-size: 1.25rem;
             font-weight: 800;
@@ -143,7 +147,6 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
-        /* כפתור הלובי המעוצב */
         .back-btn {
             position: absolute;
             top: 15px;
@@ -269,7 +272,6 @@
         .weather-temp { font-size: 1rem; font-weight: 800; color: var(--primary-green); }
         .weather-date { font-size: 0.9rem; color: #555; font-weight: 800; }
 
-        /* הסתרת אלמנטים לאורחים */
         body:not(.is-admin) .admin-only { display: none !important; }
     </style>
 </head>
@@ -278,8 +280,11 @@
     <!-- מסך הלובי (בחירת טיולים) -->
     <div id="lobby-view">
         <div class="lobby-header">
-            <button class="admin-login-btn" onclick="promptAdminLogin()">🔒</button>
-            <h1>הטיולים שלנו</h1>
+            <button class="admin-login-btn" onclick="promptAdminLogin()" title="כניסת מנהל">🔒</button>
+            <!-- הוספת הלוגו של האפליקציה -->
+            <img src="icon.png" alt="לוגו" style="width: 85px; height: 85px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 12px; border: 3px solid rgba(255,255,255,0.6); object-fit: cover;">
+            <!-- כותרת חדשה ודינמית -->
+            <h1>הטיולים של משפחת<br>שמילוביץ' - איזנברג</h1>
             <p>בחרו טיול כדי להצטרף לחוויה</p>
         </div>
         
@@ -336,13 +341,14 @@
                 <div id="itineraryListContainer"></div>
                 
                 <div class="glass-panel admin-only" style="padding: 20px; margin-bottom: 25px; margin-top: 15px;">
-                    <h3 style="font-size: 1.2rem; color: var(--primary-green); margin-bottom: 15px; font-weight:800;">הוספת תחנה למסלול</h3>
+                    <h3 style="font-size: 1.2rem; color: var(--primary-green); margin-bottom: 15px; font-weight:800;">הוספת/עריכת תחנה למסלול</h3>
                     <input type="text" id="itiTitle" placeholder="כותרת (למשל: 26.04 - עצירה לקפה)" style="margin-bottom: 12px;">
                     <input type="text" id="itiDesc" placeholder="פירוט / תיאור קצר" style="margin-bottom: 12px;">
                     <select id="itiInsertAfter" style="margin-bottom: 18px;">
                         <option value="start">מיקום במסלול (ראשון)</option>
                     </select>
-                    <button class="action-btn" onclick="addItineraryItem()">הוסף תחנה</button>
+                    <!-- כפתור ששמו ישתנה לעריכה במידת הצורך -->
+                    <button id="btn-add-iti" class="action-btn" onclick="saveItineraryItem()">הוסף תחנה</button>
                 </div>
             </div>
 
@@ -917,6 +923,8 @@
 
         // --- Itinerary ---
         let currentItinerary = [];
+        let currentItineraryEditId = null;
+
         function renderItinerary(items) {
             currentItinerary = items.filter(i => i !== null);
             const container = document.getElementById('itineraryListContainer');
@@ -939,7 +947,7 @@
                     <label class="checkbox-row" style="margin-bottom: 5px;">
                         <input type="checkbox" onchange="toggleItineraryItem(${item.id})" ${checkedAttr} ${disabledAttr}>
                         <span class="${strikeClass}" style="font-weight: 800;">${item.title}</span>
-                        ${isAdmin ? `<button onclick="removeItineraryItem(${item.id})" style="background:none; border:none; color:red; font-size:1.2rem; cursor:pointer; margin-right:10px;">🗑️</button>` : ''}
+                        ${isAdmin ? `<button onclick="editItineraryItem(${item.id})" style="background:none; border:none; font-size:1.2rem; cursor:pointer; margin-right:10px;" title="ערוך">✏️</button><button onclick="removeItineraryItem(${item.id})" style="background:none; border:none; color:red; font-size:1.2rem; cursor:pointer; margin-right:5px;" title="מחק">🗑️</button>` : ''}
                     </label>
                     <div class="details ${strikeClass}">${item.desc}</div>
                 `;
@@ -955,22 +963,57 @@
             const item = currentItinerary.find(i => i.id === id);
             if (item) { item.checked = !item.checked; db.ref(`Trips/${currentTripId}/itinerary`).set(currentItinerary); }
         }
-        function addItineraryItem() {
+        
+        function editItineraryItem(id) {
+            if(!isAdmin) return;
+            const item = currentItinerary.find(i => i.id === id);
+            if(item) {
+                document.getElementById('itiTitle').value = item.title;
+                document.getElementById('itiDesc').value = item.desc;
+                currentItineraryEditId = id;
+                
+                const btn = document.getElementById('btn-add-iti');
+                btn.innerText = "💾 שמור שינויים";
+                btn.style.backgroundColor = "var(--primary-brown)";
+                
+                document.getElementById('itiTitle').scrollIntoView({behavior: "smooth", block: "center"});
+            }
+        }
+
+        function saveItineraryItem() {
             if(!isAdmin) return;
             const title = document.getElementById('itiTitle').value.trim();
             const desc = document.getElementById('itiDesc').value.trim();
             const insertAfterId = document.getElementById('itiInsertAfter').value;
             if (!title) return showAlert('חובה להזין כותרת.');
-            const newItem = { id: Date.now(), title, desc, checked: false };
-            if (insertAfterId === 'start') { currentItinerary.unshift(newItem); } 
-            else {
-                const insertIndex = currentItinerary.findIndex(i => i.id == insertAfterId);
-                if (insertIndex > -1) currentItinerary.splice(insertIndex + 1, 0, newItem); 
-                else currentItinerary.push(newItem);
+
+            if (currentItineraryEditId) {
+                // עדכון תחנה קיימת
+                const index = currentItinerary.findIndex(i => i.id === currentItineraryEditId);
+                if(index > -1) {
+                    currentItinerary[index].title = title;
+                    currentItinerary[index].desc = desc;
+                }
+                currentItineraryEditId = null;
+                const btn = document.getElementById('btn-add-iti');
+                btn.innerText = "הוסף תחנה";
+                btn.style.backgroundColor = "var(--primary-green)";
+            } else {
+                // הוספת תחנה חדשה
+                const newItem = { id: Date.now(), title, desc, checked: false };
+                if (insertAfterId === 'start') { currentItinerary.unshift(newItem); } 
+                else {
+                    const insertIndex = currentItinerary.findIndex(i => i.id == insertAfterId);
+                    if (insertIndex > -1) currentItinerary.splice(insertIndex + 1, 0, newItem); 
+                    else currentItinerary.push(newItem);
+                }
             }
+
             db.ref(`Trips/${currentTripId}/itinerary`).set(currentItinerary);
-            document.getElementById('itiTitle').value = ''; document.getElementById('itiDesc').value = '';
+            document.getElementById('itiTitle').value = ''; 
+            document.getElementById('itiDesc').value = '';
         }
+
         function removeItineraryItem(id) {
             if(!isAdmin) return;
             currentItinerary = currentItinerary.filter(i => i.id !== id);
@@ -979,14 +1022,13 @@
 
         // --- Mandatory Tasks ---
         let currentMandatory = [];
-const defaultMandatory = [
-    { id: 't1', text: 'בדוק דרכונים בתוקף', checked: false },
-    { id: 't2', text: 'ביטוח נסיעות לחו"ל', checked: false },
-    { id: 't3', text: 'הצטיידות בכסף מקומי', checked: false },
-    { id: 't4', text: 'הפקת רישיון נהיגה בינ"ל', checked: false },
-    { id: 't5', text: 'מסמכים מודפסים (צילום דרכון, כרטיסי טיסה, שובר למלון)', checked: false }
-];
-
+        const defaultMandatory = [
+            { id: 't1', text: 'בדוק דרכונים בתוקף', checked: false },
+            { id: 't2', text: 'ביטוח נסיעות לחו"ל', checked: false },
+            { id: 't3', text: 'הצטיידות בכסף מקומי', checked: false },
+            { id: 't4', text: 'הפקת רישיון נהיגה בינ"ל', checked: false },
+            { id: 't5', text: 'מסמכים מודפסים (צילום דרכון, כרטיסי טיסה, שובר למלון)', checked: false }
+        ];
         function renderMandatoryTasks(items) {
             currentMandatory = items.length > 0 ? items : defaultMandatory;
             const container = document.getElementById('mandatoryTasksContainer');
