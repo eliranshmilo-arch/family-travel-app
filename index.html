@@ -133,11 +133,12 @@
             z-index: 10;
             position: relative;
         }
+        
         header h1 {
             font-size: 1.25rem;
             font-weight: 800;
             margin-bottom: 5px;
-            margin-top: 35px; /* מוריד את הכותרת למטה כדי לפנות מקום לכפתורים */
+            margin-top: 45px;
             padding: 0 10px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
@@ -147,18 +148,21 @@
             position: absolute;
             top: 15px;
             right: 15px;
-            background: rgba(255, 255, 255, 0.25);
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 12px;
-            padding: 6px 12px;
+            padding: 0 12px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            gap: 8px;
             font-size: 0.95rem;
             font-weight: 800;
             cursor: pointer;
             color: white;
+            white-space: nowrap;
             transition: all 0.2s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
