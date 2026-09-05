@@ -42,198 +42,56 @@
         }
 
         /* --- תצוגות (Views) --- */
-        #lobby-view {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        #trip-view {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
+        #lobby-view { display: flex; flex-direction: column; height: 100%; padding: 20px; overflow-y: auto; }
+        #trip-view { display: none; flex-direction: column; height: 100%; }
 
         /* --- עיצוב הלובי (Lobby) --- */
-        .lobby-header {
-            text-align: center;
-            margin-bottom: 30px;
-            margin-top: 15px;
-            position: relative;
-        }
-        .lobby-header h1 {
-            font-size: 1.7rem;
-            line-height: 1.3;
-            color: var(--primary-green);
-            font-weight: 800;
-        }
-        .lobby-header p {
-            color: var(--primary-brown);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-        .admin-login-btn {
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: rgba(255,255,255,0.6);
-            border: 1px solid rgba(255,255,255,0.8);
-            border-radius: 50%;
-            width: 45px; height: 45px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .trips-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            padding-bottom: 50px;
-        }
-        .trip-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
+        .lobby-header { text-align: center; margin-bottom: 30px; margin-top: 15px; position: relative; }
+        .lobby-header h1 { font-size: 1.7rem; line-height: 1.3; color: var(--primary-green); font-weight: 800; }
+        .lobby-header p { color: var(--primary-brown); font-size: 1.1rem; font-weight: 600; margin-top: 8px; }
+        .admin-login-btn { position: absolute; top: 0; left: 0; background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.8); border-radius: 50%; width: 45px; height: 45px; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .trips-grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding-bottom: 50px; }
+        .trip-card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 25px; text-align: center; cursor: pointer; transition: transform 0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
         .trip-card:active { transform: scale(0.96); }
-        .trip-card-color-bar {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 12px;
-        }
-        .trip-card h2 {
-            margin-top: 10px;
-            color: var(--text-dark);
-            border: none;
-            font-size: 1.8rem;
-        }
+        .trip-card-color-bar { position: absolute; top: 0; left: 0; width: 100%; height: 12px; }
+        .trip-card h2 { margin-top: 10px; color: var(--text-dark); border: none; font-size: 1.8rem; }
 
         /* --- עיצוב זכוכית כללי --- */
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            border-radius: 16px;
-        }
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); border-radius: 16px; }
 
         /* --- Header בתוך הטיול --- */
-        header {
-            background: linear-gradient(135deg, rgba(58, 90, 64, 0.85), rgba(88, 47, 14, 0.85));
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--white);
-            text-align: center;
-            padding: 15px;
-            z-index: 10;
-            position: relative;
-        }
-        header h1 {
-            font-size: 1.25rem;
-            font-weight: 800;
-            margin-bottom: 5px;
-            margin-top: 45px;
-            padding: 0 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .back-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            padding: 0 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 0.95rem;
-            font-weight: 800;
-            cursor: pointer;
-            color: white;
-            white-space: nowrap;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
+        header { background: linear-gradient(135deg, rgba(58, 90, 64, 0.85), rgba(88, 47, 14, 0.85)); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.2); color: var(--white); text-align: center; padding: 15px; z-index: 10; position: relative; }
+        header h1 { font-size: 1.25rem; font-weight: 800; margin-bottom: 5px; margin-top: 45px; padding: 0 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .back-btn { position: absolute; top: 15px; right: 15px; height: 40px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; font-weight: 800; cursor: pointer; color: white; white-space: nowrap; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .back-btn:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.4); }
+        .settings-icon { position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        #countdown { font-size: 1.1rem; font-weight: 600; background: rgba(255,255,255,0.25); padding: 6px 12px; border-radius: 20px; display: inline-block; border: 1px solid rgba(255,255,255,0.3); }
 
-        .settings-icon {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 12px;
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; cursor: pointer; color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-        #countdown {
-            font-size: 1.1rem;
-            font-weight: 600;
-            background: rgba(255,255,255,0.25);
-            padding: 6px 12px;
-            border-radius: 20px;
-            display: inline-block;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        main {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px 15px 180px; 
-            scroll-behavior: smooth;
-        }
-
+        main { flex-grow: 1; overflow-y: auto; padding: 20px 15px 180px; scroll-behavior: smooth; }
         .tab-content { display: none; animation: slideFadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .tab-content.active { display: block; }
         @keyframes slideFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
         h2 { color: var(--primary-green); border-bottom: 2px solid rgba(163, 177, 138, 0.4); padding-bottom: 8px; margin-bottom: 18px; font-size: 1.5rem; font-weight: 800; }
 
         .home-hero { position: relative; border-radius: 16px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); background: #ccc; min-height: 200px; border: 1px solid rgba(255,255,255,0.5); }
         .home-hero img { width: 100%; height: 200px; object-fit: cover; display: block; }
         .home-hero-text { position: absolute; bottom: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); width: 100%; color: white; padding: 30px 15px 15px; font-size: 1.4rem; font-weight: 800; }
-
         .image-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .image-gallery img { width: 100%; height: 130px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #ccc; border: 1px solid rgba(255,255,255,0.4); }
 
         .card { padding: 15px; margin-bottom: 15px; border-right: 5px solid var(--primary-green); transition: transform 0.2s ease; }
         .card.mandatory { border-right: 5px solid #d35400; }
-
         .checkbox-row { display: flex; align-items: center; font-size: 1.1rem; font-weight: 600; }
         .checkbox-row input[type="checkbox"] { width: 24px; height: 24px; margin-left: 15px; accent-color: var(--primary-green); cursor: pointer; }
         .checkbox-row span { flex-grow: 1; transition: color 0.3s; }
         .checked-text { text-decoration: line-through; color: #999; }
         .details { font-size: 0.95rem; color: #555; margin-top: 6px; margin-right: 39px; line-height: 1.4; }
-
+        
         .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        input[type="text"], input[type="number"], select, input[type="date"], input[type="time"], input[type="datetime-local"], input[type="color"], textarea {
-            width: 100%; padding: 12px; background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.8);
-            border-radius: 12px; font-size: 1rem; font-weight: 600; color: var(--text-dark); transition: all 0.3s ease;
-        }
+        input[type="text"], input[type="number"], select, input[type="date"], input[type="time"], input[type="datetime-local"], input[type="color"], textarea { width: 100%; padding: 12px; background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.8); border-radius: 12px; font-size: 1rem; font-weight: 600; color: var(--text-dark); transition: all 0.3s ease; }
         input:focus, select:focus, textarea:focus { background: rgba(255,255,255,0.9); border-color: var(--primary-green); outline: none; }
 
-        .action-btn, .btn-add {
-            display: block; width: 100%; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none;
-            margin-bottom: 12px; font-size: 1.1rem; font-weight: 800; border: none; cursor: pointer;
-            transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+        .action-btn, .btn-add { display: block; width: 100%; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; margin-bottom: 12px; font-size: 1.1rem; font-weight: 800; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .btn-add { background-color: var(--primary-brown); color: white; width: auto; padding: 12px 20px; }
         .action-btn { background-color: var(--primary-green); color: white; }
         .phone-btn { background-color: var(--primary-brown); }
@@ -243,11 +101,7 @@
         .expense-result { text-align: center; font-size: 1.25rem; font-weight: 800; color: var(--primary-brown); margin-top: 20px; padding: 18px; }
         .expense-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05); align-items: center; font-size: 1.05rem; }
 
-        nav {
-            position: fixed; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.6); display: flex; justify-content: space-around;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.05); z-index: 10; padding-bottom: env(safe-area-inset-bottom);
-        }
+        nav { position: fixed; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.6); display: flex; justify-content: space-around; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); z-index: 10; padding-bottom: env(safe-area-inset-bottom); }
         .nav-btn { background: none; border: none; padding: 12px 2px; flex-grow: 1; font-size: 0.85rem; color: #888; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; font-weight: 800; position: relative; }
         .nav-btn span { font-size: 1.5rem; transition: transform 0.4s; }
         .nav-btn.active { color: var(--primary-green); }
@@ -259,33 +113,30 @@
         .modal-content p { margin-bottom: 20px; font-size: 1.2rem; font-weight: 600; }
         .modal-btn { background: var(--primary-green); color: white; border: none; padding: 12px 25px; border-radius: 12px; font-size: 1.1rem; font-weight: 800; cursor: pointer; }
 
-        #install-prompt {
-            position: fixed; bottom: 20px; left: 5%; width: 90%;
-            background: rgba(58, 90, 64, 0.95); backdrop-filter: blur(10px);
-            color: white; padding: 20px; border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 9999;
-            display: none; animation: slideUp 0.5s ease-out; border: 1px solid rgba(255,255,255,0.2);
-        }
+        #install-prompt { position: fixed; bottom: 20px; left: 5%; width: 90%; background: rgba(58, 90, 64, 0.95); backdrop-filter: blur(10px); color: white; padding: 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 9999; display: none; animation: slideUp 0.5s ease-out; border: 1px solid rgba(255,255,255,0.2); }
         #install-prompt h3 { margin-bottom: 10px; font-size: 1.2rem; font-weight: 800; display:flex; align-items:center; gap:8px;}
         #install-prompt p { font-size: 1rem; line-height: 1.4; margin-bottom: 15px; }
         .install-close-btn { background: white; color: var(--primary-green); border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 800; font-size: 1.1rem; cursor: pointer; }
         @keyframes slideUp { from { transform: translateY(150%); } to { transform: translateY(0); } }
 
         body:not(.is-admin) .admin-only { display: none !important; }
-        
-        .cat-header {
-            font-size: 1.2rem;
-            color: var(--primary-green);
-            margin-top: 25px;
-            margin-bottom: 10px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .cat-header { font-size: 1.2rem; color: var(--primary-green); margin-top: 25px; margin-bottom: 10px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .locked-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: linear-gradient(135deg, var(--primary-green), var(--light-green)); color: white; padding: 20px; text-align: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 9999; }
+        .locked-screen input { text-align: center; letter-spacing: 10px; font-size: 1.5rem; width: 200px; margin: 20px 0; }
+
+        /* --- CSS Print View --- */
+        #print-area { display: none; }
+        @media print {
+            body, html { height: auto !important; overflow: visible !important; background: white !important; }
+            body > :not(#print-area) { display: none !important; }
+            #print-area { display: block !important; position: static !important; width: 100% !important; background: white !important; }
         }
     </style>
 </head>
 <body>
+
+    <!-- אזור חבוי מיוחד להדפסה נכונה מהטלפון -->
+    <div id="print-area"></div>
 
     <!-- גלאי ופופאפ התקנה -->
     <div id="install-prompt">
@@ -332,9 +183,7 @@
                     <div class="home-hero-text" id="dyn-hero-text">...</div>
                 </div>
                 
-                <p style="text-align: center; margin-bottom: 20px; font-size: 1.2rem; color: var(--primary-brown); font-weight: 800;">
-                    החופשה מתקרבת!
-                </p>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 1.2rem; color: var(--primary-brown); font-weight: 800;">החופשה מתקרבת!</p>
 
                 <div class="image-gallery">
                     <img id="dyn-gallery-img1" src="cabin.jpg" alt="Image 1" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'130\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'14\'>תמונה 1</text></svg>'">
@@ -447,7 +296,6 @@
 
                 <div id="expenseList"></div>
                 <div id="expenseBalance" class="glass-panel expense-result">מאזן: טוען נתונים מהענן...</div>
-                
                 <button class="admin-only" onclick="clearExpenses()" style="background:rgba(255, 235, 238, 0.8); backdrop-filter:blur(10px); border:1px solid #ffcdd2; color:#d32f2f; margin-top:30px; margin-bottom:50px; padding:18px; width:100%; border-radius:12px; font-size:1.2rem; cursor:pointer; font-weight:800;">
                     🗑️ איפוס מחשבון הוצאות
                 </button>
@@ -553,7 +401,6 @@
                     <input type="text" id="set-lobbyTitle">
                     <label class="settings-label">צבע רקע לכרטיסייה בלובי:</label>
                     <input type="color" id="set-lobbyColor" style="height: 50px; padding: 5px;">
-                    
                     <label class="settings-label" style="color: #d32f2f; margin-top: 25px;">סיסמת מנהל כללית (תקפה לכל הטיולים):</label>
                     <input type="text" id="set-adminPin" placeholder="למשל: 1981">
                 </div>
@@ -564,14 +411,12 @@
                     <input type="text" id="set-mainTitle">
                     <label class="settings-label">טקסט על תמונת הנוף:</label>
                     <input type="text" id="set-heroText">
-                    
                     <label class="settings-label" style="margin-top: 15px;">תמונת נוף ראשית (שם קובץ או קישור):</label>
                     <input type="text" id="set-heroImg" dir="ltr" placeholder="למשל: cyprus-hero.jpg">
                     <label class="settings-label">תמונת גלריה קטנה 1 (שם קובץ או קישור):</label>
                     <input type="text" id="set-gallery1" dir="ltr" placeholder="למשל: cyprus1.jpg">
                     <label class="settings-label">תמונת גלריה קטנה 2 (שם קובץ או קישור):</label>
                     <input type="text" id="set-gallery2" dir="ltr" placeholder="למשל: cyprus2.jpg">
-                    
                     <label class="settings-label" style="margin-top: 15px;">תאריך ושעת טיסה (לשעון העצר):</label>
                     <input type="datetime-local" id="set-flightDateTime" dir="ltr">
                 </div>
@@ -639,34 +484,20 @@
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 
     <script>
-        // --- 1. PWA Popup ---
         function checkInstallPrompt() {
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || document.referrer.includes('android-app://');
             if (isStandalone) return; 
-
             if (localStorage.getItem('install_prompt_dismissed')) return;
-
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             const isAndroid = /Android/.test(navigator.userAgent);
-
             const promptEl = document.getElementById('install-prompt');
             const textEl = document.getElementById('install-instructions');
-
-            if (isIOS) {
-                textEl.innerHTML = "כדי שהאפליקציה תישמר אצלכם בטלפון ותעבוד בצורה מושלמת, לחצו על כפתור <strong>השיתוף</strong> (⍐) למטה, ואז בחרו ב- <strong>הוסף למסך הבית</strong> (➕).";
-                promptEl.style.display = 'block';
-            } else if (isAndroid) {
-                textEl.innerHTML = "כדי שהאפליקציה תישמר אצלכם בטלפון ותעבוד בצורה מושלמת, לחצו על <strong>שלוש הנקודות</strong> (⋮) למעלה, ואז בחרו ב- <strong>הוסף למסך הבית</strong>.";
-                promptEl.style.display = 'block';
-            }
+            if (isIOS) { textEl.innerHTML = "כדי שהאפליקציה תישמר אצלכם בטלפון ותעבוד בצורה מושלמת, לחצו על כפתור <strong>השיתוף</strong> (⍐) למטה, ואז בחרו ב- <strong>הוסף למסך הבית</strong> (➕)."; promptEl.style.display = 'block'; } 
+            else if (isAndroid) { textEl.innerHTML = "כדי שהאפליקציה תישמר אצלכם בטלפון ותעבוד בצורה מושלמת, לחצו על <strong>שלוש הנקודות</strong> (⋮) למעלה, ואז בחרו ב- <strong>הוסף למסך הבית</strong>."; promptEl.style.display = 'block'; }
         }
-        function dismissInstall() {
-            document.getElementById('install-prompt').style.display = 'none';
-            localStorage.setItem('install_prompt_dismissed', 'true');
-        }
+        function dismissInstall() { document.getElementById('install-prompt').style.display = 'none'; localStorage.setItem('install_prompt_dismissed', 'true'); }
         setTimeout(checkInstallPrompt, 2000);
 
-        // --- Firebase Config ---
         const firebaseConfig = {
             apiKey: "AIzaSyAKlewYVxd7bWRRV-M8hs_YZKuYp1V0TQM",
             authDomain: "family-travel-app-d4710.firebaseapp.com",
@@ -679,46 +510,22 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // --- State Management ---
-        let currentTripId = null;
-        let isAdmin = false;
-        let globalAdminPin = "1981"; 
-        let countdownInterval = null;
-        
+        let currentTripId = null; let isAdmin = false; let globalAdminPin = "1981"; let countdownInterval = null;
         let globalTemplates = {
             mandatoryTasks: ['בדוק דרכונים בתוקף', 'ביטוח נסיעות לחו"ל', 'הצטיידות בכסף מקומי', 'הפקת רישיון נהיגה בינ"ל', 'מסמכים מודפסים (צילום דרכון, כרטיסי טיסה, שובר למלון)'],
-            packing: {
-                clothing: ['חולצות קצרות/ארוכות', 'מכנסיים', 'הלבשה תחתונה וגרביים', 'נעלי הליכה/ספורט', 'מעיל/גקט (אם קר)', 'בגדי ים (אם רלוונטי)'],
-                toiletries: ['מברשת ומשחת שיניים', 'דאודורנט', 'שמפו וסבון גוף', 'מסרק/מברשת שיער', 'קרם הגנה'],
-                personal: ['מטען לטלפון נייד', 'מתאם שקעים בינלאומי', 'משקפי שמש/ראייה', 'אוזניות', 'סוללת גיבוי (Power Bank)'],
-                misc: ['תיק עזרה ראשונה ותרופות קבועות', 'שקיות ניילון לכביסה', 'משחקים קטנים לילדים', 'מטריות (אם חורף)']
-            }
+            packing: { clothing: ['חולצות קצרות/ארוכות', 'מכנסיים', 'הלבשה תחתונה וגרביים', 'נעלי הליכה/ספורט', 'מעיל/גקט (אם קר)', 'בגדי ים (אם רלוונטי)'], toiletries: ['מברשת ומשחת שיניים', 'דאודורנט', 'שמפו וסבון גוף', 'מסרק/מברשת שיער', 'קרם הגנה'], personal: ['מטען לטלפון נייד', 'מתאם שקעים בינלאומי', 'משקפי שמש/ראייה', 'אוזניות', 'סוללת גיבוי (Power Bank)'], misc: ['תיק עזרה ראשונה ותרופות קבועות', 'שקיות ניילון לכביסה', 'משחקים קטנים לילדים', 'מטריות (אם חורף)'] }
         };
 
-        // --- Core Functions ---
-        function showAlert(msg) {
-            document.getElementById('modalMessage').innerText = msg;
-            document.getElementById('customModal').style.display = 'flex';
-        }
-        function closeModal() {
-            document.getElementById('customModal').style.display = 'none';
-        }
+        function showAlert(msg) { document.getElementById('modalMessage').innerText = msg; document.getElementById('customModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('customModal').style.display = 'none'; }
 
         db.ref('Global').on('value', snap => {
             const data = snap.val();
-            if (data && data.adminPin) {
-                globalAdminPin = data.adminPin;
-            } else {
-                db.ref('Global/adminPin').set("1981"); 
-            }
-            
+            if (data && data.adminPin) globalAdminPin = data.adminPin; else db.ref('Global/adminPin').set("1981"); 
             if (data && data.Templates) {
                 globalTemplates.mandatoryTasks = data.Templates.mandatoryTasks || globalTemplates.mandatoryTasks;
-                if (data.Templates.packing && data.Templates.packing.clothing) {
-                    globalTemplates.packing = data.Templates.packing;
-                }
+                if (data.Templates.packing && data.Templates.packing.clothing) globalTemplates.packing = data.Templates.packing;
             }
-
             if(document.getElementById('set-globalMandatory')) {
                 document.getElementById('set-globalMandatory').value = (globalTemplates.mandatoryTasks || []).join('\n');
                 document.getElementById('set-globalClothing').value = (globalTemplates.packing.clothing || []).join('\n');
@@ -726,10 +533,7 @@
                 document.getElementById('set-globalPersonal').value = (globalTemplates.packing.personal || []).join('\n');
                 document.getElementById('set-globalMisc').value = (globalTemplates.packing.misc || []).join('\n');
             }
-
-            if (sessionStorage.getItem('is_admin') === 'true') {
-                setAdminMode(true);
-            }
+            if (sessionStorage.getItem('is_admin') === 'true') setAdminMode(true);
         });
 
         function saveGlobalTemplates() {
@@ -741,142 +545,80 @@
                 personal: document.getElementById('set-globalPersonal').value.split('\n').map(t=>t.trim()).filter(t=>t!==''),
                 misc: document.getElementById('set-globalMisc').value.split('\n').map(t=>t.trim()).filter(t=>t!=='')
             };
-            
-            db.ref('Global/Templates').set({ mandatoryTasks, packing }).then(() => {
-                showAlert('התבניות הגלובליות (כולל קטגוריות) נשמרו בהצלחה!');
-            });
+            db.ref('Global/Templates').set({ mandatoryTasks, packing }).then(() => { showAlert('התבניות הגלובליות נשמרו בהצלחה!'); });
         }
 
-        // --- Lobby Logic ---
         function promptAdminLogin() {
-            if (isAdmin) {
-                if(confirm("אתה מחובר כמנהל. האם תרצה להתנתק ולעבור לתצוגת צופה?")) { setAdminMode(false); } return;
-            }
+            if (isAdmin) { if(confirm("אתה מחובר כמנהל. האם תרצה להתנתק ולעבור לתצוגת צופה?")) { setAdminMode(false); } return; }
             const pin = prompt("הכנס קוד מנהל כדי לערוך וליצור טיולים:");
-            if (pin === globalAdminPin) { setAdminMode(true); showAlert("התחברת בהצלחה כמנהל!"); } 
-            else if (pin !== null) { showAlert("קוד מנהל שגוי."); }
+            if (pin === globalAdminPin) { setAdminMode(true); showAlert("התחברת בהצלחה כמנהל!"); } else if (pin !== null) { showAlert("קוד מנהל שגוי."); }
         }
 
         function setAdminMode(status) {
-            isAdmin = status;
-            sessionStorage.setItem('is_admin', status ? 'true' : 'false');
-            if (status) {
-                document.body.classList.add('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔓';
-            } else {
-                document.body.classList.remove('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔒';
-            }
+            isAdmin = status; sessionStorage.setItem('is_admin', status ? 'true' : 'false');
+            if (status) { document.body.classList.add('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔓'; } 
+            else { document.body.classList.remove('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔒'; }
             updateInputsReadonly();
         }
 
-        function updateInputsReadonly() {
-            const flightInputs = document.querySelectorAll('.flight-grid input');
-            flightInputs.forEach(input => { input.readOnly = !isAdmin; });
-        }
+        function updateInputsReadonly() { document.querySelectorAll('.flight-grid input').forEach(input => { input.readOnly = !isAdmin; }); }
 
         db.ref('Trips').on('value', snap => {
-            const trips = snap.val();
-            const container = document.getElementById('trips-container');
-            container.innerHTML = '';
-            
-            if (!trips) {
-                container.innerHTML = '<div style="text-align: center; color: #666; font-size:1.1rem; margin-top:30px;">אין טיולים כרגע במערכת.</div>';
-                return;
-            }
-
+            const trips = snap.val(); const container = document.getElementById('trips-container'); container.innerHTML = '';
+            if (!trips) { container.innerHTML = '<div style="text-align: center; color: #666; font-size:1.1rem; margin-top:30px;">אין טיולים כרגע במערכת.</div>'; return; }
             for (let tripId in trips) {
-                const trip = trips[tripId];
-                const color = trip.settings?.lobbyColor || '#3a5a40';
-                const title = trip.settings?.lobbyTitle || 'טיול ללא שם';
-                
-                const card = document.createElement('div');
-                card.className = 'trip-card';
-                card.onclick = () => openTrip(tripId);
-                card.innerHTML = `
-                    <div class="trip-card-color-bar" style="background-color: ${color}"></div>
-                    <div style="font-size: 3rem; margin-bottom: 10px;">✈️</div>
-                    <h2>${title}</h2>
-                    <p style="color: #666; font-size: 0.9rem; margin-top:5px;">לחץ לכניסה לפרטי הטיול</p>
-                `;
+                const trip = trips[tripId]; const color = trip.settings?.lobbyColor || '#3a5a40'; const title = trip.settings?.lobbyTitle || 'טיול ללא שם';
+                const card = document.createElement('div'); card.className = 'trip-card'; card.onclick = () => openTrip(tripId);
+                card.innerHTML = `<div class="trip-card-color-bar" style="background-color: ${color}"></div><div style="font-size: 3rem; margin-bottom: 10px;">✈️</div><h2>${title}</h2><p style="color: #666; font-size: 0.9rem; margin-top:5px;">לחץ לכניסה לפרטי הטיול</p>`;
                 container.appendChild(card);
             }
         });
 
         function createNewTrip() {
-            const title = prompt("הכנס שם לטיול החדש (למשל: קפריסין 2026):");
-            if (!title) return;
-
+            const title = prompt("הכנס שם לטיול החדש (למשל: קפריסין 2026):"); if (!title) return;
             const tripId = 'trip_' + Date.now();
             const defaultTripSettings = {
-                lobbyTitle: title, lobbyColor: "#0ea5e9", mainTitle: "הטיול המשפחתי ל" + title,
-                heroText: "יוצאים לדרך!", heroImg: "hero.jpg", gallery1: "cabin.jpg", gallery2: "nature.jpg",
-                flightDateTime: "", routeTitle: "מפת הטיול", routeDesc: "מסלול הנסיעה והאתרים המרכזיים",
-                routeStart: "", routeEnd: "", weatherLoc: "",
-                nav1Title: "ניווט 1", nav1Url: "", nav2Title: "ניווט 2", nav2Url: "", nav3Title: "ניווט 3", nav3Url: "",
-                emergencyNum: "112", emergencyText: "חירום",
+                lobbyTitle: title, lobbyColor: "#0ea5e9", mainTitle: "הטיול המשפחתי ל" + title, heroText: "יוצאים לדרך!", heroImg: "hero.jpg", gallery1: "cabin.jpg", gallery2: "nature.jpg",
+                flightDateTime: "", routeTitle: "מפת הטיול", routeDesc: "מסלול הנסיעה והאתרים המרכזיים", routeStart: "", routeEnd: "", weatherLoc: "",
+                nav1Title: "ניווט 1", nav1Url: "", nav2Title: "ניווט 2", nav2Url: "", nav3Title: "ניווט 3", nav3Url: "", emergencyNum: "112", emergencyText: "חירום",
                 docFlights: "", docHotel: "", docCar: "", docInsurance: ""
             };
-
             db.ref('Trips/' + tripId + '/settings').set(defaultTripSettings);
-
             const mandatoryObjs = globalTemplates.mandatoryTasks.map((t, i) => ({ id: Date.now() + i, text: t, checked: false }));
-            
-            let packingObjs = [];
-            let pId = Date.now() + 1000;
-            for(let cat in globalTemplates.packing) {
-                globalTemplates.packing[cat].forEach(t => {
-                    packingObjs.push({ id: pId++, text: t, checked: false, category: cat });
-                });
-            }
-            
-            db.ref('Trips/' + tripId + '/mandatoryTasks').set(mandatoryObjs);
-            db.ref('Trips/' + tripId + '/packing').set(packingObjs);
-
+            let packingObjs = []; let pId = Date.now() + 1000;
+            for(let cat in globalTemplates.packing) { globalTemplates.packing[cat].forEach(t => { packingObjs.push({ id: pId++, text: t, checked: false, category: cat }); }); }
+            db.ref('Trips/' + tripId + '/mandatoryTasks').set(mandatoryObjs); db.ref('Trips/' + tripId + '/packing').set(packingObjs);
             showAlert("הטיול נוצר בהצלחה עם תבניות הציוד והקטגוריות!");
         }
 
-        // --- Trip Management ---
         function openTrip(tripId) {
-            currentTripId = tripId;
-            document.getElementById('lobby-view').style.display = 'none';
-            document.getElementById('trip-view').style.display = 'flex';
-            
-            updateInputsReadonly();
-            switchTab('home', document.querySelector('.nav-btn'));
-            loadTripData();
+            currentTripId = tripId; document.getElementById('lobby-view').style.display = 'none'; document.getElementById('trip-view').style.display = 'flex';
+            updateInputsReadonly(); switchTab('home', document.querySelector('.nav-btn')); loadTripData();
         }
 
         function returnToLobby() {
-            if (currentTripId) { db.ref('Trips/' + currentTripId).off(); }
-            clearInterval(countdownInterval);
-            currentTripId = null;
-            document.getElementById('trip-view').style.display = 'none';
-            document.getElementById('lobby-view').style.display = 'flex';
+            if (currentTripId) { db.ref('Trips/' + currentTripId).off(); } clearInterval(countdownInterval); currentTripId = null;
+            document.getElementById('trip-view').style.display = 'none'; document.getElementById('lobby-view').style.display = 'flex';
         }
 
         function switchTab(tabId, btnElement) {
             if (tabId === 'settings' && !isAdmin) return showAlert("אזור זה מיועד למנהלים בלבד.");
             document.querySelectorAll('#trip-view .tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('#trip-view .nav-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            if (btnElement) btnElement.classList.add('active'); 
+            document.getElementById('tab-' + tabId).classList.add('active'); if (btnElement) btnElement.classList.add('active'); 
             document.querySelector('#trip-view main').scrollTop = 0;
         }
 
         function loadTripData() {
             if (!currentTripId) return;
             db.ref('Trips/' + currentTripId).on('value', snap => {
-                const tripData = snap.val();
-                if(!tripData) return;
+                const tripData = snap.val(); if(!tripData) return;
                 const config = tripData.settings || {};
                 
                 document.getElementById('dyn-main-title').innerText = config.mainTitle || "כותרת ראשית";
                 document.getElementById('dyn-hero-text').innerText = config.heroText || "...";
-                document.getElementById('dyn-hero-img').src = config.heroImg || "hero.jpg";
-                document.getElementById('dyn-gallery-img1').src = config.gallery1 || "cabin.jpg";
-                document.getElementById('dyn-gallery-img2').src = config.gallery2 || "nature.jpg";
-
-                document.getElementById('dyn-route-title').innerText = config.routeTitle || "...";
-                document.getElementById('dyn-route-desc').innerText = config.routeDesc || "...";
+                document.getElementById('dyn-hero-img').src = config.heroImg || "hero.jpg"; document.getElementById('dyn-gallery-img1').src = config.gallery1 || "cabin.jpg"; document.getElementById('dyn-gallery-img2').src = config.gallery2 || "nature.jpg";
+                document.getElementById('dyn-route-title').innerText = config.routeTitle || "..."; document.getElementById('dyn-route-desc').innerText = config.routeDesc || "...";
                 const startP = config.routeStart || ""; const endP = config.routeEnd || "";
                 if(startP && endP) document.getElementById('dyn-route-map').src = `https://maps.google.com/maps?saddr=${encodeURIComponent(startP)}&daddr=${encodeURIComponent(endP)}&output=embed`;
 
@@ -885,76 +627,47 @@
                 document.getElementById('dyn-nav3-link').href = config.nav3Url || "#"; document.getElementById('dyn-nav3-link').innerHTML = `📍 ${config.nav3Title || 'ניווט'}`;
                 
                 const eNum = config.emergencyNum || "112"; const eText = config.emergencyText || "חירום";
-                document.getElementById('dyn-emergency-btn').onclick = () => window.location.href = `tel:${eNum}`;
-                document.getElementById('dyn-emergency-btn').innerHTML = `🚨 ${eText} (${eNum})`;
+                document.getElementById('dyn-emergency-btn').onclick = () => window.location.href = `tel:${eNum}`; document.getElementById('dyn-emergency-btn').innerHTML = `🚨 ${eText} (${eNum})`;
 
-                setupDocLink('dyn-doc-flights', config.docFlights); setupDocLink('dyn-doc-hotel', config.docHotel);
-                setupDocLink('dyn-doc-car', config.docCar); setupDocLink('dyn-doc-insurance', config.docInsurance);
+                setupDocLink('dyn-doc-flights', config.docFlights); setupDocLink('dyn-doc-hotel', config.docHotel); setupDocLink('dyn-doc-car', config.docCar); setupDocLink('dyn-doc-insurance', config.docInsurance);
 
-                document.getElementById('set-lobbyTitle').value = config.lobbyTitle || '';
-                document.getElementById('set-lobbyColor').value = config.lobbyColor || '#3a5a40';
-                document.getElementById('set-adminPin').value = globalAdminPin;
-                
-                document.getElementById('set-mainTitle').value = config.mainTitle || '';
-                document.getElementById('set-heroText').value = config.heroText || '';
-                document.getElementById('set-heroImg').value = config.heroImg || '';
-                document.getElementById('set-gallery1').value = config.gallery1 || '';
-                document.getElementById('set-gallery2').value = config.gallery2 || '';
-                document.getElementById('set-flightDateTime').value = config.flightDateTime || '';
-                document.getElementById('set-routeTitle').value = config.routeTitle || '';
-                document.getElementById('set-routeDesc').value = config.routeDesc || '';
-                document.getElementById('set-routeStart').value = config.routeStart || '';
-                document.getElementById('set-routeEnd').value = config.routeEnd || '';
-                document.getElementById('set-weatherLoc').value = config.weatherLoc || '';
-                document.getElementById('set-nav1Title').value = config.nav1Title || ''; document.getElementById('set-nav1Url').value = config.nav1Url || '';
-                document.getElementById('set-nav2Title').value = config.nav2Title || ''; document.getElementById('set-nav2Url').value = config.nav2Url || '';
-                document.getElementById('set-nav3Title').value = config.nav3Title || ''; document.getElementById('set-nav3Url').value = config.nav3Url || '';
-                document.getElementById('set-emergencyNum').value = config.emergencyNum || ''; document.getElementById('set-emergencyText').value = config.emergencyText || '';
-                document.getElementById('set-docFlights').value = config.docFlights || ''; document.getElementById('set-docHotel').value = config.docHotel || '';
-                document.getElementById('set-docCar').value = config.docCar || ''; document.getElementById('set-docInsurance').value = config.docInsurance || '';
+                document.getElementById('set-lobbyTitle').value = config.lobbyTitle || ''; document.getElementById('set-lobbyColor').value = config.lobbyColor || '#3a5a40'; document.getElementById('set-adminPin').value = globalAdminPin;
+                document.getElementById('set-mainTitle').value = config.mainTitle || ''; document.getElementById('set-heroText').value = config.heroText || ''; document.getElementById('set-heroImg').value = config.heroImg || '';
+                document.getElementById('set-gallery1').value = config.gallery1 || ''; document.getElementById('set-gallery2').value = config.gallery2 || ''; document.getElementById('set-flightDateTime').value = config.flightDateTime || '';
+                document.getElementById('set-routeTitle').value = config.routeTitle || ''; document.getElementById('set-routeDesc').value = config.routeDesc || ''; document.getElementById('set-routeStart').value = config.routeStart || '';
+                document.getElementById('set-routeEnd').value = config.routeEnd || ''; document.getElementById('set-weatherLoc').value = config.weatherLoc || '';
+                document.getElementById('set-nav1Title').value = config.nav1Title || ''; document.getElementById('set-nav1Url').value = config.nav1Url || ''; document.getElementById('set-nav2Title').value = config.nav2Title || ''; document.getElementById('set-nav2Url').value = config.nav2Url || '';
+                document.getElementById('set-nav3Title').value = config.nav3Title || ''; document.getElementById('set-nav3Url').value = config.nav3Url || ''; document.getElementById('set-emergencyNum').value = config.emergencyNum || ''; document.getElementById('set-emergencyText').value = config.emergencyText || '';
+                document.getElementById('set-docFlights').value = config.docFlights || ''; document.getElementById('set-docHotel').value = config.docHotel || ''; document.getElementById('set-docCar').value = config.docCar || ''; document.getElementById('set-docInsurance').value = config.docInsurance || '';
 
                 loadWeatherForecast(config.weatherLoc); startTimer(config.flightDateTime);
-                renderItinerary(tripData.itinerary || []);
-                renderMandatoryTasks(tripData.mandatoryTasks || []);
-                renderPackingList(tripData.packing || []);
-                renderExpenses(tripData.expenses || []);
-                populateFlights(tripData.flights || {});
-                renderLocations(tripData.locations || {});
+                renderItinerary(tripData.itinerary || []); renderMandatoryTasks(tripData.mandatoryTasks || []); renderPackingList(tripData.packing || []); renderExpenses(tripData.expenses || []); populateFlights(tripData.flights || {}); renderLocations(tripData.locations || {});
             });
         }
 
         function setupDocLink(elementId, url) {
             const el = document.getElementById(elementId);
             if (url && url.trim() !== '') { el.href = url; el.onclick = null; } 
-            else { el.href = '#'; el.onclick = (e) => { e.preventDefault(); showAlert('טרם הוזן קישור למסמך זה ע"י המנהל.'); }; }
+            else { el.href = '#'; el.onclick = (e) => { e.preventDefault(); showAlert('טרם הוזן קישור למסמך ע"י המנהל.'); }; }
         }
 
         function saveSettings() {
             if(!currentTripId || !isAdmin) return;
             const newPin = document.getElementById('set-adminPin').value.trim();
             if (newPin && newPin !== globalAdminPin) { db.ref('Global').update({ adminPin: newPin }); globalAdminPin = newPin; }
-
             db.ref('Trips/' + currentTripId + '/settings').set({
-                lobbyTitle: document.getElementById('set-lobbyTitle').value.trim(), lobbyColor: document.getElementById('set-lobbyColor').value,
-                mainTitle: document.getElementById('set-mainTitle').value.trim(), heroText: document.getElementById('set-heroText').value.trim(),
-                heroImg: document.getElementById('set-heroImg').value.trim(), gallery1: document.getElementById('set-gallery1').value.trim(), gallery2: document.getElementById('set-gallery2').value.trim(),
-                flightDateTime: document.getElementById('set-flightDateTime').value, routeTitle: document.getElementById('set-routeTitle').value.trim(),
-                routeDesc: document.getElementById('set-routeDesc').value.trim(), routeStart: document.getElementById('set-routeStart').value.trim(),
-                routeEnd: document.getElementById('set-routeEnd').value.trim(), weatherLoc: document.getElementById('set-weatherLoc').value.trim(), 
-                nav1Title: document.getElementById('set-nav1Title').value.trim(), nav1Url: document.getElementById('set-nav1Url').value.trim(),
-                nav2Title: document.getElementById('set-nav2Title').value.trim(), nav2Url: document.getElementById('set-nav2Url').value.trim(),
-                nav3Title: document.getElementById('set-nav3Title').value.trim(), nav3Url: document.getElementById('set-nav3Url').value.trim(),
-                emergencyNum: document.getElementById('set-emergencyNum').value.trim(), emergencyText: document.getElementById('set-emergencyText').value.trim(),
-                docFlights: document.getElementById('set-docFlights').value.trim(), docHotel: document.getElementById('set-docHotel').value.trim(),
-                docCar: document.getElementById('set-docCar').value.trim(), docInsurance: document.getElementById('set-docInsurance').value.trim()
+                lobbyTitle: document.getElementById('set-lobbyTitle').value.trim(), lobbyColor: document.getElementById('set-lobbyColor').value, mainTitle: document.getElementById('set-mainTitle').value.trim(), heroText: document.getElementById('set-heroText').value.trim(),
+                heroImg: document.getElementById('set-heroImg').value.trim(), gallery1: document.getElementById('set-gallery1').value.trim(), gallery2: document.getElementById('set-gallery2').value.trim(), flightDateTime: document.getElementById('set-flightDateTime').value, routeTitle: document.getElementById('set-routeTitle').value.trim(),
+                routeDesc: document.getElementById('set-routeDesc').value.trim(), routeStart: document.getElementById('set-routeStart').value.trim(), routeEnd: document.getElementById('set-routeEnd').value.trim(), weatherLoc: document.getElementById('set-weatherLoc').value.trim(), 
+                nav1Title: document.getElementById('set-nav1Title').value.trim(), nav1Url: document.getElementById('set-nav1Url').value.trim(), nav2Title: document.getElementById('set-nav2Title').value.trim(), nav2Url: document.getElementById('set-nav2Url').value.trim(),
+                nav3Title: document.getElementById('set-nav3Title').value.trim(), nav3Url: document.getElementById('set-nav3Url').value.trim(), emergencyNum: document.getElementById('set-emergencyNum').value.trim(), emergencyText: document.getElementById('set-emergencyText').value.trim(),
+                docFlights: document.getElementById('set-docFlights').value.trim(), docHotel: document.getElementById('set-docHotel').value.trim(), docCar: document.getElementById('set-docCar').value.trim(), docInsurance: document.getElementById('set-docInsurance').value.trim()
             });
-            showAlert('ההגדרות של טיול זה נשמרו בהצלחה!'); switchTab('home', document.querySelector('.nav-btn'));
+            showAlert('ההגדרות נשמרו בהצלחה!'); switchTab('home', document.querySelector('.nav-btn'));
         }
 
-        // --- Timer ---
         function startTimer(dateTimeString) {
-            clearInterval(countdownInterval);
-            if (!dateTimeString) { document.getElementById("countdown").innerHTML = "טרם נקבעה טיסה"; return; }
+            clearInterval(countdownInterval); if (!dateTimeString) { document.getElementById("countdown").innerHTML = "טרם נקבעה טיסה"; return; }
             const targetDate = new Date(dateTimeString).getTime();
             countdownInterval = setInterval(() => {
                 const distance = targetDate - new Date().getTime();
@@ -964,20 +677,15 @@
             }, 1000);
         }
 
-        // --- Itinerary ---
         let currentItinerary = []; let currentItineraryEditId = null;
         function renderItinerary(items) {
-            currentItinerary = items.filter(i => i !== null);
-            const container = document.getElementById('itineraryListContainer');
-            const selectDropdown = document.getElementById('itiInsertAfter');
-            container.innerHTML = ''; selectDropdown.innerHTML = '<option value="start">מיקום במסלול (ראשון)</option>';
+            currentItinerary = items.filter(i => i !== null); const container = document.getElementById('itineraryListContainer'); const selectDropdown = document.getElementById('itiInsertAfter'); container.innerHTML = ''; selectDropdown.innerHTML = '<option value="start">מיקום במסלול (ראשון)</option>';
             if (currentItinerary.length === 0) container.innerHTML = '<div style="text-align:center; padding:15px;">אין תחנות במסלול.</div>';
             currentItinerary.forEach((item) => {
                 const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : '';
                 const div = document.createElement('div'); div.className = 'glass-panel card';
                 div.innerHTML = `<label class="checkbox-row" style="margin-bottom: 5px;"><input type="checkbox" onchange="toggleItineraryItem(${item.id})" ${chk} ${dis}><span class="${cls}" style="font-weight: 800;">${item.title}</span>${isAdmin ? `<button onclick="editItineraryItem(${item.id})" style="background:none; border:none; font-size:1.2rem; cursor:pointer; margin-right:10px;">✏️</button><button onclick="removeItineraryItem(${item.id})" style="background:none; border:none; color:red; font-size:1.2rem; cursor:pointer; margin-right:5px;">🗑️</button>` : ''}</label><div class="details ${cls}">${item.desc}</div>`;
-                container.appendChild(div);
-                const opt = document.createElement('option'); opt.value = item.id; opt.innerText = `אחרי: ${item.title}`; selectDropdown.appendChild(opt);
+                container.appendChild(div); const opt = document.createElement('option'); opt.value = item.id; opt.innerText = `אחרי: ${item.title}`; selectDropdown.appendChild(opt);
             });
         }
         function toggleItineraryItem(id) { if(!isAdmin) return; const item = currentItinerary.find(i => i.id === id); if (item) { item.checked = !item.checked; db.ref(`Trips/${currentTripId}/itinerary`).set(currentItinerary); } }
@@ -986,8 +694,7 @@
             if(!isAdmin) return; const title = document.getElementById('itiTitle').value.trim(); const desc = document.getElementById('itiDesc').value.trim(); const insertAfterId = document.getElementById('itiInsertAfter').value;
             if (!title) return showAlert('חובה להזין כותרת.');
             if (currentItineraryEditId) {
-                const index = currentItinerary.findIndex(i => i.id === currentItineraryEditId);
-                if(index > -1) { currentItinerary[index].title = title; currentItinerary[index].desc = desc; }
+                const index = currentItinerary.findIndex(i => i.id === currentItineraryEditId); if(index > -1) { currentItinerary[index].title = title; currentItinerary[index].desc = desc; }
                 currentItineraryEditId = null; const btn = document.getElementById('btn-add-iti'); btn.innerText = "הוסף תחנה"; btn.style.backgroundColor = "var(--primary-green)";
             } else {
                 const newItem = { id: Date.now(), title, desc, checked: false };
@@ -997,12 +704,9 @@
         }
         function removeItineraryItem(id) { if(!isAdmin) return; currentItinerary = currentItinerary.filter(i => i.id !== id); db.ref(`Trips/${currentTripId}/itinerary`).set(currentItinerary); }
 
-        // --- Mandatory Tasks & Packing List ---
         let currentMandatory = []; let currentPacking = []; let currentPackingEditId = null; let currentMandatoryEditId = null;
-
         function renderMandatoryTasks(items) {
-            currentMandatory = items.filter(i => i !== null);
-            const container = document.getElementById('mandatoryTasksContainer'); container.innerHTML = '';
+            currentMandatory = items.filter(i => i !== null); const container = document.getElementById('mandatoryTasksContainer'); container.innerHTML = '';
             currentMandatory.forEach(item => {
                 const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : '';
                 const div = document.createElement('div'); div.className = 'glass-panel card mandatory';
@@ -1011,199 +715,92 @@
             });
         }
         function toggleMandatoryTask(id) { if(!isAdmin) return; const item = currentMandatory.find(i => i && i.id === id); if (item) { item.checked = !item.checked; db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); } }
-        function editMandatoryTask(id) {
-            if(!isAdmin) return; const item = currentMandatory.find(i => i && i.id === id);
-            if(item) {
-                document.getElementById('newItemInput').value = item.text; currentMandatoryEditId = id; currentPackingEditId = null;
-                const btn = document.getElementById('btn-add-packing'); btn.innerText = "💾 שמור חובה"; btn.style.backgroundColor = "#d35400"; document.getElementById('newItemInput').scrollIntoView({behavior: "smooth", block: "center"});
-            }
-        }
+        function editMandatoryTask(id) { if(!isAdmin) return; const item = currentMandatory.find(i => i && i.id === id); if(item) { document.getElementById('newItemInput').value = item.text; currentMandatoryEditId = id; currentPackingEditId = null; const btn = document.getElementById('btn-add-packing'); btn.innerText = "💾 שמור חובה"; btn.style.backgroundColor = "#d35400"; document.getElementById('newItemInput').scrollIntoView({behavior: "smooth", block: "center"}); } }
         function removeMandatoryTask(id) { if(!isAdmin) return; currentMandatory = currentMandatory.filter(i => i && i.id !== id); db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); }
 
         function renderPackingList(items) {
-            currentPacking = items.filter(i => i !== null);
-            const container = document.getElementById('packingListContainer'); container.innerHTML = '';
-            
-            const cats = {
-                clothing: { title: '👕 ביגוד', html: '' },
-                toiletries: { title: '🪥 כלי רחצה', html: '' },
-                personal: { title: '🎒 ציוד אישי', html: '' },
-                misc: { title: '📦 שונות', html: '' }
-            };
-
+            currentPacking = items.filter(i => i !== null); const container = document.getElementById('packingListContainer'); container.innerHTML = '';
+            const cats = { clothing: { title: '👕 ביגוד', html: '' }, toiletries: { title: '🪥 כלי רחצה', html: '' }, personal: { title: '🎒 ציוד אישי', html: '' }, misc: { title: '📦 שונות', html: '' } };
             currentPacking.forEach(item => {
-                const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : '';
-                const cat = item.category || 'misc'; // תאימות לאחור: אם אין קטגוריה, שים בשונות
-                
-                cats[cat].html += `
-                    <div class="glass-panel card" style="padding: 12px 15px; margin-bottom: 10px; border-right-color: var(--light-green);">
-                        <label class="checkbox-row">
-                            <input type="checkbox" onchange="togglePackingItem(${item.id})" ${chk} ${dis}>
-                            <span class="${cls}" style="font-size: 1rem;">${item.text}</span>
-                            ${isAdmin ? `
-                                <button onclick="editPackingItem(${item.id})" style="background:none; border:none; font-size:1.1rem; cursor:pointer; margin-right:10px;">✏️</button>
-                                <button onclick="removePackingItem(${item.id})" style="background:none; border:none; color:red; font-size:1.1rem; cursor:pointer; margin-right:5px;">🗑️</button>
-                            ` : ''}
-                        </label>
-                    </div>`;
+                const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : ''; const cat = item.category || 'misc';
+                cats[cat].html += `<div class="glass-panel card" style="padding: 12px 15px; margin-bottom: 10px; border-right-color: var(--light-green);"><label class="checkbox-row"><input type="checkbox" onchange="togglePackingItem(${item.id})" ${chk} ${dis}><span class="${cls}" style="font-size: 1rem;">${item.text}</span>${isAdmin ? `<button onclick="editPackingItem(${item.id})" style="background:none; border:none; font-size:1.1rem; cursor:pointer; margin-right:10px;">✏️</button><button onclick="removePackingItem(${item.id})" style="background:none; border:none; color:red; font-size:1.1rem; cursor:pointer; margin-right:5px;">🗑️</button>` : ''}</label></div>`;
             });
-
-            // הדפסת הקטגוריות למסך
-            for(let key in cats) {
-                if (cats[key].html !== '') {
-                    container.innerHTML += `<div class="cat-header">${cats[key].title}</div>${cats[key].html}`;
-                }
-            }
+            for(let key in cats) { if (cats[key].html !== '') container.innerHTML += `<div class="cat-header">${cats[key].title}</div>${cats[key].html}`; }
         }
         function togglePackingItem(id) { if(!isAdmin) return; const item = currentPacking.find(i => i && i.id === id); if (item) { item.checked = !item.checked; db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); } }
-        function editPackingItem(id) {
-            if(!isAdmin) return; const item = currentPacking.find(i => i && i.id === id);
-            if(item) {
-                document.getElementById('newItemInput').value = item.text;
-                document.getElementById('newItemCategory').value = item.category || 'misc';
-                currentPackingEditId = id; currentMandatoryEditId = null;
-                const btn = document.getElementById('btn-add-packing'); btn.innerText = "💾 שמור שינוי"; btn.style.backgroundColor = "var(--primary-green)"; document.getElementById('newItemInput').scrollIntoView({behavior: "smooth", block: "center"});
-            }
-        }
+        function editPackingItem(id) { if(!isAdmin) return; const item = currentPacking.find(i => i && i.id === id); if(item) { document.getElementById('newItemInput').value = item.text; document.getElementById('newItemCategory').value = item.category || 'misc'; currentPackingEditId = id; currentMandatoryEditId = null; const btn = document.getElementById('btn-add-packing'); btn.innerText = "💾 שמור שינוי"; btn.style.backgroundColor = "var(--primary-green)"; document.getElementById('newItemInput').scrollIntoView({behavior: "smooth", block: "center"}); } }
         function addPackingItem() {
             if(!isAdmin) return; const input = document.getElementById('newItemInput'); const val = input.value.trim(); const cat = document.getElementById('newItemCategory').value;
             if (val === '') return showAlert('יש להזין שם פריט');
-            
-            if(currentPackingEditId) {
-                const index = currentPacking.findIndex(i => i && i.id === currentPackingEditId);
-                if(index > -1) { currentPacking[index].text = val; currentPacking[index].category = cat; }
-                db.ref(`Trips/${currentTripId}/packing`).set(currentPacking);
-            } else if(currentMandatoryEditId) {
-                const index = currentMandatory.findIndex(i => i && i.id === currentMandatoryEditId);
-                if(index > -1) currentMandatory[index].text = val;
-                db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory);
-            } else {
-                currentPacking.push({ id: Date.now(), text: val, checked: false, category: cat });
-                db.ref(`Trips/${currentTripId}/packing`).set(currentPacking);
-            }
-            input.value = ''; currentPackingEditId = null; currentMandatoryEditId = null;
-            const btn = document.getElementById('btn-add-packing'); btn.innerText = "הוסף"; btn.style.backgroundColor = "var(--primary-brown)";
+            if(currentPackingEditId) { const index = currentPacking.findIndex(i => i && i.id === currentPackingEditId); if(index > -1) { currentPacking[index].text = val; currentPacking[index].category = cat; } db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); } 
+            else if(currentMandatoryEditId) { const index = currentMandatory.findIndex(i => i && i.id === currentMandatoryEditId); if(index > -1) currentMandatory[index].text = val; db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); } 
+            else { currentPacking.push({ id: Date.now(), text: val, checked: false, category: cat }); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); }
+            input.value = ''; currentPackingEditId = null; currentMandatoryEditId = null; const btn = document.getElementById('btn-add-packing'); btn.innerText = "הוסף"; btn.style.backgroundColor = "var(--primary-brown)";
         }
         function removePackingItem(id) { if(!isAdmin) return; currentPacking = currentPacking.filter(i => i && i.id !== id); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); }
-
         function syncGlobalTemplates() {
             if(!isAdmin) return; let addedCount = 0;
             let currentManTexts = currentMandatory.map(i => i.text.trim().toLowerCase());
-            globalTemplates.mandatoryTasks.forEach((t, index) => {
-                if(!currentManTexts.includes(t.trim().toLowerCase())) { currentMandatory.push({ id: Date.now() + index, text: t, checked: false }); addedCount++; }
-            });
-
+            globalTemplates.mandatoryTasks.forEach((t, index) => { if(!currentManTexts.includes(t.trim().toLowerCase())) { currentMandatory.push({ id: Date.now() + index, text: t, checked: false }); addedCount++; } });
             let currentPackTexts = currentPacking.map(i => i.text.trim().toLowerCase());
-            for(let cat in globalTemplates.packing) {
-                globalTemplates.packing[cat].forEach((t, index) => {
-                    if(!currentPackTexts.includes(t.trim().toLowerCase())) {
-                        currentPacking.push({ id: Date.now() + 1000 + index + Math.random(), text: t, checked: false, category: cat });
-                        addedCount++;
-                    }
-                });
-            }
-
-            db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory);
-            db.ref(`Trips/${currentTripId}/packing`).set(currentPacking);
-            showAlert(`סונכרנו בהצלחה ${addedCount} פריטים חדשים מהתבנית אל תוך הטיול הזה!`);
+            for(let cat in globalTemplates.packing) { globalTemplates.packing[cat].forEach((t, index) => { if(!currentPackTexts.includes(t.trim().toLowerCase())) { currentPacking.push({ id: Date.now() + 1000 + index + Math.random(), text: t, checked: false, category: cat }); addedCount++; } }); }
+            db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); showAlert(`סונכרנו בהצלחה ${addedCount} פריטים חדשים מהתבנית!`);
         }
 
-        // --- PDF Generation & Luggage Tags ---
+        // --- PWA Print Logic (Hidden Div Replacement) ---
+        function printHTMLInCurrentPage(htmlContent) {
+            document.getElementById('print-area').innerHTML = htmlContent;
+            setTimeout(() => { window.print(); }, 300);
+        }
+
         function printPackingList() {
             const tripName = document.getElementById('dyn-main-title').innerText;
-            const printWindow = window.open('', '', 'width=800,height=800');
-            
             let html = `
-                <html dir="rtl" lang="he">
-                <head>
-                    <title>רשימת ציוד - ${tripName}</title>
-                    <style>
-                        body { font-family: 'Arial', sans-serif; padding: 40px; color: #333; background: #fff; }
-                        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3a5a40; padding-bottom: 20px;}
-                        h1 { color: #3a5a40; margin-bottom: 5px; font-size: 28px; }
-                        h2 { color: #582f0e; border-bottom: 1px dashed #a3b18a; padding-bottom: 5px; margin-top: 30px; font-size: 20px; }
-                        h3 { color: #3a5a40; font-size: 18px; margin-top: 25px; margin-bottom: 10px;}
-                        .subtitle { font-size: 16px; color: #666; }
-                        .item { font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; }
-                        .box { width: 18px; height: 18px; border: 2px solid #555; border-radius: 4px; display: inline-block; margin-left: 12px; flex-shrink: 0; }
-                        .footer { text-align: center; margin-top: 50px; font-size: 12px; color: #999; border-top: 1px solid #eee; padding-top: 20px; }
-                    </style>
-                </head>
-                <body>
-                    <div class="header"><h1>✈️ ${tripName}</h1><div class="subtitle">צ'קליסט לאריזה - מומלץ להדפיס ולסמן!</div></div>
-                    <h2>✅ משימות חובה לטיסה</h2>
+                <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; background: #fff; text-align: right; direction: rtl; min-height: 100vh;">
+                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3a5a40; padding-bottom: 20px;">
+                        <h1 style="color: #3a5a40; margin-bottom: 5px; font-size: 28px;">✈️ ${tripName}</h1>
+                        <div style="font-size: 16px; color: #666;">צ'קליסט לאריזה - מומלץ להדפיס ולסמן!</div>
+                    </div>
+                    <h2 style="color: #582f0e; border-bottom: 1px dashed #a3b18a; padding-bottom: 5px; margin-top: 30px; font-size: 20px;">✅ משימות חובה לטיסה</h2>
             `;
-            currentMandatory.forEach(item => { html += `<div class="item"><div class="box"></div> ${item.text}</div>`; });
-
-            html += `<h2>🎒 ציוד אריזה</h2>`;
+            currentMandatory.forEach(item => { html += `<div style="font-size: 16px; margin-bottom: 12px; display: flex; align-items: center;"><div style="width: 18px; height: 18px; border: 2px solid #555; border-radius: 4px; display: inline-block; margin-left: 12px; flex-shrink: 0;"></div> ${item.text}</div>`; });
+            html += `<h2 style="color: #582f0e; border-bottom: 1px dashed #a3b18a; padding-bottom: 5px; margin-top: 30px; font-size: 20px;">🎒 ציוד אריזה</h2>`;
             const cats = { clothing: '👕 ביגוד', toiletries: '🪥 כלי רחצה', personal: '🎒 ציוד אישי', misc: '📦 שונות' };
             for(let key in cats) {
                 const itemsInCat = currentPacking.filter(i => (i.category || 'misc') === key);
                 if(itemsInCat.length > 0) {
-                    html += `<h3>${cats[key]}</h3>`;
-                    itemsInCat.forEach(item => { html += `<div class="item"><div class="box"></div> ${item.text}</div>`; });
+                    html += `<h3 style="color: #3a5a40; font-size: 18px; margin-top: 25px; margin-bottom: 10px;">${cats[key]}</h3>`;
+                    itemsInCat.forEach(item => { html += `<div style="font-size: 16px; margin-bottom: 12px; display: flex; align-items: center;"><div style="width: 18px; height: 18px; border: 2px solid #555; border-radius: 4px; display: inline-block; margin-left: 12px; flex-shrink: 0;"></div> ${item.text}</div>`; });
                 }
             }
-
-            html += `<div class="footer">הופק באהבה מפורטל הטיולים של משפחת שמילוביץ' - איזנברג</div></body></html>`;
-            printWindow.document.write(html); printWindow.document.close(); printWindow.focus();
-            setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
+            html += `<div style="text-align: center; margin-top: 50px; font-size: 12px; color: #999; border-top: 1px solid #eee; padding-top: 20px;">הופק באהבה מפורטל הטיולים של משפחת שמילוביץ' - איזנברג</div></div>`;
+            printHTMLInCurrentPage(html);
         }
 
         function printLuggageTags() {
-            const printWindow = window.open('', '', 'width=800,height=800');
-            
-            // תבנית בודדת לתגית מזוודה
             const tagHTML = `
-                <div style="border: 2px dashed #888; padding: 25px; width: 45%; margin: 2%; float: left; box-sizing: border-box; page-break-inside: avoid; background: #fff;">
-                    <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 16px;">
-                        <tr>
-                            <td style="border: 1px solid #000; padding: 12px; font-weight: bold; width: 30%;">NAME:</td>
-                            <td style="border: 1px solid #000; padding: 12px; font-weight: bold;">Eliran Shmilovich</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #000; padding: 12px; font-weight: bold;">TEL:</td>
-                            <td style="border: 1px solid #000; padding: 12px; font-weight: bold;">972-504039236</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #000; padding: 12px; font-weight: bold;">ADDRESS:</td>
-                            <td style="border: 1px solid #000; padding: 12px; font-weight: bold;">Bareket 12 , Afula , Israel</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #000; padding: 12px; font-weight: bold;">E-MAIL:</td>
-                            <td style="border: 1px solid #000; padding: 12px; font-weight: bold;">eliranshmilo@Gmail.com</td>
-                        </tr>
+                <div style="border: 2px dashed #888; padding: 25px; width: 46%; margin: 2%; float: left; box-sizing: border-box; page-break-inside: avoid; background: #fff; text-align: left; direction: ltr;">
+                    <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px;">
+                        <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold; width: 30%;">NAME:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">Eliran Shmilovich</td></tr>
+                        <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">TEL:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">972-504039236</td></tr>
+                        <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">ADDRESS:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">Bareket 12 , Afula , Israel</td></tr>
+                        <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">E-MAIL:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">eliranshmilo@Gmail.com</td></tr>
                     </table>
                 </div>
             `;
-
             const html = `
-                <html>
-                <head>
-                    <title>תגיות מזוודה להדפסה</title>
-                </head>
-                <body style="font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; text-align: center;">
+                <div style="font-family: Arial, sans-serif; padding: 20px; background: #fff; text-align: center; direction: rtl; min-height: 100vh;">
                     <h2 style="color: #3a5a40; margin-bottom: 5px;">תגיות שם למזוודות (Luggage Tags)</h2>
                     <p style="color: #666; margin-bottom: 30px;">גזרו לאורך הקווים המקווקוים והצמידו למזוודה</p>
                     <div style="max-width: 900px; margin: 0 auto; overflow: hidden; text-align: left;" dir="ltr">
                         ${tagHTML}${tagHTML}${tagHTML}${tagHTML}
                     </div>
-                </body>
-                </html>
+                </div>
             `;
-
-            printWindow.document.write(html);
-            printWindow.document.close();
-            printWindow.focus();
-            
-            // תן לדף רגע להתרנדר לפני ההדפסה
-            setTimeout(() => {
-                printWindow.print();
-                printWindow.close();
-            }, 500);
+            printHTMLInCurrentPage(html);
         }
 
-        // --- Expenses ---
+        // --- Expenses & Utilities ---
         let currentExpenses = []; let exchangeRates = { EUR: 1, ILS: 4.0, CHF: 0.95, USD: 1.1 }; 
         async function initLiveRates() { try { const res = await fetch('https://open.er-api.com/v6/latest/EUR'); const data = await res.json(); exchangeRates = data.rates; } catch(e) {} }
         initLiveRates();
@@ -1223,7 +820,6 @@
         function addExpense() { if(!isAdmin) return; const desc = document.getElementById('expDesc').value.trim(); const amount = parseFloat(document.getElementById('expAmount').value); const currency = document.getElementById('expCurrency').value; const payer = document.getElementById('expPayer').value; if (!desc || isNaN(amount) || amount <= 0) return showAlert('יש להזין תיאור וסכום תקין.'); currentExpenses.push({ desc, amount, payer, currency }); db.ref(`Trips/${currentTripId}/expenses`).set(currentExpenses); document.getElementById('expDesc').value = ''; document.getElementById('expAmount').value = ''; }
         function clearExpenses() { if(!isAdmin) return; if(confirm('בטוח שברצונך לאפס את כל ההוצאות בטיול זה?')) { db.ref(`Trips/${currentTripId}/expenses`).set([]); showAlert('ההוצאות אופסו.'); } }
 
-        // --- Flights & Locations & Weather ---
         function populateFlights(flights) { document.getElementById('f1_date').value = flights.f1_date || ''; document.getElementById('f1_num').value = flights.f1_num || ''; document.getElementById('f1_from').value = flights.f1_from || ''; document.getElementById('f1_dep_time').value = flights.f1_dep_time || ''; document.getElementById('f1_to').value = flights.f1_to || ''; document.getElementById('f1_arr_time').value = flights.f1_arr_time || ''; document.getElementById('f2_date').value = flights.f2_date || ''; document.getElementById('f2_num').value = flights.f2_num || ''; document.getElementById('f2_from').value = flights.f2_from || ''; document.getElementById('f2_dep_time').value = flights.f2_dep_time || ''; document.getElementById('f2_to').value = flights.f2_to || ''; document.getElementById('f2_arr_time').value = flights.f2_arr_time || ''; }
         function saveFlights() { if(!isAdmin || !currentTripId) return; db.ref(`Trips/${currentTripId}/flights`).set({ f1_date: document.getElementById('f1_date').value, f1_num: document.getElementById('f1_num').value, f1_from: document.getElementById('f1_from').value, f1_dep_time: document.getElementById('f1_dep_time').value, f1_to: document.getElementById('f1_to').value, f1_arr_time: document.getElementById('f1_arr_time').value, f2_date: document.getElementById('f2_date').value, f2_num: document.getElementById('f2_num').value, f2_from: document.getElementById('f2_from').value, f2_dep_time: document.getElementById('f2_dep_time').value, f2_to: document.getElementById('f2_to').value, f2_arr_time: document.getElementById('f2_arr_time').value }); }
         function shareMyLocation() { if(!currentTripId) return; const status = document.getElementById('location-status'); const userName = prompt("מי משתף את המיקום עכשיו? (הכנס את שמך)"); if (!userName) return; status.innerText = "מחפש מיקום..."; if (!navigator.geolocation) return status.innerText = "הדפדפן שלך לא תומך בשיתוף מיקום."; navigator.geolocation.getCurrentPosition( (position) => { const now = new Date(); db.ref(`Trips/${currentTripId}/locations/` + userName).set({ lat: position.coords.latitude, lng: position.coords.longitude, timestamp: `${now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })} - ${now.toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: '2-digit' })}` }); status.innerText = "המיקום שלך נשמר ושותף בהצלחה!"; document.getElementById('google-map-iframe').src = `https://maps.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}&z=16&output=embed`; document.getElementById('map-container').style.display = 'block'; }, (error) => { status.innerText = "שגיאה. ודא שאישרת גישה למיקום בהגדרות הטלפון/הדפדפן."; }, { enableHighAccuracy: true } ); }
