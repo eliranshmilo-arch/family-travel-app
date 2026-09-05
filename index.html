@@ -392,7 +392,39 @@
                     <label class="settings-label" style="font-weight: 800; color: var(--primary-green);">📦 שונות:</label>
                     <textarea id="set-globalMisc" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:15px; font-size: 0.95rem;"></textarea>
                     
-                    <button class="action-btn" onclick="saveGlobalTemplates()" style="background-color: var(--primary-green); margin-top:10px; margin-bottom:0;">💾 שמור תבניות גלובליות</button>
+                    <label class="settings-label" style="font-weight: 800; color: var(--primary-green); margin-top: 25px;">🧳 עריכת תגיות מזוודה (4 תגיות להדפסה):</label>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px;">
+                        <div style="background: rgba(255,255,255,0.4); padding: 10px; border-radius: 8px;">
+                            <div style="font-weight: 800; font-size: 0.9rem; margin-bottom: 5px; color:#555;">תגית 1</div>
+                            <input type="text" id="tag0-name" placeholder="Name (אנגלית)" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag0-tel" placeholder="Tel" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag0-address" placeholder="Address" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag0-email" placeholder="Email" style="padding: 8px; margin-bottom: 0;">
+                        </div>
+                        <div style="background: rgba(255,255,255,0.4); padding: 10px; border-radius: 8px;">
+                            <div style="font-weight: 800; font-size: 0.9rem; margin-bottom: 5px; color:#555;">תגית 2</div>
+                            <input type="text" id="tag1-name" placeholder="Name (אנגלית)" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag1-tel" placeholder="Tel" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag1-address" placeholder="Address" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag1-email" placeholder="Email" style="padding: 8px; margin-bottom: 0;">
+                        </div>
+                        <div style="background: rgba(255,255,255,0.4); padding: 10px; border-radius: 8px;">
+                            <div style="font-weight: 800; font-size: 0.9rem; margin-bottom: 5px; color:#555;">תגית 3</div>
+                            <input type="text" id="tag2-name" placeholder="Name (אנגלית)" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag2-tel" placeholder="Tel" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag2-address" placeholder="Address" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag2-email" placeholder="Email" style="padding: 8px; margin-bottom: 0;">
+                        </div>
+                        <div style="background: rgba(255,255,255,0.4); padding: 10px; border-radius: 8px;">
+                            <div style="font-weight: 800; font-size: 0.9rem; margin-bottom: 5px; color:#555;">תגית 4</div>
+                            <input type="text" id="tag3-name" placeholder="Name (אנגלית)" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag3-tel" placeholder="Tel" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag3-address" placeholder="Address" style="padding: 8px; margin-bottom: 5px;">
+                            <input type="text" id="tag3-email" placeholder="Email" style="padding: 8px; margin-bottom: 0;">
+                        </div>
+                    </div>
+
+                    <button class="action-btn" onclick="saveGlobalTemplates()" style="background-color: var(--primary-green); margin-top:10px; margin-bottom:0;">💾 שמור תבניות גלובליות ותגיות</button>
                 </div>
 
                 <div class="glass-panel" style="padding: 20px; margin-bottom: 20px;">
@@ -513,7 +545,13 @@
         let currentTripId = null; let isAdmin = false; let globalAdminPin = "1981"; let countdownInterval = null;
         let globalTemplates = {
             mandatoryTasks: ['בדוק דרכונים בתוקף', 'ביטוח נסיעות לחו"ל', 'הצטיידות בכסף מקומי', 'הפקת רישיון נהיגה בינ"ל', 'מסמכים מודפסים (צילום דרכון, כרטיסי טיסה, שובר למלון)'],
-            packing: { clothing: ['חולצות קצרות/ארוכות', 'מכנסיים', 'הלבשה תחתונה וגרביים', 'נעלי הליכה/ספורט', 'מעיל/גקט (אם קר)', 'בגדי ים (אם רלוונטי)'], toiletries: ['מברשת ומשחת שיניים', 'דאודורנט', 'שמפו וסבון גוף', 'מסרק/מברשת שיער', 'קרם הגנה'], personal: ['מטען לטלפון נייד', 'מתאם שקעים בינלאומי', 'משקפי שמש/ראייה', 'אוזניות', 'סוללת גיבוי (Power Bank)'], misc: ['תיק עזרה ראשונה ותרופות קבועות', 'שקיות ניילון לכביסה', 'משחקים קטנים לילדים', 'מטריות (אם חורף)'] }
+            packing: { clothing: ['חולצות קצרות/ארוכות', 'מכנסיים', 'הלבשה תחתונה וגרביים', 'נעלי הליכה/ספורט', 'מעיל/גקט (אם קר)', 'בגדי ים (אם רלוונטי)'], toiletries: ['מברשת ומשחת שיניים', 'דאודורנט', 'שמפו וסבון גוף', 'מסרק/מברשת שיער', 'קרם הגנה'], personal: ['מטען לטלפון נייד', 'מתאם שקעים בינלאומי', 'משקפי שמש/ראייה', 'אוזניות', 'סוללת גיבוי (Power Bank)'], misc: ['תיק עזרה ראשונה ותרופות קבועות', 'שקיות ניילון לכביסה', 'משחקים קטנים לילדים', 'מטריות (אם חורף)'] },
+            luggageTags: [
+                { name: 'Eliran Shmilovich', tel: '972-504039236', address: 'Bareket 12 , Afula , Israel', email: 'eliranshmilo@Gmail.com' },
+                { name: 'Dror Aizenberg', tel: '972-542420007', address: 'Bareket 12 , Afula , Israel', email: '' },
+                { name: '', tel: '', address: '', email: '' },
+                { name: '', tel: '', address: '', email: '' }
+            ]
         };
 
         function showAlert(msg) { document.getElementById('modalMessage').innerText = msg; document.getElementById('customModal').style.display = 'flex'; }
@@ -525,6 +563,7 @@
             if (data && data.Templates) {
                 globalTemplates.mandatoryTasks = data.Templates.mandatoryTasks || globalTemplates.mandatoryTasks;
                 if (data.Templates.packing && data.Templates.packing.clothing) globalTemplates.packing = data.Templates.packing;
+                if (data.Templates.luggageTags) globalTemplates.luggageTags = data.Templates.luggageTags;
             }
             if(document.getElementById('set-globalMandatory')) {
                 document.getElementById('set-globalMandatory').value = (globalTemplates.mandatoryTasks || []).join('\n');
@@ -532,6 +571,14 @@
                 document.getElementById('set-globalToiletries').value = (globalTemplates.packing.toiletries || []).join('\n');
                 document.getElementById('set-globalPersonal').value = (globalTemplates.packing.personal || []).join('\n');
                 document.getElementById('set-globalMisc').value = (globalTemplates.packing.misc || []).join('\n');
+                
+                for(let i=0; i<4; i++){
+                    let t = globalTemplates.luggageTags[i] || {name:'', tel:'', address:'', email:''};
+                    document.getElementById(`tag${i}-name`).value = t.name;
+                    document.getElementById(`tag${i}-tel`).value = t.tel;
+                    document.getElementById(`tag${i}-address`).value = t.address;
+                    document.getElementById(`tag${i}-email`).value = t.email;
+                }
             }
             if (sessionStorage.getItem('is_admin') === 'true') setAdminMode(true);
         });
@@ -545,7 +592,17 @@
                 personal: document.getElementById('set-globalPersonal').value.split('\n').map(t=>t.trim()).filter(t=>t!==''),
                 misc: document.getElementById('set-globalMisc').value.split('\n').map(t=>t.trim()).filter(t=>t!=='')
             };
-            db.ref('Global/Templates').set({ mandatoryTasks, packing }).then(() => { showAlert('התבניות הגלובליות נשמרו בהצלחה!'); });
+            const luggageTags = [];
+            for(let i=0; i<4; i++){
+                luggageTags.push({
+                    name: document.getElementById(`tag${i}-name`).value.trim(),
+                    tel: document.getElementById(`tag${i}-tel`).value.trim(),
+                    address: document.getElementById(`tag${i}-address`).value.trim(),
+                    email: document.getElementById(`tag${i}-email`).value.trim()
+                });
+            }
+            
+            db.ref('Global/Templates').set({ mandatoryTasks, packing, luggageTags }).then(() => { showAlert('התבניות הגלובליות והתגיות נשמרו בהצלחה!'); });
         }
 
         function promptAdminLogin() {
@@ -747,7 +804,7 @@
             db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); showAlert(`סונכרנו בהצלחה ${addedCount} פריטים חדשים מהתבנית!`);
         }
 
-        // --- PWA Print Logic (Hidden Div Replacement) ---
+        // --- PWA Print Logic ---
         function printHTMLInCurrentPage(htmlContent) {
             document.getElementById('print-area').innerHTML = htmlContent;
             setTimeout(() => { window.print(); }, 300);
@@ -778,22 +835,27 @@
         }
 
         function printLuggageTags() {
-            const tagHTML = `
-                <div style="border: 2px dashed #888; padding: 25px; width: 46%; margin: 2%; float: left; box-sizing: border-box; page-break-inside: avoid; background: #fff; text-align: left; direction: ltr;">
-                    <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px;">
-                        <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold; width: 30%;">NAME:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">Eliran Shmilovich</td></tr>
-                        <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">TEL:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">972-504039236</td></tr>
-                        <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">ADDRESS:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">Bareket 12 , Afula , Israel</td></tr>
-                        <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">E-MAIL:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">eliranshmilo@Gmail.com</td></tr>
-                    </table>
-                </div>
-            `;
+            let tagsHtmlString = '';
+            
+            globalTemplates.luggageTags.forEach(tag => {
+                tagsHtmlString += `
+                    <div style="border: 2px dashed #888; padding: 25px; width: 46%; margin: 2%; float: left; box-sizing: border-box; page-break-inside: avoid; background: #fff; text-align: left; direction: ltr;">
+                        <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px;">
+                            <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold; width: 30%;">NAME:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.name}</td></tr>
+                            <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">TEL:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.tel}</td></tr>
+                            <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">ADDRESS:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.address}</td></tr>
+                            <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">E-MAIL:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.email}</td></tr>
+                        </table>
+                    </div>
+                `;
+            });
+
             const html = `
                 <div style="font-family: Arial, sans-serif; padding: 20px; background: #fff; text-align: center; direction: rtl; min-height: 100vh;">
                     <h2 style="color: #3a5a40; margin-bottom: 5px;">תגיות שם למזוודות (Luggage Tags)</h2>
                     <p style="color: #666; margin-bottom: 30px;">גזרו לאורך הקווים המקווקוים והצמידו למזוודה</p>
                     <div style="max-width: 900px; margin: 0 auto; overflow: hidden; text-align: left;" dir="ltr">
-                        ${tagHTML}${tagHTML}${tagHTML}${tagHTML}
+                        ${tagsHtmlString}
                     </div>
                 </div>
             `;
