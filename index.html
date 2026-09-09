@@ -104,7 +104,7 @@
         .locked-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: linear-gradient(135deg, var(--primary-green), var(--light-green)); color: white; padding: 20px; text-align: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 9999; }
         .locked-screen input { text-align: center; letter-spacing: 10px; font-size: 1.5rem; width: 200px; margin: 20px 0; }
 
-        /* --- תצוגת מזג אוויר וכרטיסי טיסה (חדש) --- */
+        /* --- תצוגת מזג אוויר וכרטיסי טיסה --- */
         .weather-grid { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; scrollbar-width: none; }
         .weather-grid::-webkit-scrollbar { display: none; }
         .weather-day { flex: 0 0 auto; width: 110px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; border-radius: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.8); }
@@ -121,7 +121,7 @@
         .ticket-logo { font-size: 1.5rem; }
         .ticket-body { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .ticket-station { text-align: center; width: 40%; }
-        .ticket-station h2 { font-size: 1.6rem; margin: 0; color: var(--text-dark); border: none; padding: 0; font-weight: 800; line-height: 1.2; }
+        .ticket-station h2 { font-size: 1.6rem; margin: 0 0 2px 0; color: var(--text-dark); border: none; padding: 0; font-weight: 800; line-height: 1.1; }
         .ticket-station p { font-size: 1.3rem; color: var(--primary-brown); font-weight: 800; margin-top: 5px; }
         .ticket-plane { font-size: 1.6rem; color: var(--light-green); transform: scaleX(-1); }
         .ticket-footer { display: flex; justify-content: space-between; background: #f4f4f4; padding: 12px; border-radius: 12px; }
@@ -261,12 +261,14 @@
                         <div class="ticket-header"><h4>טיסה הלוך</h4><div class="ticket-logo">🛫</div></div>
                         <div class="ticket-body">
                             <div class="ticket-station">
-                                <h2 id="tkt_f1_from_code">---</h2>
+                                <h2 id="tkt_f1_from_code" style="margin-bottom:2px;">---</h2>
+                                <div id="tkt_f1_from" style="font-size: 0.85rem; color: #666; font-weight: 800;"></div>
                                 <p id="tkt_f1_dep_time">--:--</p>
                             </div>
                             <div class="ticket-plane">✈️</div>
                             <div class="ticket-station">
-                                <h2 id="tkt_f1_to_code">---</h2>
+                                <h2 id="tkt_f1_to_code" style="margin-bottom:2px;">---</h2>
+                                <div id="tkt_f1_to" style="font-size: 0.85rem; color: #666; font-weight: 800;"></div>
                                 <p id="tkt_f1_arr_time">--:--</p>
                             </div>
                         </div>
@@ -280,12 +282,14 @@
                         <div class="ticket-header"><h4>טיסה חזור</h4><div class="ticket-logo">🛬</div></div>
                         <div class="ticket-body">
                             <div class="ticket-station">
-                                <h2 id="tkt_f2_from_code">---</h2>
+                                <h2 id="tkt_f2_from_code" style="margin-bottom:2px;">---</h2>
+                                <div id="tkt_f2_from" style="font-size: 0.85rem; color: #666; font-weight: 800;"></div>
                                 <p id="tkt_f2_dep_time">--:--</p>
                             </div>
                             <div class="ticket-plane">✈️</div>
                             <div class="ticket-station">
-                                <h2 id="tkt_f2_to_code">---</h2>
+                                <h2 id="tkt_f2_to_code" style="margin-bottom:2px;">---</h2>
+                                <div id="tkt_f2_to" style="font-size: 0.85rem; color: #666; font-weight: 800;"></div>
                                 <p id="tkt_f2_arr_time">--:--</p>
                             </div>
                         </div>
@@ -364,24 +368,45 @@
                 <!-- FLIGHT SETTINGS IN ADMIN TAB -->
                 <div class="glass-panel" style="padding: 20px; margin-bottom: 20px;">
                     <h3 style="color: var(--primary-green); margin-bottom: 15px; font-weight:800;">✈️ עריכת פרטי טיסות</h3>
+                    
                     <h4 style="font-size:1rem; margin-bottom:10px; color:#555;">טיסה הלוך</h4>
-                    <div class="input-group" style="margin-bottom:10px;"><input type="date" id="set_f1_date"><input type="text" id="set_f1_num" placeholder="מספר טיסה"></div>
-                    <div class="input-group" style="margin-bottom:10px;"><input type="text" id="set_f1_from" placeholder="ממריא מ- (למשל: נתבג)"><input type="time" id="set_f1_dep_time"></div>
-                    <div class="input-group" style="margin-bottom:10px;"><input type="text" id="set_f1_to" placeholder="נוחת ב- (למשל: לרנקה)"><input type="time" id="set_f1_arr_time"></div>
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <input type="date" id="set_f1_date" style="flex:1;"><input type="text" id="set_f1_num" placeholder="מספר טיסה" style="flex:1;">
+                    </div>
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <input type="text" id="set_f1_from" placeholder="ממריא מ- (עיר)" style="flex:2;">
+                        <input type="text" id="set_f1_from_code" placeholder="קוד (HFA)" maxlength="3" oninput="this.value=this.value.toUpperCase();" style="flex:1; text-transform:uppercase;">
+                        <input type="time" id="set_f1_dep_time" style="flex:1;">
+                    </div>
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <input type="text" id="set_f1_to" placeholder="נוחת ב- (עיר)" style="flex:2;">
+                        <input type="text" id="set_f1_to_code" placeholder="קוד (LCA)" maxlength="3" oninput="this.value=this.value.toUpperCase();" style="flex:1; text-transform:uppercase;">
+                        <input type="time" id="set_f1_arr_time" style="flex:1;">
+                    </div>
                     
                     <h4 style="font-size:1rem; margin-bottom:10px; margin-top:20px; color:#555;">טיסה חזור</h4>
-                    <div class="input-group" style="margin-bottom:10px;"><input type="date" id="set_f2_date"><input type="text" id="set_f2_num" placeholder="מספר טיסה"></div>
-                    <div class="input-group" style="margin-bottom:10px;"><input type="text" id="set_f2_from" placeholder="ממריא מ-"><input type="time" id="set_f2_dep_time"></div>
-                    <div class="input-group" style="margin-bottom:10px;"><input type="text" id="set_f2_to" placeholder="נוחת ב-"><input type="time" id="set_f2_arr_time"></div>
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <input type="date" id="set_f2_date" style="flex:1;"><input type="text" id="set_f2_num" placeholder="מספר טיסה" style="flex:1;">
+                    </div>
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <input type="text" id="set_f2_from" placeholder="ממריא מ- (עיר)" style="flex:2;">
+                        <input type="text" id="set_f2_from_code" placeholder="קוד (HFA)" maxlength="3" oninput="this.value=this.value.toUpperCase();" style="flex:1; text-transform:uppercase;">
+                        <input type="time" id="set_f2_dep_time" style="flex:1;">
+                    </div>
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <input type="text" id="set_f2_to" placeholder="נוחת ב- (עיר)" style="flex:2;">
+                        <input type="text" id="set_f2_to_code" placeholder="קוד (LCA)" maxlength="3" oninput="this.value=this.value.toUpperCase();" style="flex:1; text-transform:uppercase;">
+                        <input type="time" id="set_f2_arr_time" style="flex:1;">
+                    </div>
                 </div>
 
                 <div class="glass-panel" style="padding: 20px; margin-bottom: 20px;">
                     <h3 style="color: var(--primary-green); margin-bottom: 10px; font-weight:800;">עיצוב דף הבית ותמונות 🖼️</h3>
                     <label class="settings-label">כותרת ראשית (למעלה):</label><input type="text" id="set-mainTitle">
                     <label class="settings-label">טקסט על תמונת הנוף:</label><input type="text" id="set-heroText">
-                    <label class="settings-label" style="margin-top: 15px;">תמונת נוף ראשית:</label><input type="text" id="set-heroImg" dir="ltr" placeholder="למשל: cyprus-hero.jpg">
-                    <label class="settings-label">תמונת גלריה קטנה 1:</label><input type="text" id="set-gallery1" dir="ltr" placeholder="למשל: cyprus1.jpg">
-                    <label class="settings-label">תמונת גלריה קטנה 2:</label><input type="text" id="set-gallery2" dir="ltr" placeholder="למשל: cyprus2.jpg">
+                    <label class="settings-label" style="margin-top: 15px;">תמונת נוף ראשית (שם קובץ או קישור):</label><input type="text" id="set-heroImg" dir="ltr" placeholder="למשל: cyprus-hero.jpg">
+                    <label class="settings-label">תמונת גלריה קטנה 1 (שם קובץ או קישור):</label><input type="text" id="set-gallery1" dir="ltr" placeholder="למשל: cyprus1.jpg">
+                    <label class="settings-label">תמונת גלריה קטנה 2 (שם קובץ או קישור):</label><input type="text" id="set-gallery2" dir="ltr" placeholder="למשל: cyprus2.jpg">
                     <label class="settings-label" style="margin-top: 15px;">תאריך ושעת טיסה (לשעון העצר):</label><input type="datetime-local" id="set-flightDateTime" dir="ltr">
                 </div>
 
@@ -506,7 +531,10 @@
             isAdmin = status; sessionStorage.setItem('is_admin', status ? 'true' : 'false');
             if (status) { document.body.classList.add('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔓'; } 
             else { document.body.classList.remove('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔒'; }
+            updateInputsReadonly();
         }
+
+        function updateInputsReadonly() { document.querySelectorAll('.flight-grid input').forEach(input => { input.readOnly = !isAdmin; }); }
 
         db.ref('Trips').on('value', snap => {
             const trips = snap.val(); const container = document.getElementById('trips-container'); container.innerHTML = '';
@@ -538,7 +566,7 @@
 
         function openTrip(tripId) {
             currentTripId = tripId; document.getElementById('lobby-view').style.display = 'none'; document.getElementById('trip-view').style.display = 'flex';
-            switchTab('home', document.querySelector('.nav-btn')); loadTripData();
+            updateInputsReadonly(); switchTab('home', document.querySelector('.nav-btn')); loadTripData();
         }
 
         function returnToLobby() {
@@ -576,7 +604,6 @@
 
                 setupDocLink('dyn-doc-flights', config.docFlights); setupDocLink('dyn-doc-hotel', config.docHotel); setupDocLink('dyn-doc-car', config.docCar); setupDocLink('dyn-doc-insurance', config.docInsurance);
 
-                // Populate settings inputs
                 document.getElementById('set-lobbyTitle').value = config.lobbyTitle || ''; document.getElementById('set-lobbyColor').value = config.lobbyColor || '#3a5a40'; document.getElementById('set-adminPin').value = globalAdminPin;
                 document.getElementById('set-mainTitle').value = config.mainTitle || ''; document.getElementById('set-heroText').value = config.heroText || ''; document.getElementById('set-heroImg').value = config.heroImg || '';
                 document.getElementById('set-gallery1').value = config.gallery1 || ''; document.getElementById('set-gallery2').value = config.gallery2 || ''; document.getElementById('set-flightDateTime').value = config.flightDateTime || '';
@@ -609,7 +636,7 @@
                 nav3Title: document.getElementById('set-nav3Title').value.trim(), nav3Url: document.getElementById('set-nav3Url').value.trim(), emergencyNum: document.getElementById('set-emergencyNum').value.trim(), emergencyText: document.getElementById('set-emergencyText').value.trim(),
                 docFlights: document.getElementById('set-docFlights').value.trim(), docHotel: document.getElementById('set-docHotel').value.trim(), docCar: document.getElementById('set-docCar').value.trim(), docInsurance: document.getElementById('set-docInsurance').value.trim()
             });
-            saveFlights(); // Save flights edited in admin tab
+            saveFlights(); 
             showAlert('ההגדרות ופרטי הטיסה נשמרו בהצלחה!'); switchTab('home', document.querySelector('.nav-btn'));
         }
 
@@ -624,7 +651,6 @@
             }, 1000);
         }
 
-        // --- Itinerary ---
         let currentItinerary = []; let currentItineraryEditId = null;
         function renderItinerary(items) {
             currentItinerary = items.filter(i => i !== null); const container = document.getElementById('itineraryListContainer'); const selectDropdown = document.getElementById('itiInsertAfter'); container.innerHTML = ''; selectDropdown.innerHTML = '<option value="start">מיקום במסלול (ראשון)</option>';
@@ -739,16 +765,7 @@
                     </div>
                 `;
             });
-
-            const html = `
-                <div style="font-family: Arial, sans-serif; padding: 20px; background: #fff; text-align: center; direction: rtl; min-height: 100vh;">
-                    <h2 style="color: #3a5a40; margin-bottom: 5px;">תגיות שם למזוודות (Luggage Tags)</h2>
-                    <p style="color: #666; margin-bottom: 30px;">גזרו לאורך הקווים המקווקוים והצמידו למזוודה</p>
-                    <div style="max-width: 900px; margin: 0 auto; overflow: hidden; text-align: left;" dir="ltr">
-                        ${tagsHtmlString}
-                    </div>
-                </div>
-            `;
+            const html = `<div style="font-family: Arial, sans-serif; padding: 20px; background: #fff; text-align: center; direction: rtl; min-height: 100vh;"><h2 style="color: #3a5a40; margin-bottom: 5px;">תגיות שם למזוודות (Luggage Tags)</h2><p style="color: #666; margin-bottom: 30px;">גזרו לאורך הקווים המקווקוים והצמידו למזוודה</p><div style="max-width: 900px; margin: 0 auto; overflow: hidden; text-align: left;" dir="ltr">${tagsHtmlString}</div></div>`;
             printHTMLInCurrentPage(html);
         }
 
@@ -772,33 +789,29 @@
         function addExpense() { if(!isAdmin) return; const desc = document.getElementById('expDesc').value.trim(); const amount = parseFloat(document.getElementById('expAmount').value); const currency = document.getElementById('expCurrency').value; const payer = document.getElementById('expPayer').value; if (!desc || isNaN(amount) || amount <= 0) return showAlert('יש להזין תיאור וסכום תקין.'); currentExpenses.push({ desc, amount, payer, currency }); db.ref(`Trips/${currentTripId}/expenses`).set(currentExpenses); document.getElementById('expDesc').value = ''; document.getElementById('expAmount').value = ''; }
         function clearExpenses() { if(!isAdmin) return; if(confirm('בטוח שברצונך לאפס את כל ההוצאות בטיול זה?')) { db.ref(`Trips/${currentTripId}/expenses`).set([]); showAlert('ההוצאות אופסו.'); } }
 
-        // --- Flights & Info Tab ---
         function populateFlights(flights) { 
-            // Populate hidden inputs in admin tab
-            document.getElementById('set_f1_date').value = flights.f1_date || ''; document.getElementById('set_f1_num').value = flights.f1_num || ''; document.getElementById('set_f1_from').value = flights.f1_from || ''; document.getElementById('set_f1_dep_time').value = flights.f1_dep_time || ''; document.getElementById('set_f1_to').value = flights.f1_to || ''; document.getElementById('set_f1_arr_time').value = flights.f1_arr_time || ''; 
-            document.getElementById('set_f2_date').value = flights.f2_date || ''; document.getElementById('set_f2_num').value = flights.f2_num || ''; document.getElementById('set_f2_from').value = flights.f2_from || ''; document.getElementById('set_f2_dep_time').value = flights.f2_dep_time || ''; document.getElementById('set_f2_to').value = flights.f2_to || ''; document.getElementById('set_f2_arr_time').value = flights.f2_arr_time || ''; 
+            document.getElementById('set_f1_date').value = flights.f1_date || ''; document.getElementById('set_f1_num').value = flights.f1_num || ''; document.getElementById('set_f1_from').value = flights.f1_from || ''; document.getElementById('set_f1_from_code').value = flights.f1_from_code || ''; document.getElementById('set_f1_dep_time').value = flights.f1_dep_time || ''; document.getElementById('set_f1_to').value = flights.f1_to || ''; document.getElementById('set_f1_to_code').value = flights.f1_to_code || ''; document.getElementById('set_f1_arr_time').value = flights.f1_arr_time || ''; 
+            document.getElementById('set_f2_date').value = flights.f2_date || ''; document.getElementById('set_f2_num').value = flights.f2_num || ''; document.getElementById('set_f2_from').value = flights.f2_from || ''; document.getElementById('set_f2_from_code').value = flights.f2_from_code || ''; document.getElementById('set_f2_dep_time').value = flights.f2_dep_time || ''; document.getElementById('set_f2_to').value = flights.f2_to || ''; document.getElementById('set_f2_to_code').value = flights.f2_to_code || ''; document.getElementById('set_f2_arr_time').value = flights.f2_arr_time || ''; 
             
-            // Populate Ticket Display
-            document.getElementById('tkt_f1_from_code').innerText = flights.f1_from ? flights.f1_from.substring(0,3).toUpperCase() : '---';
-            document.getElementById('tkt_f1_to_code').innerText = flights.f1_to ? flights.f1_to.substring(0,3).toUpperCase() : '---';
-            document.getElementById('tkt_f1_dep_time').innerText = flights.f1_dep_time || '--:--';
-            document.getElementById('tkt_f1_arr_time').innerText = flights.f1_arr_time || '--:--';
-            document.getElementById('tkt_f1_date').innerText = flights.f1_date ? flights.f1_date.split('-').reverse().join('/') : '--/--/----';
-            document.getElementById('tkt_f1_num').innerText = flights.f1_num || '----';
+            const setDisp = (cId, nId, cVal, nVal) => {
+                const cEl = document.getElementById(cId); const nEl = document.getElementById(nId);
+                if(cVal) { cEl.innerText = cVal; nEl.innerText = nVal || ''; cEl.style.fontSize = "1.8rem"; }
+                else { cEl.innerText = nVal || '---'; nEl.innerText = ''; cEl.style.fontSize = (nVal && nVal.length > 5) ? "1.2rem" : "1.6rem"; }
+            };
+            setDisp('tkt_f1_from_code', 'tkt_f1_from', flights.f1_from_code, flights.f1_from);
+            setDisp('tkt_f1_to_code', 'tkt_f1_to', flights.f1_to_code, flights.f1_to);
+            setDisp('tkt_f2_from_code', 'tkt_f2_from', flights.f2_from_code, flights.f2_from);
+            setDisp('tkt_f2_to_code', 'tkt_f2_to', flights.f2_to_code, flights.f2_to);
 
-            document.getElementById('tkt_f2_from_code').innerText = flights.f2_from ? flights.f2_from.substring(0,3).toUpperCase() : '---';
-            document.getElementById('tkt_f2_to_code').innerText = flights.f2_to ? flights.f2_to.substring(0,3).toUpperCase() : '---';
-            document.getElementById('tkt_f2_dep_time').innerText = flights.f2_dep_time || '--:--';
-            document.getElementById('tkt_f2_arr_time').innerText = flights.f2_arr_time || '--:--';
-            document.getElementById('tkt_f2_date').innerText = flights.f2_date ? flights.f2_date.split('-').reverse().join('/') : '--/--/----';
-            document.getElementById('tkt_f2_num').innerText = flights.f2_num || '----';
+            document.getElementById('tkt_f1_dep_time').innerText = flights.f1_dep_time || '--:--'; document.getElementById('tkt_f1_arr_time').innerText = flights.f1_arr_time || '--:--'; document.getElementById('tkt_f1_date').innerText = flights.f1_date ? flights.f1_date.split('-').reverse().join('/') : '--/--/----'; document.getElementById('tkt_f1_num').innerText = flights.f1_num || '----';
+            document.getElementById('tkt_f2_dep_time').innerText = flights.f2_dep_time || '--:--'; document.getElementById('tkt_f2_arr_time').innerText = flights.f2_arr_time || '--:--'; document.getElementById('tkt_f2_date').innerText = flights.f2_date ? flights.f2_date.split('-').reverse().join('/') : '--/--/----'; document.getElementById('tkt_f2_num').innerText = flights.f2_num || '----';
         }
 
         function saveFlights() { 
             if(!isAdmin || !currentTripId) return; 
             db.ref(`Trips/${currentTripId}/flights`).set({ 
-                f1_date: document.getElementById('set_f1_date').value, f1_num: document.getElementById('set_f1_num').value, f1_from: document.getElementById('set_f1_from').value, f1_dep_time: document.getElementById('set_f1_dep_time').value, f1_to: document.getElementById('set_f1_to').value, f1_arr_time: document.getElementById('set_f1_arr_time').value, 
-                f2_date: document.getElementById('set_f2_date').value, f2_num: document.getElementById('set_f2_num').value, f2_from: document.getElementById('set_f2_from').value, f2_dep_time: document.getElementById('set_f2_dep_time').value, f2_to: document.getElementById('set_f2_to').value, f2_arr_time: document.getElementById('set_f2_arr_time').value 
+                f1_date: document.getElementById('set_f1_date').value, f1_num: document.getElementById('set_f1_num').value, f1_from: document.getElementById('set_f1_from').value, f1_from_code: document.getElementById('set_f1_from_code').value, f1_dep_time: document.getElementById('set_f1_dep_time').value, f1_to: document.getElementById('set_f1_to').value, f1_to_code: document.getElementById('set_f1_to_code').value, f1_arr_time: document.getElementById('set_f1_arr_time').value, 
+                f2_date: document.getElementById('set_f2_date').value, f2_num: document.getElementById('set_f2_num').value, f2_from: document.getElementById('set_f2_from').value, f2_from_code: document.getElementById('set_f2_from_code').value, f2_dep_time: document.getElementById('set_f2_dep_time').value, f2_to: document.getElementById('set_f2_to').value, f2_to_code: document.getElementById('set_f2_to_code').value, f2_arr_time: document.getElementById('set_f2_arr_time').value 
             }); 
         }
 
@@ -807,22 +820,19 @@
             const t = document.getElementById('dyn-main-title').innerText;
             const f1_d = document.getElementById('set_f1_date').value ? document.getElementById('set_f1_date').value.split('-').reverse().join('/') : '--/--/----';
             const f1_n = document.getElementById('set_f1_num').value || '----';
-            const f1_f = document.getElementById('set_f1_from').value || '---';
+            const f1_f = document.getElementById('set_f1_from').value || '---'; const f1_fc = document.getElementById('set_f1_from_code').value; const f1_fd = f1_fc ? `${f1_f} (${f1_fc})` : f1_f;
             const f1_dt = document.getElementById('set_f1_dep_time').value || '--:--';
-            const f1_to = document.getElementById('set_f1_to').value || '---';
+            const f1_to = document.getElementById('set_f1_to').value || '---'; const f1_toc = document.getElementById('set_f1_to_code').value; const f1_tod = f1_toc ? `${f1_to} (${f1_toc})` : f1_to;
             const f1_at = document.getElementById('set_f1_arr_time').value || '--:--';
             
             const f2_d = document.getElementById('set_f2_date').value ? document.getElementById('set_f2_date').value.split('-').reverse().join('/') : '--/--/----';
             const f2_n = document.getElementById('set_f2_num').value || '----';
-            const f2_f = document.getElementById('set_f2_from').value || '---';
+            const f2_f = document.getElementById('set_f2_from').value || '---'; const f2_fc = document.getElementById('set_f2_from_code').value; const f2_fd = f2_fc ? `${f2_f} (${f2_fc})` : f2_f;
             const f2_dt = document.getElementById('set_f2_dep_time').value || '--:--';
-            const f2_to = document.getElementById('set_f2_to').value || '---';
+            const f2_to = document.getElementById('set_f2_to').value || '---'; const f2_toc = document.getElementById('set_f2_to_code').value; const f2_tod = f2_toc ? `${f2_to} (${f2_toc})` : f2_to;
             const f2_at = document.getElementById('set_f2_arr_time').value || '--:--';
 
-            let msg = `✈️ *פרטי טיסות - ${t}*\n\n`;
-            msg += `*🛫 טיסה הלוך (*${f1_d}*):*\nמס' טיסה: ${f1_n}\nהמראה: ${f1_f} בשעה ${f1_dt}\nנחיתה: ${f1_to} בשעה ${f1_at}\n\n`;
-            msg += `*🛬 טיסה חזור (*${f2_d}*):*\nמס' טיסה: ${f2_n}\nהמראה: ${f2_f} בשעה ${f2_dt}\nנחיתה: ${f2_to} בשעה ${f2_at}`;
-
+            let msg = `✈️ *פרטי טיסות - ${t}*\n\n*🛫 טיסה הלוך (*${f1_d}*):*\nמס' טיסה: ${f1_n}\nהמראה: ${f1_fd} בשעה ${f1_dt}\nנחיתה: ${f1_tod} בשעה ${f1_at}\n\n*🛬 טיסה חזור (*${f2_d}*):*\nמס' טיסה: ${f2_n}\nהמראה: ${f2_fd} בשעה ${f2_dt}\nנחיתה: ${f2_tod} בשעה ${f2_at}`;
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
