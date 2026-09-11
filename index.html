@@ -88,10 +88,16 @@
         .nav-btn.active::before { content: ''; position: absolute; top: 0; left: 20%; width: 60%; height: 3px; background-color: var(--primary-green); border-radius: 0 0 5px 5px; }
         .nav-btn.active span { transform: translateY(-4px) scale(1.15); }
 
-        #customModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: rgba(255, 255, 255, 0.9); padding: 25px; border-radius: 20px; text-align: center; width: 80%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
-        .modal-content p { margin-bottom: 20px; font-size: 1.2rem; font-weight: 600; }
-        .modal-btn { background: var(--primary-green); color: white; border: none; padding: 12px 25px; border-radius: 12px; font-size: 1.1rem; font-weight: 800; cursor: pointer; }
+        /* מודל התראות חכם (חדש) */
+        #customModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: rgba(255, 255, 255, 0.95); padding: 30px 20px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); position: relative; }
+        .modal-content p { margin-bottom: 25px; font-size: 1.2rem; font-weight: 600; line-height: 1.4; color: var(--text-dark); }
+        .modal-btn { background: var(--primary-green); color: white; border: none; padding: 12px 25px; border-radius: 12px; font-size: 1.1rem; font-weight: 800; cursor: pointer; width: 100%; }
+        
+        /* עיצוב אזהרה למודל התראות */
+        .modal-content.warning { border-top: 6px solid #d35400; }
+        .modal-content.warning .modal-btn { background: #d35400; }
+        .modal-content.party { border-top: 6px solid var(--primary-green); }
 
         #install-prompt { position: fixed; bottom: 20px; left: 5%; width: 90%; background: rgba(58, 90, 64, 0.95); backdrop-filter: blur(10px); color: white; padding: 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 9999; display: none; animation: slideUp 0.5s ease-out; border: 1px solid rgba(255,255,255,0.2); }
         #install-prompt h3 { margin-bottom: 10px; font-size: 1.2rem; font-weight: 800; display:flex; align-items:center; gap:8px;}
@@ -102,7 +108,6 @@
         body:not(.is-admin) .admin-only { display: none !important; }
         .cat-header { font-size: 1.2rem; color: var(--primary-green); margin-top: 25px; margin-bottom: 10px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
 
-        /* --- תצוגת מזג אוויר וכרטיסי טיסה --- */
         .weather-grid { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; scrollbar-width: none; }
         .weather-grid::-webkit-scrollbar { display: none; }
         .weather-day { flex: 0 0 auto; width: 110px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; border-radius: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.8); }
@@ -134,7 +139,6 @@
             #print-area { display: block !important; position: static !important; width: 100% !important; background: white !important; }
         }
 
-        /* --- אקורדיון להגדרות פאנל מנהל --- */
         .acc-item { margin-bottom: 15px; border-radius: 16px; overflow: hidden; padding: 0; }
         .acc-header { padding: 18px 20px; background: rgba(255,255,255,0.7); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: var(--primary-green); font-size: 1.15rem; transition: background 0.2s; }
         .acc-header:active { background: rgba(255,255,255,0.9); }
@@ -148,7 +152,6 @@
 
     <div id="print-area"></div>
 
-    <!-- גלאי ופופאפ התקנה -->
     <div id="install-prompt">
         <h3><span style="font-size: 1.5rem;">📲</span> התקינו את האפליקציה!</h3>
         <p id="install-instructions">טוען הוראות...</p>
@@ -220,7 +223,7 @@
                 <div id="packingListContainer"></div>
                 <div class="glass-panel admin-only" style="padding: 15px; margin-top: 30px; margin-bottom: 20px; text-align:center; border: 2px solid #f59e0b;">
                     <button class="action-btn" onclick="syncGlobalTemplates()" style="background-color: #f59e0b; margin-bottom:0;">🔄 שאב חוסרים מתבנית גלובלית</button>
-                    <p style="font-size:0.85rem; color:#666; margin-top:10px;">פעולה זו מביאה פריטים חסרים שמוגדרים בתבניות המנהל אל תוך הטיול הנוכחי (לא תמחק נתונים קיימים).</p>
+                    <p style="font-size:0.85rem; color:#666; margin-top:10px;">פעולה זו מביאה פריטים חסרים שמוגדרים בתבניות המנהל אל תוך הטיול הנוכחי.</p>
                 </div>
             </div>
 
@@ -255,9 +258,7 @@
                 <h2>מידע, מסמכים וטלפונים</h2>
 
                 <h3 style="margin-top: 15px; margin-bottom: 12px; color: var(--primary-brown); font-weight:800;">🌤️ תחזית מזג אוויר (7 ימים)</h3>
-                <div id="weather-container" style="margin-bottom: 30px; width: 100%;">
-                    <div style="text-align: center; color: #555; font-weight:600;">טוען תחזית מזג אוויר ליעד... ⏳</div>
-                </div>
+                <div id="weather-container" style="margin-bottom: 30px; width: 100%;"><div style="text-align: center; color: #555; font-weight:600;">טוען תחזית מזג אוויר ליעד... ⏳</div></div>
 
                 <h3 style="margin-top: 15px; margin-bottom: 12px; color: var(--primary-brown); font-weight:800;">✈️ פרטי טיסות</h3>
                 <div id="flight-tickets-container">
@@ -268,10 +269,7 @@
                             <div class="ticket-plane">✈️</div>
                             <div class="ticket-station"><h2 id="tkt_f1_to_code" style="margin-bottom:2px;">---</h2><div id="tkt_f1_to" style="font-size: 0.85rem; color: #666; font-weight: 800;"></div><p id="tkt_f1_arr_time">--:--</p></div>
                         </div>
-                        <div class="ticket-footer">
-                            <div class="ticket-footer-item"><span>תאריך</span><strong id="tkt_f1_date">--/--/----</strong></div>
-                            <div class="ticket-footer-item"><span>מספר טיסה</span><strong id="tkt_f1_num">----</strong></div>
-                        </div>
+                        <div class="ticket-footer"><div class="ticket-footer-item"><span>תאריך</span><strong id="tkt_f1_date">--/--/----</strong></div><div class="ticket-footer-item"><span>מספר טיסה</span><strong id="tkt_f1_num">----</strong></div></div>
                     </div>
                     <div class="flight-ticket">
                         <div class="ticket-header"><h4>טיסה חזור</h4><div class="ticket-logo">🛬</div></div>
@@ -280,10 +278,7 @@
                             <div class="ticket-plane">✈️</div>
                             <div class="ticket-station"><h2 id="tkt_f2_to_code" style="margin-bottom:2px;">---</h2><div id="tkt_f2_to" style="font-size: 0.85rem; color: #666; font-weight: 800;"></div><p id="tkt_f2_arr_time">--:--</p></div>
                         </div>
-                        <div class="ticket-footer">
-                            <div class="ticket-footer-item"><span>תאריך</span><strong id="tkt_f2_date">--/--/----</strong></div>
-                            <div class="ticket-footer-item"><span>מספר טיסה</span><strong id="tkt_f2_num">----</strong></div>
-                        </div>
+                        <div class="ticket-footer"><div class="ticket-footer-item"><span>תאריך</span><strong id="tkt_f2_date">--/--/----</strong></div><div class="ticket-footer-item"><span>מספר טיסה</span><strong id="tkt_f2_num">----</strong></div></div>
                     </div>
                 </div>
                 <button class="action-btn" onclick="shareFlightsWhatsApp()" style="background-color: #25D366; color: white; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);">📤 שתף כרטיסים בוואטסאפ</button>
@@ -317,27 +312,18 @@
                 </div>
             </div>
 
-            <!-- Tab 6: App Settings (Admin Only) with Accordion -->
+            <!-- Tab 6: Admin Settings -->
             <div id="tab-settings" class="tab-content admin-only">
                 <h2 style="margin-bottom: 25px;">⚙️ פאנל ניהול (מנהל)</h2>
                 
-                <!-- Accordion 1: Global Templates -->
                 <div class="glass-panel acc-item">
-                    <div class="acc-header" onclick="toggleAcc('acc-global', this)">
-                        <span>🌍 תבניות ציוד ותגיות גלובליות</span><span class="acc-icon">▼</span>
-                    </div>
+                    <div class="acc-header" onclick="toggleAcc('acc-global', this)"><span>🌍 תבניות ציוד ותגיות גלובליות</span><span class="acc-icon">▼</span></div>
                     <div id="acc-global" class="acc-body">
-                        <p style="font-size:0.9rem; color:#555; margin-bottom:15px;">יועתק אוטומטית לכל טיול חדש. פריט בשורה.</p>
-                        <label class="settings-label" style="font-weight: 800; color: #d35400;">✅ משימות חובה:</label>
-                        <textarea id="set-globalMandatory" rows="4" style="width:100%; padding:10px; border-radius:12px; margin-bottom:20px; font-size: 0.95rem;"></textarea>
-                        <label class="settings-label" style="font-weight: 800; color: var(--primary-green);">👕 ביגוד:</label>
-                        <textarea id="set-globalClothing" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:15px; font-size: 0.95rem;"></textarea>
-                        <label class="settings-label" style="font-weight: 800; color: var(--primary-green);">🪥 כלי רחצה:</label>
-                        <textarea id="set-globalToiletries" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:15px; font-size: 0.95rem;"></textarea>
-                        <label class="settings-label" style="font-weight: 800; color: var(--primary-green);">🎒 ציוד אישי:</label>
-                        <textarea id="set-globalPersonal" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:15px; font-size: 0.95rem;"></textarea>
-                        <label class="settings-label" style="font-weight: 800; color: var(--primary-green);">📦 שונות:</label>
-                        <textarea id="set-globalMisc" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:15px; font-size: 0.95rem;"></textarea>
+                        <label class="settings-label" style="font-weight: 800; color: #d35400;">✅ משימות חובה:</label><textarea id="set-globalMandatory" rows="4" style="width:100%; padding:10px; border-radius:12px; margin-bottom:20px; font-size: 0.95rem;"></textarea>
+                        <label class="settings-label" style="font-weight: 800; color: var(--primary-green);">👕 ביגוד:</label><textarea id="set-globalClothing" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:15px; font-size: 0.95rem;"></textarea>
+                        <label class="settings-label" style="font-weight: 800; color: var(--primary-green);">🪥 כלי רחצה:</label><textarea id="set-globalToiletries" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:15px; font-size: 0.95rem;"></textarea>
+                        <label class="settings-label" style="font-weight: 800; color: var(--primary-green);">🎒 ציוד אישי:</label><textarea id="set-globalPersonal" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:15px; font-size: 0.95rem;"></textarea>
+                        <label class="settings-label" style="font-weight: 800; color: var(--primary-green);">📦 שונות:</label><textarea id="set-globalMisc" rows="3" style="width:100%; padding:10px; border-radius:12px; margin-bottom:15px; font-size: 0.95rem;"></textarea>
                         
                         <label class="settings-label" style="font-weight: 800; color: var(--primary-green); margin-top: 25px;">🧳 עריכת תגיות מזוודה (4 תגיות):</label>
                         <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px;">
@@ -350,11 +336,8 @@
                     </div>
                 </div>
 
-                <!-- Accordion 2: Lobby Settings -->
                 <div class="glass-panel acc-item">
-                    <div class="acc-header" onclick="toggleAcc('acc-lobby', this)">
-                        <span>🛎️ הגדרות לובי וזיהוי</span><span class="acc-icon">▼</span>
-                    </div>
+                    <div class="acc-header" onclick="toggleAcc('acc-lobby', this)"><span>🛎️ הגדרות לובי וזיהוי</span><span class="acc-icon">▼</span></div>
                     <div id="acc-lobby" class="acc-body">
                         <label class="settings-label">שם הטיול (כפי שיופיע בלובי):</label><input type="text" id="set-lobbyTitle" style="margin-bottom:10px;">
                         <label class="settings-label">צבע רקע לכרטיסייה בלובי:</label><input type="color" id="set-lobbyColor" style="height: 50px; padding: 5px; margin-bottom:10px;">
@@ -362,17 +345,13 @@
                     </div>
                 </div>
 
-                <!-- Accordion 3: Flights -->
                 <div class="glass-panel acc-item">
-                    <div class="acc-header" onclick="toggleAcc('acc-flights-set', this)">
-                        <span>✈️ עריכת פרטי טיסות</span><span class="acc-icon">▼</span>
-                    </div>
+                    <div class="acc-header" onclick="toggleAcc('acc-flights-set', this)"><span>✈️ עריכת פרטי טיסות</span><span class="acc-icon">▼</span></div>
                     <div id="acc-flights-set" class="acc-body">
                         <h4 style="font-size:1rem; margin-bottom:10px; color:#555;">טיסה הלוך</h4>
                         <div style="display:flex; gap:10px; margin-bottom:10px;"><input type="date" id="set_f1_date" style="flex:1;"><input type="text" id="set_f1_num" placeholder="מספר טיסה" style="flex:1;"></div>
                         <div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" id="set_f1_from" placeholder="ממריא מ- (עיר)" style="flex:2;"><input type="text" id="set_f1_from_code" placeholder="קוד (HFA)" maxlength="3" oninput="this.value=this.value.toUpperCase();" style="flex:1; text-transform:uppercase;"><input type="time" id="set_f1_dep_time" style="flex:1;"></div>
                         <div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" id="set_f1_to" placeholder="נוחת ב- (עיר)" style="flex:2;"><input type="text" id="set_f1_to_code" placeholder="קוד (LCA)" maxlength="3" oninput="this.value=this.value.toUpperCase();" style="flex:1; text-transform:uppercase;"><input type="time" id="set_f1_arr_time" style="flex:1;"></div>
-                        
                         <h4 style="font-size:1rem; margin-bottom:10px; margin-top:20px; color:#555;">טיסה חזור</h4>
                         <div style="display:flex; gap:10px; margin-bottom:10px;"><input type="date" id="set_f2_date" style="flex:1;"><input type="text" id="set_f2_num" placeholder="מספר טיסה" style="flex:1;"></div>
                         <div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" id="set_f2_from" placeholder="ממריא מ- (עיר)" style="flex:2;"><input type="text" id="set_f2_from_code" placeholder="קוד (HFA)" maxlength="3" oninput="this.value=this.value.toUpperCase();" style="flex:1; text-transform:uppercase;"><input type="time" id="set_f2_dep_time" style="flex:1;"></div>
@@ -380,11 +359,8 @@
                     </div>
                 </div>
 
-                <!-- Accordion 4: Home Design -->
                 <div class="glass-panel acc-item">
-                    <div class="acc-header" onclick="toggleAcc('acc-design', this)">
-                        <span>🖼️ עיצוב דף הבית ותמונות</span><span class="acc-icon">▼</span>
-                    </div>
+                    <div class="acc-header" onclick="toggleAcc('acc-design', this)"><span>🖼️ עיצוב דף הבית ותמונות</span><span class="acc-icon">▼</span></div>
                     <div id="acc-design" class="acc-body">
                         <label class="settings-label">כותרת ראשית:</label><input type="text" id="set-mainTitle" style="margin-bottom:10px;">
                         <label class="settings-label">טקסט על תמונת הנוף:</label><input type="text" id="set-heroText" style="margin-bottom:10px;">
@@ -395,11 +371,8 @@
                     </div>
                 </div>
 
-                <!-- Accordion 5: Docs -->
                 <div class="glass-panel acc-item">
-                    <div class="acc-header" onclick="toggleAcc('acc-docs', this)">
-                        <span>📄 קישורי מסמכים (Drive)</span><span class="acc-icon">▼</span>
-                    </div>
+                    <div class="acc-header" onclick="toggleAcc('acc-docs', this)"><span>📄 קישורי מסמכים (Drive)</span><span class="acc-icon">▼</span></div>
                     <div id="acc-docs" class="acc-body">
                         <input type="text" id="set-docFlights" dir="ltr" placeholder="כרטיסי טיסה (קישור)" style="margin-bottom:10px;">
                         <input type="text" id="set-docHotel" dir="ltr" placeholder="ואוצ'ר למלון (קישור)" style="margin-bottom:10px;">
@@ -408,26 +381,18 @@
                     </div>
                 </div>
 
-                <!-- Accordion 6: Maps & Weather -->
                 <div class="glass-panel acc-item">
-                    <div class="acc-header" onclick="toggleAcc('acc-maps', this)">
-                        <span>🗺️ מפות ותחזית</span><span class="acc-icon">▼</span>
-                    </div>
+                    <div class="acc-header" onclick="toggleAcc('acc-maps', this)"><span>🗺️ מפות ותחזית</span><span class="acc-icon">▼</span></div>
                     <div id="acc-maps" class="acc-body">
                         <label class="settings-label">כותרת למפה בדף הבית:</label><input type="text" id="set-routeTitle" style="margin-bottom:10px;">
                         <label class="settings-label">תיאור קצר מתחת לכותרת:</label><input type="text" id="set-routeDesc" style="margin-bottom:10px;">
-                        <label class="settings-label">נקודת התחלה וסיום במסלול:</label>
-                        <input type="text" id="set-routeStart" placeholder="התחלה (למשל נתבג)" style="margin-bottom:10px;">
-                        <input type="text" id="set-routeEnd" placeholder="סיום (למשל ציריך)" style="margin-bottom:10px;">
+                        <label class="settings-label">נקודת התחלה וסיום במסלול:</label><input type="text" id="set-routeStart" placeholder="התחלה (למשל נתבג)" style="margin-bottom:10px;"><input type="text" id="set-routeEnd" placeholder="סיום (למשל ציריך)" style="margin-bottom:10px;">
                         <label class="settings-label">עיר לתחזית מזג אוויר (אנגלית):</label><input type="text" id="set-weatherLoc" placeholder="למשל: Protaras">
                     </div>
                 </div>
 
-                <!-- Accordion 7: Quick Nav -->
                 <div class="glass-panel acc-item">
-                    <div class="acc-header" onclick="toggleAcc('acc-nav', this)">
-                        <span>🔗 אתרי ניווט מהיר</span><span class="acc-icon">▼</span>
-                    </div>
+                    <div class="acc-header" onclick="toggleAcc('acc-nav', this)"><span>🔗 אתרי ניווט מהיר</span><span class="acc-icon">▼</span></div>
                     <div id="acc-nav" class="acc-body">
                         <input type="text" id="set-nav1Title" placeholder="כותרת אתר 1"><input type="text" id="set-nav1Url" dir="ltr" placeholder="קישור אתר 1" style="margin-top:5px; margin-bottom:15px;">
                         <input type="text" id="set-nav2Title" placeholder="כותרת אתר 2"><input type="text" id="set-nav2Url" dir="ltr" placeholder="קישור אתר 2" style="margin-top:5px; margin-bottom:15px;">
@@ -435,18 +400,14 @@
                     </div>
                 </div>
 
-                <!-- Accordion 8: Emergency -->
                 <div class="glass-panel acc-item">
-                    <div class="acc-header" onclick="toggleAcc('acc-emergency', this)">
-                        <span>🚨 חירום מקומי</span><span class="acc-icon">▼</span>
-                    </div>
+                    <div class="acc-header" onclick="toggleAcc('acc-emergency', this)"><span>🚨 חירום מקומי</span><span class="acc-icon">▼</span></div>
                     <div id="acc-emergency" class="acc-body">
                         <input type="text" id="set-emergencyNum" dir="ltr" placeholder="מספר חירום" style="margin-bottom:10px;">
                         <input type="text" id="set-emergencyText" placeholder="טקסט על הכפתור">
                     </div>
                 </div>
 
-                <!-- GLOBAL TRIP SAVE BUTTON -->
                 <button class="action-btn" onclick="saveSettings()" style="background-color: var(--primary-brown); padding: 16px; margin-top: 15px;">💾 שמור והחל הגדרות בטיול הנוכחי</button>
             </div>
         </main>
@@ -461,9 +422,15 @@
         </nav>
     </div>
 
-    <div id="customModal"><div class="modal-content"><p id="modalMessage">הודעה</p><button class="modal-btn" onclick="closeModal()">הבנתי</button></div></div>
+    <!-- מודל ההתראות המעוצב (Party / Warning) -->
+    <div id="customModal">
+        <div class="modal-content" id="modalContentDiv">
+            <div id="modalIcon" style="font-size: 3rem; margin-bottom: 10px;">🔔</div>
+            <p id="modalMessage">הודעה</p>
+            <button id="modalBtn" class="modal-btn" onclick="closeModal()">הבנתי</button>
+        </div>
+    </div>
 
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 
@@ -485,380 +452,171 @@
         firebase.initializeApp(firebaseConfig); const db = firebase.database();
 
         let currentTripId = null; let isAdmin = false; let globalAdminPin = "1981"; let countdownInterval = null;
-        let globalTemplates = {
-            mandatoryTasks: ['בדוק דרכונים בתוקף', 'ביטוח נסיעות לחו"ל', 'הצטיידות בכסף מקומי', 'הפקת רישיון נהיגה בינ"ל', 'מסמכים מודפסים'],
-            packing: { clothing: ['חולצות קצרות/ארוכות', 'מכנסיים', 'הלבשה תחתונה וגרביים', 'נעלי הליכה/ספורט', 'מעיל/גקט (אם קר)', 'בגדי ים'], toiletries: ['מברשת ומשחת שיניים', 'דאודורנט', 'שמפו וסבון גוף', 'מסרק/מברשת שיער', 'קרם הגנה'], personal: ['מטען לטלפון נייד', 'מתאם שקעים בינלאומי', 'משקפי שמש/ראייה', 'אוזניות', 'סוללת גיבוי'], misc: ['תיק עזרה ראשונה', 'שקיות ניילון לכביסה', 'משחקים קטנים', 'מטריות'] },
-            luggageTags: [
-                { name: 'Eliran Shmilovich', tel: '972-504039236', address: 'Bareket 12 , Afula , Israel', email: 'eliranshmilo@Gmail.com' },
-                { name: 'Dror Aizenberg', tel: '972-542420007', address: 'Bareket 12 , Afula , Israel', email: '' },
-                { name: '', tel: '', address: '', email: '' }, { name: '', tel: '', address: '', email: '' }
-            ]
-        };
+        let globalTemplates = { mandatoryTasks: ['בדוק דרכונים בתוקף', 'ביטוח נסיעות לחו"ל', 'הצטיידות בכסף מקומי', 'הפקת רישיון נהיגה בינ"ל', 'מסמכים מודפסים'], packing: { clothing: ['חולצות קצרות/ארוכות', 'מכנסיים', 'הלבשה תחתונה וגרביים', 'נעלי הליכה/ספורט', 'מעיל/גקט', 'בגדי ים'], toiletries: ['מברשת ומשחת שיניים', 'דאודורנט', 'שמפו וסבון גוף', 'קרם הגנה'], personal: ['מטען לטלפון נייד', 'מתאם שקעים בינלאומי', 'משקפי שמש/ראייה', 'סוללת גיבוי'], misc: ['תיק עזרה ראשונה', 'שקיות ניילון לכביסה', 'משחקים קטנים'] }, luggageTags: [ { name: 'Eliran Shmilovich', tel: '972-504039236', address: 'Bareket 12 , Afula , Israel', email: 'eliranshmilo@Gmail.com' }, { name: 'Dror Aizenberg', tel: '972-542420007', address: 'Bareket 12 , Afula , Israel', email: '' }, { name: '', tel: '', address: '', email: '' }, { name: '', tel: '', address: '', email: '' } ] };
 
-        function showAlert(msg) { document.getElementById('modalMessage').innerText = msg; document.getElementById('customModal').style.display = 'flex'; }
+        // --- Alert System ---
+        function showAlert(msg, type = 'normal', buttonText = 'הבנתי', action = null) { 
+            const modal = document.getElementById('customModal');
+            const content = document.getElementById('modalContentDiv');
+            const icon = document.getElementById('modalIcon');
+            const btn = document.getElementById('modalBtn');
+            
+            content.className = 'modal-content'; // Reset classes
+            document.getElementById('modalMessage').innerText = msg; 
+            btn.innerText = buttonText;
+            
+            if(type === 'party') {
+                content.classList.add('party'); icon.innerText = '🎉';
+            } else if (type === 'warning') {
+                content.classList.add('warning'); icon.innerText = '⚠️';
+            } else {
+                icon.innerText = '🔔';
+            }
+
+            btn.onclick = () => {
+                closeModal();
+                if(action && typeof action === 'function') action();
+            };
+
+            modal.style.display = 'flex'; 
+        }
         function closeModal() { document.getElementById('customModal').style.display = 'none'; }
 
-        // --- Accordion Logic ---
-        function toggleAcc(id, headerEl) {
-            const body = document.getElementById(id);
-            if (body.style.display === 'block') {
-                body.style.display = 'none'; headerEl.classList.remove('active');
-            } else {
-                body.style.display = 'block'; headerEl.classList.add('active');
+        // --- Smart Notifications Engine ---
+        function runSmartNotifications(flightDateStr, mandatoryTasks) {
+            if (!flightDateStr) return;
+            
+            // Check if we already showed notifications today
+            const todayStr = new Date().toDateString();
+            if(sessionStorage.getItem(`notifications_shown_${currentTripId}`) === todayStr) return;
+
+            const targetDate = new Date(flightDateStr).getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            
+            if (distance < 0) return; // Trip already started
+
+            const daysLeft = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+            // 1. Party Alert (Exactly 10 days before)
+            if (daysLeft === 10) {
+                showAlert(`איזה כיף! בעוד בדיוק 10 ימים יוצאים לחופשה! ✈️\nזה הזמן להתחיל להתרגש ולארוז.`, 'party', 'יאללה!');
+                sessionStorage.setItem(`notifications_shown_${currentTripId}`, todayStr);
+                return;
+            }
+
+            // 2. Warning Alert (7 days or less AND missing mandatory tasks)
+            if (daysLeft <= 7) {
+                const missingTasks = mandatoryTasks.filter(task => task && !task.checked);
+                if (missingTasks.length > 0) {
+                    showAlert(
+                        `שימו לב!\nהטיסה בעוד ${daysLeft} ימים ויש לכם ${missingTasks.length} משימות חובה שעוד לא השלמתם!\n(כגון: ${missingTasks[0].text})`, 
+                        'warning', 
+                        'קח אותי למשימות',
+                        () => switchTab('packing', document.querySelectorAll('.nav-btn')[2])
+                    );
+                    sessionStorage.setItem(`notifications_shown_${currentTripId}`, todayStr);
+                }
             }
         }
+
+        function toggleAcc(id, headerEl) { const body = document.getElementById(id); if (body.style.display === 'block') { body.style.display = 'none'; headerEl.classList.remove('active'); } else { body.style.display = 'block'; headerEl.classList.add('active'); } }
 
         db.ref('Global').on('value', snap => {
             const data = snap.val();
             if (data && data.adminPin) globalAdminPin = data.adminPin; else db.ref('Global/adminPin').set("1981"); 
-            if (data && data.Templates) {
-                globalTemplates.mandatoryTasks = data.Templates.mandatoryTasks || globalTemplates.mandatoryTasks;
-                if (data.Templates.packing && data.Templates.packing.clothing) globalTemplates.packing = data.Templates.packing;
-                if (data.Templates.luggageTags) globalTemplates.luggageTags = data.Templates.luggageTags;
-            }
+            if (data && data.Templates) { globalTemplates.mandatoryTasks = data.Templates.mandatoryTasks || globalTemplates.mandatoryTasks; if (data.Templates.packing && data.Templates.packing.clothing) globalTemplates.packing = data.Templates.packing; if (data.Templates.luggageTags) globalTemplates.luggageTags = data.Templates.luggageTags; }
             if(document.getElementById('set-globalMandatory')) {
-                document.getElementById('set-globalMandatory').value = (globalTemplates.mandatoryTasks || []).join('\n');
-                document.getElementById('set-globalClothing').value = (globalTemplates.packing.clothing || []).join('\n');
-                document.getElementById('set-globalToiletries').value = (globalTemplates.packing.toiletries || []).join('\n');
-                document.getElementById('set-globalPersonal').value = (globalTemplates.packing.personal || []).join('\n');
-                document.getElementById('set-globalMisc').value = (globalTemplates.packing.misc || []).join('\n');
-                for(let i=0; i<4; i++){
-                    let t = globalTemplates.luggageTags[i] || {name:'', tel:'', address:'', email:''};
-                    document.getElementById(`tag${i}-name`).value = t.name; document.getElementById(`tag${i}-tel`).value = t.tel;
-                    document.getElementById(`tag${i}-address`).value = t.address; document.getElementById(`tag${i}-email`).value = t.email;
-                }
+                document.getElementById('set-globalMandatory').value = (globalTemplates.mandatoryTasks || []).join('\n'); document.getElementById('set-globalClothing').value = (globalTemplates.packing.clothing || []).join('\n'); document.getElementById('set-globalToiletries').value = (globalTemplates.packing.toiletries || []).join('\n'); document.getElementById('set-globalPersonal').value = (globalTemplates.packing.personal || []).join('\n'); document.getElementById('set-globalMisc').value = (globalTemplates.packing.misc || []).join('\n');
+                for(let i=0; i<4; i++){ let t = globalTemplates.luggageTags[i] || {name:'', tel:'', address:'', email:''}; document.getElementById(`tag${i}-name`).value = t.name; document.getElementById(`tag${i}-tel`).value = t.tel; document.getElementById(`tag${i}-address`).value = t.address; document.getElementById(`tag${i}-email`).value = t.email; }
             }
             if (sessionStorage.getItem('is_admin') === 'true') setAdminMode(true);
         });
 
-        function saveGlobalTemplates() {
-            if(!isAdmin) return;
-            const mandatoryTasks = document.getElementById('set-globalMandatory').value.split('\n').map(t => t.trim()).filter(t => t !== '');
-            const packing = { clothing: document.getElementById('set-globalClothing').value.split('\n').map(t=>t.trim()).filter(t=>t!==''), toiletries: document.getElementById('set-globalToiletries').value.split('\n').map(t=>t.trim()).filter(t=>t!==''), personal: document.getElementById('set-globalPersonal').value.split('\n').map(t=>t.trim()).filter(t=>t!==''), misc: document.getElementById('set-globalMisc').value.split('\n').map(t=>t.trim()).filter(t=>t!=='') };
-            const luggageTags = [];
-            for(let i=0; i<4; i++){ luggageTags.push({ name: document.getElementById(`tag${i}-name`).value.trim(), tel: document.getElementById(`tag${i}-tel`).value.trim(), address: document.getElementById(`tag${i}-address`).value.trim(), email: document.getElementById(`tag${i}-email`).value.trim() }); }
-            db.ref('Global/Templates').set({ mandatoryTasks, packing, luggageTags }).then(() => { showAlert('התבניות הגלובליות והתגיות נשמרו בהצלחה!'); });
-        }
+        function saveGlobalTemplates() { if(!isAdmin) return; const mandatoryTasks = document.getElementById('set-globalMandatory').value.split('\n').map(t => t.trim()).filter(t => t !== ''); const packing = { clothing: document.getElementById('set-globalClothing').value.split('\n').map(t=>t.trim()).filter(t=>t!==''), toiletries: document.getElementById('set-globalToiletries').value.split('\n').map(t=>t.trim()).filter(t=>t!==''), personal: document.getElementById('set-globalPersonal').value.split('\n').map(t=>t.trim()).filter(t=>t!==''), misc: document.getElementById('set-globalMisc').value.split('\n').map(t=>t.trim()).filter(t=>t!=='') }; const luggageTags = []; for(let i=0; i<4; i++){ luggageTags.push({ name: document.getElementById(`tag${i}-name`).value.trim(), tel: document.getElementById(`tag${i}-tel`).value.trim(), address: document.getElementById(`tag${i}-address`).value.trim(), email: document.getElementById(`tag${i}-email`).value.trim() }); } db.ref('Global/Templates').set({ mandatoryTasks, packing, luggageTags }).then(() => { showAlert('התבניות הגלובליות והתגיות נשמרו בהצלחה!'); }); }
 
-        function promptAdminLogin() {
-            if (isAdmin) { if(confirm("אתה מחובר כמנהל. האם תרצה להתנתק ולעבור לתצוגת צופה?")) { setAdminMode(false); } return; }
-            const pin = prompt("הכנס קוד מנהל כדי לערוך וליצור טיולים:");
-            if (pin === globalAdminPin) { setAdminMode(true); showAlert("התחברת בהצלחה כמנהל!"); } else if (pin !== null) { showAlert("קוד מנהל שגוי."); }
-        }
-
-        function setAdminMode(status) {
-            isAdmin = status; sessionStorage.setItem('is_admin', status ? 'true' : 'false');
-            if (status) { document.body.classList.add('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔓'; } 
-            else { document.body.classList.remove('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔒'; }
-            updateInputsReadonly();
-        }
-
+        function promptAdminLogin() { if (isAdmin) { if(confirm("אתה מחובר כמנהל. האם תרצה להתנתק ולעבור לתצוגת צופה?")) { setAdminMode(false); } return; } const pin = prompt("הכנס קוד מנהל כדי לערוך וליצור טיולים:"); if (pin === globalAdminPin) { setAdminMode(true); showAlert("התחברת בהצלחה כמנהל!"); } else if (pin !== null) { showAlert("קוד מנהל שגוי."); } }
+        function setAdminMode(status) { isAdmin = status; sessionStorage.setItem('is_admin', status ? 'true' : 'false'); if (status) { document.body.classList.add('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔓'; } else { document.body.classList.remove('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔒'; } updateInputsReadonly(); }
         function updateInputsReadonly() { document.querySelectorAll('.flight-grid input').forEach(input => { input.readOnly = !isAdmin; }); }
 
         db.ref('Trips').on('value', snap => {
             const trips = snap.val(); const container = document.getElementById('trips-container'); container.innerHTML = '';
             if (!trips) { container.innerHTML = '<div style="text-align: center; color: #666; font-size:1.1rem; margin-top:30px;">אין טיולים כרגע במערכת.</div>'; return; }
-            for (let tripId in trips) {
-                const trip = trips[tripId]; const color = trip.settings?.lobbyColor || '#3a5a40'; const title = trip.settings?.lobbyTitle || 'טיול ללא שם';
-                const card = document.createElement('div'); card.className = 'trip-card'; card.onclick = () => openTrip(tripId);
-                card.innerHTML = `<div class="trip-card-color-bar" style="background-color: ${color}"></div><div style="font-size: 3rem; margin-bottom: 10px;">✈️</div><h2>${title}</h2><p style="color: #666; font-size: 0.9rem; margin-top:5px;">לחץ לכניסה לפרטי הטיול</p>`;
-                container.appendChild(card);
-            }
+            for (let tripId in trips) { const trip = trips[tripId]; const color = trip.settings?.lobbyColor || '#3a5a40'; const title = trip.settings?.lobbyTitle || 'טיול ללא שם'; const card = document.createElement('div'); card.className = 'trip-card'; card.onclick = () => openTrip(tripId); card.innerHTML = `<div class="trip-card-color-bar" style="background-color: ${color}"></div><div style="font-size: 3rem; margin-bottom: 10px;">✈️</div><h2>${title}</h2><p style="color: #666; font-size: 0.9rem; margin-top:5px;">לחץ לכניסה לפרטי הטיול</p>`; container.appendChild(card); }
         });
 
         function createNewTrip() {
-            const title = prompt("הכנס שם לטיול החדש (למשל: קפריסין 2026):"); if (!title) return;
-            const tripId = 'trip_' + Date.now();
-            const defaultTripSettings = {
-                lobbyTitle: title, lobbyColor: "#0ea5e9", mainTitle: "הטיול המשפחתי ל" + title, heroText: "יוצאים לדרך!", heroImg: "hero.jpg", gallery1: "cabin.jpg", gallery2: "nature.jpg",
-                flightDateTime: "", routeTitle: "מפת הטיול", routeDesc: "מסלול הנסיעה והאתרים המרכזיים", routeStart: "", routeEnd: "", weatherLoc: "",
-                nav1Title: "ניווט 1", nav1Url: "", nav2Title: "ניווט 2", nav2Url: "", nav3Title: "ניווט 3", nav3Url: "", emergencyNum: "112", emergencyText: "חירום",
-                docFlights: "", docHotel: "", docCar: "", docInsurance: ""
-            };
+            const title = prompt("הכנס שם לטיול החדש (למשל: קפריסין 2026):"); if (!title) return; const tripId = 'trip_' + Date.now();
+            const defaultTripSettings = { lobbyTitle: title, lobbyColor: "#0ea5e9", mainTitle: "הטיול המשפחתי ל" + title, heroText: "יוצאים לדרך!", heroImg: "hero.jpg", gallery1: "cabin.jpg", gallery2: "nature.jpg", flightDateTime: "", routeTitle: "מפת הטיול", routeDesc: "מסלול הנסיעה והאתרים המרכזיים", routeStart: "", routeEnd: "", weatherLoc: "", nav1Title: "ניווט 1", nav1Url: "", nav2Title: "ניווט 2", nav2Url: "", nav3Title: "ניווט 3", nav3Url: "", emergencyNum: "112", emergencyText: "חירום", docFlights: "", docHotel: "", docCar: "", docInsurance: "" };
             db.ref('Trips/' + tripId + '/settings').set(defaultTripSettings);
-            const mandatoryObjs = globalTemplates.mandatoryTasks.map((t, i) => ({ id: Date.now() + i, text: t, checked: false }));
-            let packingObjs = []; let pId = Date.now() + 1000;
-            for(let cat in globalTemplates.packing) { globalTemplates.packing[cat].forEach(t => { packingObjs.push({ id: pId++, text: t, checked: false, category: cat }); }); }
-            db.ref('Trips/' + tripId + '/mandatoryTasks').set(mandatoryObjs); db.ref('Trips/' + tripId + '/packing').set(packingObjs);
-            showAlert("הטיול נוצר בהצלחה עם תבניות הציוד והקטגוריות!");
+            const mandatoryObjs = globalTemplates.mandatoryTasks.map((t, i) => ({ id: Date.now() + i, text: t, checked: false })); let packingObjs = []; let pId = Date.now() + 1000; for(let cat in globalTemplates.packing) { globalTemplates.packing[cat].forEach(t => { packingObjs.push({ id: pId++, text: t, checked: false, category: cat }); }); }
+            db.ref('Trips/' + tripId + '/mandatoryTasks').set(mandatoryObjs); db.ref('Trips/' + tripId + '/packing').set(packingObjs); showAlert("הטיול נוצר בהצלחה עם תבניות הציוד והקטגוריות!");
         }
 
-        function openTrip(tripId) {
-            currentTripId = tripId; document.getElementById('lobby-view').style.display = 'none'; document.getElementById('trip-view').style.display = 'flex';
-            updateInputsReadonly(); switchTab('home', document.querySelector('.nav-btn')); loadTripData();
-        }
-
-        function returnToLobby() {
-            if (currentTripId) { db.ref('Trips/' + currentTripId).off(); } clearInterval(countdownInterval); currentTripId = null;
-            document.getElementById('trip-view').style.display = 'none'; document.getElementById('lobby-view').style.display = 'flex';
-        }
-
-        function switchTab(tabId, btnElement) {
-            if (tabId === 'settings' && !isAdmin) return showAlert("אזור זה מיועד למנהלים בלבד.");
-            document.querySelectorAll('#trip-view .tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('#trip-view .nav-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active'); if (btnElement) btnElement.classList.add('active'); 
-            document.querySelector('#trip-view main').scrollTop = 0;
-        }
+        function openTrip(tripId) { currentTripId = tripId; document.getElementById('lobby-view').style.display = 'none'; document.getElementById('trip-view').style.display = 'flex'; updateInputsReadonly(); switchTab('home', document.querySelector('.nav-btn')); loadTripData(); }
+        function returnToLobby() { if (currentTripId) { db.ref('Trips/' + currentTripId).off(); } clearInterval(countdownInterval); currentTripId = null; document.getElementById('trip-view').style.display = 'none'; document.getElementById('lobby-view').style.display = 'flex'; }
+        function switchTab(tabId, btnElement) { if (tabId === 'settings' && !isAdmin) return showAlert("אזור זה מיועד למנהלים בלבד."); document.querySelectorAll('#trip-view .tab-content').forEach(tab => tab.classList.remove('active')); document.querySelectorAll('#trip-view .nav-btn').forEach(btn => btn.classList.remove('active')); document.getElementById('tab-' + tabId).classList.add('active'); if (btnElement) btnElement.classList.add('active'); document.querySelector('#trip-view main').scrollTop = 0; }
 
         function loadTripData() {
             if (!currentTripId) return;
             db.ref('Trips/' + currentTripId).on('value', snap => {
-                const tripData = snap.val(); if(!tripData) return;
-                const config = tripData.settings || {};
-                
-                document.getElementById('dyn-main-title').innerText = config.mainTitle || "כותרת ראשית";
-                document.getElementById('dyn-hero-text').innerText = config.heroText || "...";
-                document.getElementById('dyn-hero-img').src = config.heroImg || "hero.jpg"; document.getElementById('dyn-gallery-img1').src = config.gallery1 || "cabin.jpg"; document.getElementById('dyn-gallery-img2').src = config.gallery2 || "nature.jpg";
-                document.getElementById('dyn-route-title').innerText = config.routeTitle || "..."; document.getElementById('dyn-route-desc').innerText = config.routeDesc || "...";
-                const startP = config.routeStart || ""; const endP = config.routeEnd || "";
-                if(startP && endP) document.getElementById('dyn-route-map').src = `https://maps.google.com/maps?saddr=${encodeURIComponent(startP)}&daddr=${encodeURIComponent(endP)}&output=embed`;
-
-                document.getElementById('dyn-nav1-link').href = config.nav1Url || "#"; document.getElementById('dyn-nav1-link').innerHTML = `📍 ${config.nav1Title || 'ניווט'}`;
-                document.getElementById('dyn-nav2-link').href = config.nav2Url || "#"; document.getElementById('dyn-nav2-link').innerHTML = `📍 ${config.nav2Title || 'ניווט'}`;
-                document.getElementById('dyn-nav3-link').href = config.nav3Url || "#"; document.getElementById('dyn-nav3-link').innerHTML = `📍 ${config.nav3Title || 'ניווט'}`;
-                
-                const eNum = config.emergencyNum || "112"; const eText = config.emergencyText || "חירום";
-                document.getElementById('dyn-emergency-btn').onclick = () => window.location.href = `tel:${eNum}`; document.getElementById('dyn-emergency-btn').innerHTML = `🚨 ${eText} (${eNum})`;
-
+                const tripData = snap.val(); if(!tripData) return; const config = tripData.settings || {};
+                document.getElementById('dyn-main-title').innerText = config.mainTitle || "כותרת ראשית"; document.getElementById('dyn-hero-text').innerText = config.heroText || "..."; document.getElementById('dyn-hero-img').src = config.heroImg || "hero.jpg"; document.getElementById('dyn-gallery-img1').src = config.gallery1 || "cabin.jpg"; document.getElementById('dyn-gallery-img2').src = config.gallery2 || "nature.jpg"; document.getElementById('dyn-route-title').innerText = config.routeTitle || "..."; document.getElementById('dyn-route-desc').innerText = config.routeDesc || "..."; const startP = config.routeStart || ""; const endP = config.routeEnd || ""; if(startP && endP) document.getElementById('dyn-route-map').src = `https://maps.google.com/maps?saddr=${encodeURIComponent(startP)}&daddr=${encodeURIComponent(endP)}&output=embed`;
+                document.getElementById('dyn-nav1-link').href = config.nav1Url || "#"; document.getElementById('dyn-nav1-link').innerHTML = `📍 ${config.nav1Title || 'ניווט'}`; document.getElementById('dyn-nav2-link').href = config.nav2Url || "#"; document.getElementById('dyn-nav2-link').innerHTML = `📍 ${config.nav2Title || 'ניווט'}`; document.getElementById('dyn-nav3-link').href = config.nav3Url || "#"; document.getElementById('dyn-nav3-link').innerHTML = `📍 ${config.nav3Title || 'ניווט'}`;
+                const eNum = config.emergencyNum || "112"; const eText = config.emergencyText || "חירום"; document.getElementById('dyn-emergency-btn').onclick = () => window.location.href = `tel:${eNum}`; document.getElementById('dyn-emergency-btn').innerHTML = `🚨 ${eText} (${eNum})`;
                 setupDocLink('dyn-doc-flights', config.docFlights); setupDocLink('dyn-doc-hotel', config.docHotel); setupDocLink('dyn-doc-car', config.docCar); setupDocLink('dyn-doc-insurance', config.docInsurance);
-
-                // Populate settings inputs
-                document.getElementById('set-lobbyTitle').value = config.lobbyTitle || ''; document.getElementById('set-lobbyColor').value = config.lobbyColor || '#3a5a40'; document.getElementById('set-adminPin').value = globalAdminPin;
-                document.getElementById('set-mainTitle').value = config.mainTitle || ''; document.getElementById('set-heroText').value = config.heroText || ''; document.getElementById('set-heroImg').value = config.heroImg || '';
-                document.getElementById('set-gallery1').value = config.gallery1 || ''; document.getElementById('set-gallery2').value = config.gallery2 || ''; document.getElementById('set-flightDateTime').value = config.flightDateTime || '';
-                document.getElementById('set-routeTitle').value = config.routeTitle || ''; document.getElementById('set-routeDesc').value = config.routeDesc || ''; document.getElementById('set-routeStart').value = config.routeStart || '';
-                document.getElementById('set-routeEnd').value = config.routeEnd || ''; document.getElementById('set-weatherLoc').value = config.weatherLoc || '';
-                document.getElementById('set-nav1Title').value = config.nav1Title || ''; document.getElementById('set-nav1Url').value = config.nav1Url || ''; document.getElementById('set-nav2Title').value = config.nav2Title || ''; document.getElementById('set-nav2Url').value = config.nav2Url || '';
-                document.getElementById('set-nav3Title').value = config.nav3Title || ''; document.getElementById('set-nav3Url').value = config.nav3Url || ''; document.getElementById('set-emergencyNum').value = config.emergencyNum || ''; document.getElementById('set-emergencyText').value = config.emergencyText || '';
-                document.getElementById('set-docFlights').value = config.docFlights || ''; document.getElementById('set-docHotel').value = config.docHotel || ''; document.getElementById('set-docCar').value = config.docCar || ''; document.getElementById('set-docInsurance').value = config.docInsurance || '';
+                
+                document.getElementById('set-lobbyTitle').value = config.lobbyTitle || ''; document.getElementById('set-lobbyColor').value = config.lobbyColor || '#3a5a40'; document.getElementById('set-adminPin').value = globalAdminPin; document.getElementById('set-mainTitle').value = config.mainTitle || ''; document.getElementById('set-heroText').value = config.heroText || ''; document.getElementById('set-heroImg').value = config.heroImg || ''; document.getElementById('set-gallery1').value = config.gallery1 || ''; document.getElementById('set-gallery2').value = config.gallery2 || ''; document.getElementById('set-flightDateTime').value = config.flightDateTime || ''; document.getElementById('set-routeTitle').value = config.routeTitle || ''; document.getElementById('set-routeDesc').value = config.routeDesc || ''; document.getElementById('set-routeStart').value = config.routeStart || ''; document.getElementById('set-routeEnd').value = config.routeEnd || ''; document.getElementById('set-weatherLoc').value = config.weatherLoc || ''; document.getElementById('set-nav1Title').value = config.nav1Title || ''; document.getElementById('set-nav1Url').value = config.nav1Url || ''; document.getElementById('set-nav2Title').value = config.nav2Title || ''; document.getElementById('set-nav2Url').value = config.nav2Url || ''; document.getElementById('set-nav3Title').value = config.nav3Title || ''; document.getElementById('set-nav3Url').value = config.nav3Url || ''; document.getElementById('set-emergencyNum').value = config.emergencyNum || ''; document.getElementById('set-emergencyText').value = config.emergencyText || ''; document.getElementById('set-docFlights').value = config.docFlights || ''; document.getElementById('set-docHotel').value = config.docHotel || ''; document.getElementById('set-docCar').value = config.docCar || ''; document.getElementById('set-docInsurance').value = config.docInsurance || '';
 
                 loadWeatherForecast(config.weatherLoc); startTimer(config.flightDateTime);
                 renderItinerary(tripData.itinerary || []); renderMandatoryTasks(tripData.mandatoryTasks || []); renderPackingList(tripData.packing || []); renderExpenses(tripData.expenses || []); populateFlights(tripData.flights || {}); renderLocations(tripData.locations || {});
+                
+                // Run Smart Notifications
+                runSmartNotifications(config.flightDateTime, tripData.mandatoryTasks || []);
             });
         }
-
-        function setupDocLink(elementId, url) {
-            const el = document.getElementById(elementId);
-            if (url && url.trim() !== '') { el.href = url; el.onclick = null; } 
-            else { el.href = '#'; el.onclick = (e) => { e.preventDefault(); showAlert('טרם הוזן קישור למסמך ע"י המנהל.'); }; }
-        }
-
-        function saveSettings() {
-            if(!currentTripId || !isAdmin) return;
-            const newPin = document.getElementById('set-adminPin').value.trim();
-            if (newPin && newPin !== globalAdminPin) { db.ref('Global').update({ adminPin: newPin }); globalAdminPin = newPin; }
-            db.ref('Trips/' + currentTripId + '/settings').set({
-                lobbyTitle: document.getElementById('set-lobbyTitle').value.trim(), lobbyColor: document.getElementById('set-lobbyColor').value, mainTitle: document.getElementById('set-mainTitle').value.trim(), heroText: document.getElementById('set-heroText').value.trim(),
-                heroImg: document.getElementById('set-heroImg').value.trim(), gallery1: document.getElementById('set-gallery1').value.trim(), gallery2: document.getElementById('set-gallery2').value.trim(), flightDateTime: document.getElementById('set-flightDateTime').value, routeTitle: document.getElementById('set-routeTitle').value.trim(),
-                routeDesc: document.getElementById('set-routeDesc').value.trim(), routeStart: document.getElementById('set-routeStart').value.trim(), routeEnd: document.getElementById('set-routeEnd').value.trim(), weatherLoc: document.getElementById('set-weatherLoc').value.trim(), 
-                nav1Title: document.getElementById('set-nav1Title').value.trim(), nav1Url: document.getElementById('set-nav1Url').value.trim(), nav2Title: document.getElementById('set-nav2Title').value.trim(), nav2Url: document.getElementById('set-nav2Url').value.trim(),
-                nav3Title: document.getElementById('set-nav3Title').value.trim(), nav3Url: document.getElementById('set-nav3Url').value.trim(), emergencyNum: document.getElementById('set-emergencyNum').value.trim(), emergencyText: document.getElementById('set-emergencyText').value.trim(),
-                docFlights: document.getElementById('set-docFlights').value.trim(), docHotel: document.getElementById('set-docHotel').value.trim(), docCar: document.getElementById('set-docCar').value.trim(), docInsurance: document.getElementById('set-docInsurance').value.trim()
-            });
-            saveFlights(); 
-            showAlert('ההגדרות ופרטי הטיסה נשמרו בהצלחה!'); switchTab('home', document.querySelector('.nav-btn'));
-        }
-
-        function startTimer(dateTimeString) {
-            clearInterval(countdownInterval); if (!dateTimeString) { document.getElementById("countdown").innerHTML = "טרם נקבעה טיסה"; return; }
-            const targetDate = new Date(dateTimeString).getTime();
-            countdownInterval = setInterval(() => {
-                const distance = targetDate - new Date().getTime();
-                if (distance < 0 || isNaN(distance)) { document.getElementById("countdown").innerHTML = "✈️ הגענו ליעד!"; clearInterval(countdownInterval); return; }
-                const d = Math.floor(distance / (1000 * 60 * 60 * 24)); const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                document.getElementById("countdown").innerHTML = `עוד ${d} ימים, ${h} שעות ו-${m} דקות!`;
-            }, 1000);
-        }
+        function setupDocLink(elementId, url) { const el = document.getElementById(elementId); if (url && url.trim() !== '') { el.href = url; el.onclick = null; } else { el.href = '#'; el.onclick = (e) => { e.preventDefault(); showAlert('טרם הוזן קישור למסמך ע"י המנהל.'); }; } }
+        function saveSettings() { if(!currentTripId || !isAdmin) return; const newPin = document.getElementById('set-adminPin').value.trim(); if (newPin && newPin !== globalAdminPin) { db.ref('Global').update({ adminPin: newPin }); globalAdminPin = newPin; } db.ref('Trips/' + currentTripId + '/settings').set({ lobbyTitle: document.getElementById('set-lobbyTitle').value.trim(), lobbyColor: document.getElementById('set-lobbyColor').value, mainTitle: document.getElementById('set-mainTitle').value.trim(), heroText: document.getElementById('set-heroText').value.trim(), heroImg: document.getElementById('set-heroImg').value.trim(), gallery1: document.getElementById('set-gallery1').value.trim(), gallery2: document.getElementById('set-gallery2').value.trim(), flightDateTime: document.getElementById('set-flightDateTime').value, routeTitle: document.getElementById('set-routeTitle').value.trim(), routeDesc: document.getElementById('set-routeDesc').value.trim(), routeStart: document.getElementById('set-routeStart').value.trim(), routeEnd: document.getElementById('set-routeEnd').value.trim(), weatherLoc: document.getElementById('set-weatherLoc').value.trim(), nav1Title: document.getElementById('set-nav1Title').value.trim(), nav1Url: document.getElementById('set-nav1Url').value.trim(), nav2Title: document.getElementById('set-nav2Title').value.trim(), nav2Url: document.getElementById('set-nav2Url').value.trim(), nav3Title: document.getElementById('set-nav3Title').value.trim(), nav3Url: document.getElementById('set-nav3Url').value.trim(), emergencyNum: document.getElementById('set-emergencyNum').value.trim(), emergencyText: document.getElementById('set-emergencyText').value.trim(), docFlights: document.getElementById('set-docFlights').value.trim(), docHotel: document.getElementById('set-docHotel').value.trim(), docCar: document.getElementById('set-docCar').value.trim(), docInsurance: document.getElementById('set-docInsurance').value.trim() }); saveFlights(); showAlert('ההגדרות ופרטי הטיסה נשמרו בהצלחה!'); switchTab('home', document.querySelector('.nav-btn')); }
+        function startTimer(dateTimeString) { clearInterval(countdownInterval); if (!dateTimeString) { document.getElementById("countdown").innerHTML = "טרם נקבעה טיסה"; return; } const targetDate = new Date(dateTimeString).getTime(); countdownInterval = setInterval(() => { const distance = targetDate - new Date().getTime(); if (distance < 0 || isNaN(distance)) { document.getElementById("countdown").innerHTML = "✈️ הגענו ליעד!"; clearInterval(countdownInterval); return; } const d = Math.floor(distance / (1000 * 60 * 60 * 24)); const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)); document.getElementById("countdown").innerHTML = `עוד ${d} ימים, ${h} שעות ו-${m} דקות!`; }, 1000); }
 
         let currentItinerary = []; let currentItineraryEditId = null;
-        function renderItinerary(items) {
-            currentItinerary = items.filter(i => i !== null); const container = document.getElementById('itineraryListContainer'); const selectDropdown = document.getElementById('itiInsertAfter'); container.innerHTML = ''; selectDropdown.innerHTML = '<option value="start">מיקום במסלול (ראשון)</option>';
-            if (currentItinerary.length === 0) container.innerHTML = '<div style="text-align:center; padding:15px;">אין תחנות במסלול.</div>';
-            currentItinerary.forEach((item) => {
-                const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : '';
-                const div = document.createElement('div'); div.className = 'glass-panel card';
-                div.innerHTML = `<label class="checkbox-row" style="margin-bottom: 5px;"><input type="checkbox" onchange="toggleItineraryItem(${item.id})" ${chk} ${dis}><span class="${cls}" style="font-weight: 800;">${item.title}</span>${isAdmin ? `<button onclick="editItineraryItem(${item.id})" style="background:none; border:none; font-size:1.2rem; cursor:pointer; margin-right:10px;">✏️</button><button onclick="removeItineraryItem(${item.id})" style="background:none; border:none; color:red; font-size:1.2rem; cursor:pointer; margin-right:5px;">🗑️</button>` : ''}</label><div class="details ${cls}">${item.desc}</div>`;
-                container.appendChild(div); const opt = document.createElement('option'); opt.value = item.id; opt.innerText = `אחרי: ${item.title}`; selectDropdown.appendChild(opt);
-            });
-        }
+        function renderItinerary(items) { currentItinerary = items.filter(i => i !== null); const container = document.getElementById('itineraryListContainer'); const selectDropdown = document.getElementById('itiInsertAfter'); container.innerHTML = ''; selectDropdown.innerHTML = '<option value="start">מיקום במסלול (ראשון)</option>'; if (currentItinerary.length === 0) container.innerHTML = '<div style="text-align:center; padding:15px;">אין תחנות במסלול.</div>'; currentItinerary.forEach((item) => { const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : ''; const div = document.createElement('div'); div.className = 'glass-panel card'; div.innerHTML = `<label class="checkbox-row" style="margin-bottom: 5px;"><input type="checkbox" onchange="toggleItineraryItem(${item.id})" ${chk} ${dis}><span class="${cls}" style="font-weight: 800;">${item.title}</span>${isAdmin ? `<button onclick="editItineraryItem(${item.id})" style="background:none; border:none; font-size:1.2rem; cursor:pointer; margin-right:10px;">✏️</button><button onclick="removeItineraryItem(${item.id})" style="background:none; border:none; color:red; font-size:1.2rem; cursor:pointer; margin-right:5px;">🗑️</button>` : ''}</label><div class="details ${cls}">${item.desc}</div>`; container.appendChild(div); const opt = document.createElement('option'); opt.value = item.id; opt.innerText = `אחרי: ${item.title}`; selectDropdown.appendChild(opt); }); }
         function toggleItineraryItem(id) { if(!isAdmin) return; const item = currentItinerary.find(i => i.id === id); if (item) { item.checked = !item.checked; db.ref(`Trips/${currentTripId}/itinerary`).set(currentItinerary); } }
         function editItineraryItem(id) { if(!isAdmin) return; const item = currentItinerary.find(i => i.id === id); if(item) { document.getElementById('itiTitle').value = item.title; document.getElementById('itiDesc').value = item.desc; currentItineraryEditId = id; const btn = document.getElementById('btn-add-iti'); btn.innerText = "💾 שמור שינויים"; btn.style.backgroundColor = "var(--primary-brown)"; document.getElementById('itiTitle').scrollIntoView({behavior: "smooth", block: "center"}); } }
-        function saveItineraryItem() {
-            if(!isAdmin) return; const title = document.getElementById('itiTitle').value.trim(); const desc = document.getElementById('itiDesc').value.trim(); const insertAfterId = document.getElementById('itiInsertAfter').value;
-            if (!title) return showAlert('חובה להזין כותרת.');
-            if (currentItineraryEditId) {
-                const index = currentItinerary.findIndex(i => i.id === currentItineraryEditId); if(index > -1) { currentItinerary[index].title = title; currentItinerary[index].desc = desc; }
-                currentItineraryEditId = null; const btn = document.getElementById('btn-add-iti'); btn.innerText = "הוסף תחנה"; btn.style.backgroundColor = "var(--primary-green)";
-            } else {
-                const newItem = { id: Date.now(), title, desc, checked: false };
-                if (insertAfterId === 'start') { currentItinerary.unshift(newItem); } else { const insertIndex = currentItinerary.findIndex(i => i.id == insertAfterId); if (insertIndex > -1) currentItinerary.splice(insertIndex + 1, 0, newItem); else currentItinerary.push(newItem); }
-            }
-            db.ref(`Trips/${currentTripId}/itinerary`).set(currentItinerary); document.getElementById('itiTitle').value = ''; document.getElementById('itiDesc').value = '';
-        }
+        function saveItineraryItem() { if(!isAdmin) return; const title = document.getElementById('itiTitle').value.trim(); const desc = document.getElementById('itiDesc').value.trim(); const insertAfterId = document.getElementById('itiInsertAfter').value; if (!title) return showAlert('חובה להזין כותרת.'); if (currentItineraryEditId) { const index = currentItinerary.findIndex(i => i.id === currentItineraryEditId); if(index > -1) { currentItinerary[index].title = title; currentItinerary[index].desc = desc; } currentItineraryEditId = null; const btn = document.getElementById('btn-add-iti'); btn.innerText = "הוסף תחנה"; btn.style.backgroundColor = "var(--primary-green)"; } else { const newItem = { id: Date.now(), title, desc, checked: false }; if (insertAfterId === 'start') { currentItinerary.unshift(newItem); } else { const insertIndex = currentItinerary.findIndex(i => i.id == insertAfterId); if (insertIndex > -1) currentItinerary.splice(insertIndex + 1, 0, newItem); else currentItinerary.push(newItem); } } db.ref(`Trips/${currentTripId}/itinerary`).set(currentItinerary); document.getElementById('itiTitle').value = ''; document.getElementById('itiDesc').value = ''; }
         function removeItineraryItem(id) { if(!isAdmin) return; currentItinerary = currentItinerary.filter(i => i.id !== id); db.ref(`Trips/${currentTripId}/itinerary`).set(currentItinerary); }
 
         let currentMandatory = []; let currentPacking = []; let currentPackingEditId = null; let currentMandatoryEditId = null;
-        function renderMandatoryTasks(items) {
-            currentMandatory = items.filter(i => i !== null); const container = document.getElementById('mandatoryTasksContainer'); container.innerHTML = '';
-            currentMandatory.forEach(item => {
-                const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : '';
-                const div = document.createElement('div'); div.className = 'glass-panel card mandatory';
-                div.innerHTML = `<label class="checkbox-row"><input type="checkbox" onchange="toggleMandatoryTask(${item.id})" ${chk} ${dis}><span class="${cls}">${item.text}</span>${isAdmin ? `<button onclick="editMandatoryTask(${item.id})" style="background:none; border:none; font-size:1.2rem; cursor:pointer; margin-right:10px;">✏️</button><button onclick="removeMandatoryTask(${item.id})" style="background:none; border:none; color:red; font-size:1.2rem; cursor:pointer; margin-right:5px;">🗑️</button>` : ''}</label>`;
-                container.appendChild(div);
-            });
-        }
+        function renderMandatoryTasks(items) { currentMandatory = items.filter(i => i !== null); const container = document.getElementById('mandatoryTasksContainer'); container.innerHTML = ''; currentMandatory.forEach(item => { const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : ''; const div = document.createElement('div'); div.className = 'glass-panel card mandatory'; div.innerHTML = `<label class="checkbox-row"><input type="checkbox" onchange="toggleMandatoryTask(${item.id})" ${chk} ${dis}><span class="${cls}">${item.text}</span>${isAdmin ? `<button onclick="editMandatoryTask(${item.id})" style="background:none; border:none; font-size:1.2rem; cursor:pointer; margin-right:10px;">✏️</button><button onclick="removeMandatoryTask(${item.id})" style="background:none; border:none; color:red; font-size:1.2rem; cursor:pointer; margin-right:5px;">🗑️</button>` : ''}</label>`; container.appendChild(div); }); }
         function toggleMandatoryTask(id) { if(!isAdmin) return; const item = currentMandatory.find(i => i && i.id === id); if (item) { item.checked = !item.checked; db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); } }
         function editMandatoryTask(id) { if(!isAdmin) return; const item = currentMandatory.find(i => i && i.id === id); if(item) { document.getElementById('newItemInput').value = item.text; currentMandatoryEditId = id; currentPackingEditId = null; const btn = document.getElementById('btn-add-packing'); btn.innerText = "💾 שמור חובה"; btn.style.backgroundColor = "#d35400"; document.getElementById('newItemInput').scrollIntoView({behavior: "smooth", block: "center"}); } }
         function removeMandatoryTask(id) { if(!isAdmin) return; currentMandatory = currentMandatory.filter(i => i && i.id !== id); db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); }
 
-        function renderPackingList(items) {
-            currentPacking = items.filter(i => i !== null); const container = document.getElementById('packingListContainer'); container.innerHTML = '';
-            const cats = { clothing: { title: '👕 ביגוד', html: '' }, toiletries: { title: '🪥 כלי רחצה', html: '' }, personal: { title: '🎒 ציוד אישי', html: '' }, misc: { title: '📦 שונות', html: '' } };
-            currentPacking.forEach(item => {
-                const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : ''; const cat = item.category || 'misc';
-                cats[cat].html += `<div class="glass-panel card" style="padding: 12px 15px; margin-bottom: 10px; border-right-color: var(--light-green);"><label class="checkbox-row"><input type="checkbox" onchange="togglePackingItem(${item.id})" ${chk} ${dis}><span class="${cls}" style="font-size: 1rem;">${item.text}</span>${isAdmin ? `<button onclick="editPackingItem(${item.id})" style="background:none; border:none; font-size:1.1rem; cursor:pointer; margin-right:10px;">✏️</button><button onclick="removePackingItem(${item.id})" style="background:none; border:none; color:red; font-size:1.1rem; cursor:pointer; margin-right:5px;">🗑️</button>` : ''}</label></div>`;
-            });
-            for(let key in cats) { if (cats[key].html !== '') container.innerHTML += `<div class="cat-header">${cats[key].title}</div>${cats[key].html}`; }
-        }
+        function renderPackingList(items) { currentPacking = items.filter(i => i !== null); const container = document.getElementById('packingListContainer'); container.innerHTML = ''; const cats = { clothing: { title: '👕 ביגוד', html: '' }, toiletries: { title: '🪥 כלי רחצה', html: '' }, personal: { title: '🎒 ציוד אישי', html: '' }, misc: { title: '📦 שונות', html: '' } }; currentPacking.forEach(item => { const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : ''; const cat = item.category || 'misc'; cats[cat].html += `<div class="glass-panel card" style="padding: 12px 15px; margin-bottom: 10px; border-right-color: var(--light-green);"><label class="checkbox-row"><input type="checkbox" onchange="togglePackingItem(${item.id})" ${chk} ${dis}><span class="${cls}" style="font-size: 1rem;">${item.text}</span>${isAdmin ? `<button onclick="editPackingItem(${item.id})" style="background:none; border:none; font-size:1.1rem; cursor:pointer; margin-right:10px;">✏️</button><button onclick="removePackingItem(${item.id})" style="background:none; border:none; color:red; font-size:1.1rem; cursor:pointer; margin-right:5px;">🗑️</button>` : ''}</label></div>`; }); for(let key in cats) { if (cats[key].html !== '') container.innerHTML += `<div class="cat-header">${cats[key].title}</div>${cats[key].html}`; } }
         function togglePackingItem(id) { if(!isAdmin) return; const item = currentPacking.find(i => i && i.id === id); if (item) { item.checked = !item.checked; db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); } }
         function editPackingItem(id) { if(!isAdmin) return; const item = currentPacking.find(i => i && i.id === id); if(item) { document.getElementById('newItemInput').value = item.text; document.getElementById('newItemCategory').value = item.category || 'misc'; currentPackingEditId = id; currentMandatoryEditId = null; const btn = document.getElementById('btn-add-packing'); btn.innerText = "💾 שמור שינוי"; btn.style.backgroundColor = "var(--primary-green)"; document.getElementById('newItemInput').scrollIntoView({behavior: "smooth", block: "center"}); } }
-        function addPackingItem() {
-            if(!isAdmin) return; const input = document.getElementById('newItemInput'); const val = input.value.trim(); const cat = document.getElementById('newItemCategory').value;
-            if (val === '') return showAlert('יש להזין שם פריט');
-            if(currentPackingEditId) { const index = currentPacking.findIndex(i => i && i.id === currentPackingEditId); if(index > -1) { currentPacking[index].text = val; currentPacking[index].category = cat; } db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); } 
-            else if(currentMandatoryEditId) { const index = currentMandatory.findIndex(i => i && i.id === currentMandatoryEditId); if(index > -1) currentMandatory[index].text = val; db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); } 
-            else { currentPacking.push({ id: Date.now(), text: val, checked: false, category: cat }); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); }
-            input.value = ''; currentPackingEditId = null; currentMandatoryEditId = null; const btn = document.getElementById('btn-add-packing'); btn.innerText = "הוסף"; btn.style.backgroundColor = "var(--primary-brown)";
-        }
+        function addPackingItem() { if(!isAdmin) return; const input = document.getElementById('newItemInput'); const val = input.value.trim(); const cat = document.getElementById('newItemCategory').value; if (val === '') return showAlert('יש להזין שם פריט'); if(currentPackingEditId) { const index = currentPacking.findIndex(i => i && i.id === currentPackingEditId); if(index > -1) { currentPacking[index].text = val; currentPacking[index].category = cat; } db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); } else if(currentMandatoryEditId) { const index = currentMandatory.findIndex(i => i && i.id === currentMandatoryEditId); if(index > -1) currentMandatory[index].text = val; db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); } else { currentPacking.push({ id: Date.now(), text: val, checked: false, category: cat }); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); } input.value = ''; currentPackingEditId = null; currentMandatoryEditId = null; const btn = document.getElementById('btn-add-packing'); btn.innerText = "הוסף"; btn.style.backgroundColor = "var(--primary-brown)"; }
         function removePackingItem(id) { if(!isAdmin) return; currentPacking = currentPacking.filter(i => i && i.id !== id); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); }
-        function syncGlobalTemplates() {
-            if(!isAdmin) return; let addedCount = 0;
-            let currentManTexts = currentMandatory.map(i => i.text.trim().toLowerCase());
-            globalTemplates.mandatoryTasks.forEach((t, index) => { if(!currentManTexts.includes(t.trim().toLowerCase())) { currentMandatory.push({ id: Date.now() + index, text: t, checked: false }); addedCount++; } });
-            let currentPackTexts = currentPacking.map(i => i.text.trim().toLowerCase());
-            for(let cat in globalTemplates.packing) { globalTemplates.packing[cat].forEach((t, index) => { if(!currentPackTexts.includes(t.trim().toLowerCase())) { currentPacking.push({ id: Date.now() + 1000 + index + Math.random(), text: t, checked: false, category: cat }); addedCount++; } }); }
-            db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); showAlert(`סונכרנו בהצלחה ${addedCount} פריטים חדשים מהתבנית!`);
-        }
+        function syncGlobalTemplates() { if(!isAdmin) return; let addedCount = 0; let currentManTexts = currentMandatory.map(i => i.text.trim().toLowerCase()); globalTemplates.mandatoryTasks.forEach((t, index) => { if(!currentManTexts.includes(t.trim().toLowerCase())) { currentMandatory.push({ id: Date.now() + index, text: t, checked: false }); addedCount++; } }); let currentPackTexts = currentPacking.map(i => i.text.trim().toLowerCase()); for(let cat in globalTemplates.packing) { globalTemplates.packing[cat].forEach((t, index) => { if(!currentPackTexts.includes(t.trim().toLowerCase())) { currentPacking.push({ id: Date.now() + 1000 + index + Math.random(), text: t, checked: false, category: cat }); addedCount++; } }); } db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); showAlert(`סונכרנו בהצלחה ${addedCount} פריטים חדשים מהתבנית!`); }
 
-        // --- PWA Print Logic ---
-        function printHTMLInCurrentPage(htmlContent) {
-            document.getElementById('print-area').innerHTML = htmlContent;
-            setTimeout(() => { window.print(); }, 300);
-        }
+        function printHTMLInCurrentPage(htmlContent) { document.getElementById('print-area').innerHTML = htmlContent; setTimeout(() => { window.print(); }, 300); }
+        function printPackingList() { const tripName = document.getElementById('dyn-main-title').innerText; let html = `<div style="font-family: Arial, sans-serif; padding: 20px; color: #333; background: #fff; text-align: right; direction: rtl; min-height: 100vh;"><div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3a5a40; padding-bottom: 20px;"><h1 style="color: #3a5a40; margin-bottom: 5px; font-size: 28px;">✈️ ${tripName}</h1><div style="font-size: 16px; color: #666;">צ'קליסט לאריזה - מומלץ להדפיס ולסמן!</div></div><h2 style="color: #582f0e; border-bottom: 1px dashed #a3b18a; padding-bottom: 5px; margin-top: 30px; font-size: 20px;">✅ משימות חובה לטיסה</h2>`; currentMandatory.forEach(item => { html += `<div style="font-size: 16px; margin-bottom: 12px; display: flex; align-items: center;"><div style="width: 18px; height: 18px; border: 2px solid #555; border-radius: 4px; display: inline-block; margin-left: 12px; flex-shrink: 0;"></div> ${item.text}</div>`; }); html += `<h2 style="color: #582f0e; border-bottom: 1px dashed #a3b18a; padding-bottom: 5px; margin-top: 30px; font-size: 20px;">🎒 ציוד אריזה</h2>`; const cats = { clothing: '👕 ביגוד', toiletries: '🪥 כלי רחצה', personal: '🎒 ציוד אישי', misc: '📦 שונות' }; for(let key in cats) { const itemsInCat = currentPacking.filter(i => (i.category || 'misc') === key); if(itemsInCat.length > 0) { html += `<h3 style="color: #3a5a40; font-size: 18px; margin-top: 25px; margin-bottom: 10px;">${cats[key]}</h3>`; itemsInCat.forEach(item => { html += `<div style="font-size: 16px; margin-bottom: 12px; display: flex; align-items: center;"><div style="width: 18px; height: 18px; border: 2px solid #555; border-radius: 4px; display: inline-block; margin-left: 12px; flex-shrink: 0;"></div> ${item.text}</div>`; }); } } html += `<div style="text-align: center; margin-top: 50px; font-size: 12px; color: #999; border-top: 1px solid #eee; padding-top: 20px;">הופק באהבה מפורטל הטיולים של משפחת שמילוביץ' - איזנברג</div></div>`; printHTMLInCurrentPage(html); }
+        function printLuggageTags() { let tagsHtmlString = ''; globalTemplates.luggageTags.forEach(tag => { tagsHtmlString += `<div style="border: 2px dashed #888; padding: 25px; width: 46%; margin: 2%; float: left; box-sizing: border-box; page-break-inside: avoid; background: #fff; text-align: left; direction: ltr;"><table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px;"><tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold; width: 30%;">NAME:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.name}</td></tr><tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">TEL:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.tel}</td></tr><tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">ADDRESS:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.address}</td></tr><tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">E-MAIL:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.email}</td></tr></table></div>`; }); const html = `<div style="font-family: Arial, sans-serif; padding: 20px; background: #fff; text-align: center; direction: rtl; min-height: 100vh;"><h2 style="color: #3a5a40; margin-bottom: 5px;">תגיות שם למזוודות (Luggage Tags)</h2><p style="color: #666; margin-bottom: 30px;">גזרו לאורך הקווים המקווקוים והצמידו למזוודה</p><div style="max-width: 900px; margin: 0 auto; overflow: hidden; text-align: left;" dir="ltr">${tagsHtmlString}</div></div>`; printHTMLInCurrentPage(html); }
 
-        function printPackingList() {
-            const tripName = document.getElementById('dyn-main-title').innerText;
-            let html = `
-                <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; background: #fff; text-align: right; direction: rtl; min-height: 100vh;">
-                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3a5a40; padding-bottom: 20px;">
-                        <h1 style="color: #3a5a40; margin-bottom: 5px; font-size: 28px;">✈️ ${tripName}</h1>
-                        <div style="font-size: 16px; color: #666;">צ'קליסט לאריזה - מומלץ להדפיס ולסמן!</div>
-                    </div>
-                    <h2 style="color: #582f0e; border-bottom: 1px dashed #a3b18a; padding-bottom: 5px; margin-top: 30px; font-size: 20px;">✅ משימות חובה לטיסה</h2>
-            `;
-            currentMandatory.forEach(item => { html += `<div style="font-size: 16px; margin-bottom: 12px; display: flex; align-items: center;"><div style="width: 18px; height: 18px; border: 2px solid #555; border-radius: 4px; display: inline-block; margin-left: 12px; flex-shrink: 0;"></div> ${item.text}</div>`; });
-            html += `<h2 style="color: #582f0e; border-bottom: 1px dashed #a3b18a; padding-bottom: 5px; margin-top: 30px; font-size: 20px;">🎒 ציוד אריזה</h2>`;
-            const cats = { clothing: '👕 ביגוד', toiletries: '🪥 כלי רחצה', personal: '🎒 ציוד אישי', misc: '📦 שונות' };
-            for(let key in cats) {
-                const itemsInCat = currentPacking.filter(i => (i.category || 'misc') === key);
-                if(itemsInCat.length > 0) {
-                    html += `<h3 style="color: #3a5a40; font-size: 18px; margin-top: 25px; margin-bottom: 10px;">${cats[key]}</h3>`;
-                    itemsInCat.forEach(item => { html += `<div style="font-size: 16px; margin-bottom: 12px; display: flex; align-items: center;"><div style="width: 18px; height: 18px; border: 2px solid #555; border-radius: 4px; display: inline-block; margin-left: 12px; flex-shrink: 0;"></div> ${item.text}</div>`; });
-                }
-            }
-            html += `<div style="text-align: center; margin-top: 50px; font-size: 12px; color: #999; border-top: 1px solid #eee; padding-top: 20px;">הופק באהבה מפורטל הטיולים של משפחת שמילוביץ' - איזנברג</div></div>`;
-            printHTMLInCurrentPage(html);
-        }
-
-        function printLuggageTags() {
-            let tagsHtmlString = '';
-            globalTemplates.luggageTags.forEach(tag => {
-                tagsHtmlString += `
-                    <div style="border: 2px dashed #888; padding: 25px; width: 46%; margin: 2%; float: left; box-sizing: border-box; page-break-inside: avoid; background: #fff; text-align: left; direction: ltr;">
-                        <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px;">
-                            <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold; width: 30%;">NAME:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.name}</td></tr>
-                            <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">TEL:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.tel}</td></tr>
-                            <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">ADDRESS:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.address}</td></tr>
-                            <tr><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">E-MAIL:</td><td style="border: 1px solid #000; padding: 12px; font-weight: bold;">${tag.email}</td></tr>
-                        </table>
-                    </div>
-                `;
-            });
-            const html = `<div style="font-family: Arial, sans-serif; padding: 20px; background: #fff; text-align: center; direction: rtl; min-height: 100vh;"><h2 style="color: #3a5a40; margin-bottom: 5px;">תגיות שם למזוודות (Luggage Tags)</h2><p style="color: #666; margin-bottom: 30px;">גזרו לאורך הקווים המקווקוים והצמידו למזוודה</p><div style="max-width: 900px; margin: 0 auto; overflow: hidden; text-align: left;" dir="ltr">${tagsHtmlString}</div></div>`;
-            printHTMLInCurrentPage(html);
-        }
-
-        // --- Expenses & Utilities ---
-        let currentExpenses = []; let exchangeRates = { EUR: 1, ILS: 4.0, CHF: 0.95, USD: 1.1 }; 
-        async function initLiveRates() { try { const res = await fetch('https://open.er-api.com/v6/latest/EUR'); const data = await res.json(); exchangeRates = data.rates; } catch(e) {} }
-        initLiveRates();
+        let currentExpenses = []; let exchangeRates = { EUR: 1, ILS: 4.0, CHF: 0.95, USD: 1.1 }; async function initLiveRates() { try { const res = await fetch('https://open.er-api.com/v6/latest/EUR'); const data = await res.json(); exchangeRates = data.rates; } catch(e) {} } initLiveRates();
         function convertCurrency() { const amount = parseFloat(document.getElementById('convAmount').value); const from = document.getElementById('convFrom').value; const to = document.getElementById('convTo').value; if(isNaN(amount)) return showAlert('יש להזין סכום תקין.'); const result = (amount / exchangeRates[from]) * exchangeRates[to]; const symbols = { EUR: '€', ILS: '₪', CHF: 'CHF', USD: '$' }; document.getElementById('convResult').innerHTML = `${amount}${symbols[from]} = <strong style="color:var(--primary-brown); font-size:1.4rem;">${result.toFixed(2)}${symbols[to]}</strong>`; }
-        function renderExpenses(items) {
-            currentExpenses = items.filter(i => i !== null); const list = document.getElementById('expenseList'); list.innerHTML = ''; let totalEliranEur = 0, totalDrorEur = 0;
-            if(currentExpenses.length === 0) { list.innerHTML = '<div style="text-align:center; padding:15px;">אין הוצאות בינתיים.</div>'; }
-            currentExpenses.forEach(exp => {
-                const payerName = exp.payer === 'eliran' ? 'אלירן' : 'דרור'; const curr = exp.currency || 'EUR'; const rate = exchangeRates[curr] || 1; const amountInEur = curr === 'EUR' ? parseFloat(exp.amount) : parseFloat(exp.amount) / rate;
-                if (exp.payer === 'eliran') totalEliranEur += amountInEur; if (exp.payer === 'dror') totalDrorEur += amountInEur;
-                let sym = '€'; if(curr === 'ILS') sym = '₪'; if(curr === 'CHF') sym = 'CHF'; if(curr === 'USD') sym = '$';
-                const div = document.createElement('div'); div.className = 'expense-item'; div.innerHTML = `<span><strong style="font-weight:800;">${payerName}</strong>: ${exp.desc}</span><span style="color:var(--primary-brown); font-weight:800; font-size:1.1rem;">${exp.amount}${sym}</span>`; list.appendChild(div);
-            });
-            const balanceDiv = document.getElementById('expenseBalance');
-            if (Math.abs(totalEliranEur - totalDrorEur) < 0.01) { balanceDiv.innerHTML = "מאזן: אין חובות! שילמתם שווה בשווה."; } else if (totalEliranEur > totalDrorEur) { balanceDiv.innerHTML = `דרור חייב/ת לאלירן: <br><strong style="font-size:1.5rem;">€${((totalEliranEur - totalDrorEur) / 2).toFixed(2)}</strong><br><span style="font-size:0.85rem; font-weight:600;">(מומר ליורו לפי שער חי)</span>`; } else { balanceDiv.innerHTML = `אלירן חייב לדרור: <br><strong style="font-size:1.5rem;">€${((totalDrorEur - totalEliranEur) / 2).toFixed(2)}</strong><br><span style="font-size:0.85rem; font-weight:600;">(מומר ליורו לפי שער חי)</span>`; }
-        }
+        function renderExpenses(items) { currentExpenses = items.filter(i => i !== null); const list = document.getElementById('expenseList'); list.innerHTML = ''; let totalEliranEur = 0, totalDrorEur = 0; if(currentExpenses.length === 0) { list.innerHTML = '<div style="text-align:center; padding:15px;">אין הוצאות בינתיים.</div>'; } currentExpenses.forEach(exp => { const payerName = exp.payer === 'eliran' ? 'אלירן' : 'דרור'; const curr = exp.currency || 'EUR'; const rate = exchangeRates[curr] || 1; const amountInEur = curr === 'EUR' ? parseFloat(exp.amount) : parseFloat(exp.amount) / rate; if (exp.payer === 'eliran') totalEliranEur += amountInEur; if (exp.payer === 'dror') totalDrorEur += amountInEur; let sym = '€'; if(curr === 'ILS') sym = '₪'; if(curr === 'CHF') sym = 'CHF'; if(curr === 'USD') sym = '$'; const div = document.createElement('div'); div.className = 'expense-item'; div.innerHTML = `<span><strong style="font-weight:800;">${payerName}</strong>: ${exp.desc}</span><span style="color:var(--primary-brown); font-weight:800; font-size:1.1rem;">${exp.amount}${sym}</span>`; list.appendChild(div); }); const balanceDiv = document.getElementById('expenseBalance'); if (Math.abs(totalEliranEur - totalDrorEur) < 0.01) { balanceDiv.innerHTML = "מאזן: אין חובות! שילמתם שווה בשווה."; } else if (totalEliranEur > totalDrorEur) { balanceDiv.innerHTML = `דרור חייב/ת לאלירן: <br><strong style="font-size:1.5rem;">€${((totalEliranEur - totalDrorEur) / 2).toFixed(2)}</strong><br><span style="font-size:0.85rem; font-weight:600;">(מומר ליורו לפי שער חי)</span>`; } else { balanceDiv.innerHTML = `אלירן חייב לדרור: <br><strong style="font-size:1.5rem;">€${((totalDrorEur - totalEliranEur) / 2).toFixed(2)}</strong><br><span style="font-size:0.85rem; font-weight:600;">(מומר ליורו לפי שער חי)</span>`; } }
         function addExpense() { if(!isAdmin) return; const desc = document.getElementById('expDesc').value.trim(); const amount = parseFloat(document.getElementById('expAmount').value); const currency = document.getElementById('expCurrency').value; const payer = document.getElementById('expPayer').value; if (!desc || isNaN(amount) || amount <= 0) return showAlert('יש להזין תיאור וסכום תקין.'); currentExpenses.push({ desc, amount, payer, currency }); db.ref(`Trips/${currentTripId}/expenses`).set(currentExpenses); document.getElementById('expDesc').value = ''; document.getElementById('expAmount').value = ''; }
         function clearExpenses() { if(!isAdmin) return; if(confirm('בטוח שברצונך לאפס את כל ההוצאות בטיול זה?')) { db.ref(`Trips/${currentTripId}/expenses`).set([]); showAlert('ההוצאות אופסו.'); } }
 
-        function populateFlights(flights) { 
-            document.getElementById('set_f1_date').value = flights.f1_date || ''; document.getElementById('set_f1_num').value = flights.f1_num || ''; document.getElementById('set_f1_from').value = flights.f1_from || ''; document.getElementById('set_f1_from_code').value = flights.f1_from_code || ''; document.getElementById('set_f1_dep_time').value = flights.f1_dep_time || ''; document.getElementById('set_f1_to').value = flights.f1_to || ''; document.getElementById('set_f1_to_code').value = flights.f1_to_code || ''; document.getElementById('set_f1_arr_time').value = flights.f1_arr_time || ''; 
-            document.getElementById('set_f2_date').value = flights.f2_date || ''; document.getElementById('set_f2_num').value = flights.f2_num || ''; document.getElementById('set_f2_from').value = flights.f2_from || ''; document.getElementById('set_f2_from_code').value = flights.f2_from_code || ''; document.getElementById('set_f2_dep_time').value = flights.f2_dep_time || ''; document.getElementById('set_f2_to').value = flights.f2_to || ''; document.getElementById('set_f2_to_code').value = flights.f2_to_code || ''; document.getElementById('set_f2_arr_time').value = flights.f2_arr_time || ''; 
-            
-            const setDisp = (cId, nId, cVal, nVal) => {
-                const cEl = document.getElementById(cId); const nEl = document.getElementById(nId);
-                if(cVal) { cEl.innerText = cVal; nEl.innerText = nVal || ''; cEl.style.fontSize = "1.8rem"; }
-                else { cEl.innerText = nVal || '---'; nEl.innerText = ''; cEl.style.fontSize = (nVal && nVal.length > 5) ? "1.2rem" : "1.6rem"; }
-            };
-            setDisp('tkt_f1_from_code', 'tkt_f1_from', flights.f1_from_code, flights.f1_from);
-            setDisp('tkt_f1_to_code', 'tkt_f1_to', flights.f1_to_code, flights.f1_to);
-            setDisp('tkt_f2_from_code', 'tkt_f2_from', flights.f2_from_code, flights.f2_from);
-            setDisp('tkt_f2_to_code', 'tkt_f2_to', flights.f2_to_code, flights.f2_to);
-
-            document.getElementById('tkt_f1_dep_time').innerText = flights.f1_dep_time || '--:--'; document.getElementById('tkt_f1_arr_time').innerText = flights.f1_arr_time || '--:--'; document.getElementById('tkt_f1_date').innerText = flights.f1_date ? flights.f1_date.split('-').reverse().join('/') : '--/--/----'; document.getElementById('tkt_f1_num').innerText = flights.f1_num || '----';
-            document.getElementById('tkt_f2_dep_time').innerText = flights.f2_dep_time || '--:--'; document.getElementById('tkt_f2_arr_time').innerText = flights.f2_arr_time || '--:--'; document.getElementById('tkt_f2_date').innerText = flights.f2_date ? flights.f2_date.split('-').reverse().join('/') : '--/--/----'; document.getElementById('tkt_f2_num').innerText = flights.f2_num || '----';
-        }
-
-        function saveFlights() { 
-            if(!isAdmin || !currentTripId) return; 
-            db.ref(`Trips/${currentTripId}/flights`).set({ 
-                f1_date: document.getElementById('set_f1_date').value, f1_num: document.getElementById('set_f1_num').value, f1_from: document.getElementById('set_f1_from').value, f1_from_code: document.getElementById('set_f1_from_code').value, f1_dep_time: document.getElementById('set_f1_dep_time').value, f1_to: document.getElementById('set_f1_to').value, f1_to_code: document.getElementById('set_f1_to_code').value, f1_arr_time: document.getElementById('set_f1_arr_time').value, 
-                f2_date: document.getElementById('set_f2_date').value, f2_num: document.getElementById('set_f2_num').value, f2_from: document.getElementById('set_f2_from').value, f2_from_code: document.getElementById('set_f2_from_code').value, f2_dep_time: document.getElementById('set_f2_dep_time').value, f2_to: document.getElementById('set_f2_to').value, f2_to_code: document.getElementById('set_f2_to_code').value, f2_arr_time: document.getElementById('set_f2_arr_time').value 
-            }); 
-        }
-
-        function shareFlightsWhatsApp() {
-            if(!currentTripId) return;
-            const t = document.getElementById('dyn-main-title').innerText;
-            const f1_d = document.getElementById('set_f1_date').value ? document.getElementById('set_f1_date').value.split('-').reverse().join('/') : '--/--/----';
-            const f1_n = document.getElementById('set_f1_num').value || '----';
-            const f1_f = document.getElementById('set_f1_from').value || '---'; const f1_fc = document.getElementById('set_f1_from_code').value; const f1_fd = f1_fc ? `${f1_f} (${f1_fc})` : f1_f;
-            const f1_dt = document.getElementById('set_f1_dep_time').value || '--:--';
-            const f1_to = document.getElementById('set_f1_to').value || '---'; const f1_toc = document.getElementById('set_f1_to_code').value; const f1_tod = f1_toc ? `${f1_to} (${f1_toc})` : f1_to;
-            const f1_at = document.getElementById('set_f1_arr_time').value || '--:--';
-            
-            const f2_d = document.getElementById('set_f2_date').value ? document.getElementById('set_f2_date').value.split('-').reverse().join('/') : '--/--/----';
-            const f2_n = document.getElementById('set_f2_num').value || '----';
-            const f2_f = document.getElementById('set_f2_from').value || '---'; const f2_fc = document.getElementById('set_f2_from_code').value; const f2_fd = f2_fc ? `${f2_f} (${f2_fc})` : f2_f;
-            const f2_dt = document.getElementById('set_f2_dep_time').value || '--:--';
-            const f2_to = document.getElementById('set_f2_to').value || '---'; const f2_toc = document.getElementById('set_f2_to_code').value; const f2_tod = f2_toc ? `${f2_to} (${f2_toc})` : f2_to;
-            const f2_at = document.getElementById('set_f2_arr_time').value || '--:--';
-
-            let msg = `✈️ *פרטי טיסות - ${t}*\n\n*🛫 טיסה הלוך (*${f1_d}*):*\nמס' טיסה: ${f1_n}\nהמראה: ${f1_fd} בשעה ${f1_dt}\nנחיתה: ${f1_tod} בשעה ${f1_at}\n\n*🛬 טיסה חזור (*${f2_d}*):*\nמס' טיסה: ${f2_n}\nהמראה: ${f2_fd} בשעה ${f2_dt}\nנחיתה: ${f2_tod} בשעה ${f2_at}`;
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
-        }
+        function populateFlights(flights) { document.getElementById('set_f1_date').value = flights.f1_date || ''; document.getElementById('set_f1_num').value = flights.f1_num || ''; document.getElementById('set_f1_from').value = flights.f1_from || ''; document.getElementById('set_f1_from_code').value = flights.f1_from_code || ''; document.getElementById('set_f1_dep_time').value = flights.f1_dep_time || ''; document.getElementById('set_f1_to').value = flights.f1_to || ''; document.getElementById('set_f1_to_code').value = flights.f1_to_code || ''; document.getElementById('set_f1_arr_time').value = flights.f1_arr_time || ''; document.getElementById('set_f2_date').value = flights.f2_date || ''; document.getElementById('set_f2_num').value = flights.f2_num || ''; document.getElementById('set_f2_from').value = flights.f2_from || ''; document.getElementById('set_f2_from_code').value = flights.f2_from_code || ''; document.getElementById('set_f2_dep_time').value = flights.f2_dep_time || ''; document.getElementById('set_f2_to').value = flights.f2_to || ''; document.getElementById('set_f2_to_code').value = flights.f2_to_code || ''; document.getElementById('set_f2_arr_time').value = flights.f2_arr_time || ''; const setDisp = (cId, nId, cVal, nVal) => { const cEl = document.getElementById(cId); const nEl = document.getElementById(nId); if(cVal) { cEl.innerText = cVal; nEl.innerText = nVal || ''; cEl.style.fontSize = "1.8rem"; } else { cEl.innerText = nVal || '---'; nEl.innerText = ''; cEl.style.fontSize = (nVal && nVal.length > 5) ? "1.2rem" : "1.6rem"; } }; setDisp('tkt_f1_from_code', 'tkt_f1_from', flights.f1_from_code, flights.f1_from); setDisp('tkt_f1_to_code', 'tkt_f1_to', flights.f1_to_code, flights.f1_to); setDisp('tkt_f2_from_code', 'tkt_f2_from', flights.f2_from_code, flights.f2_from); setDisp('tkt_f2_to_code', 'tkt_f2_to', flights.f2_to_code, flights.f2_to); document.getElementById('tkt_f1_dep_time').innerText = flights.f1_dep_time || '--:--'; document.getElementById('tkt_f1_arr_time').innerText = flights.f1_arr_time || '--:--'; document.getElementById('tkt_f1_date').innerText = flights.f1_date ? flights.f1_date.split('-').reverse().join('/') : '--/--/----'; document.getElementById('tkt_f1_num').innerText = flights.f1_num || '----'; document.getElementById('tkt_f2_dep_time').innerText = flights.f2_dep_time || '--:--'; document.getElementById('tkt_f2_arr_time').innerText = flights.f2_arr_time || '--:--'; document.getElementById('tkt_f2_date').innerText = flights.f2_date ? flights.f2_date.split('-').reverse().join('/') : '--/--/----'; document.getElementById('tkt_f2_num').innerText = flights.f2_num || '----'; }
+        function saveFlights() { if(!isAdmin || !currentTripId) return; db.ref(`Trips/${currentTripId}/flights`).set({ f1_date: document.getElementById('set_f1_date').value, f1_num: document.getElementById('set_f1_num').value, f1_from: document.getElementById('set_f1_from').value, f1_from_code: document.getElementById('set_f1_from_code').value, f1_dep_time: document.getElementById('set_f1_dep_time').value, f1_to: document.getElementById('set_f1_to').value, f1_to_code: document.getElementById('set_f1_to_code').value, f1_arr_time: document.getElementById('set_f1_arr_time').value, f2_date: document.getElementById('set_f2_date').value, f2_num: document.getElementById('set_f2_num').value, f2_from: document.getElementById('set_f2_from').value, f2_from_code: document.getElementById('set_f2_from_code').value, f2_dep_time: document.getElementById('set_f2_dep_time').value, f2_to: document.getElementById('set_f2_to').value, f2_to_code: document.getElementById('set_f2_to_code').value, f2_arr_time: document.getElementById('set_f2_arr_time').value }); }
+        function shareFlightsWhatsApp() { if(!currentTripId) return; const t = document.getElementById('dyn-main-title').innerText; const f1_d = document.getElementById('set_f1_date').value ? document.getElementById('set_f1_date').value.split('-').reverse().join('/') : '--/--/----'; const f1_n = document.getElementById('set_f1_num').value || '----'; const f1_f = document.getElementById('set_f1_from').value || '---'; const f1_fc = document.getElementById('set_f1_from_code').value; const f1_fd = f1_fc ? `${f1_f} (${f1_fc})` : f1_f; const f1_dt = document.getElementById('set_f1_dep_time').value || '--:--'; const f1_to = document.getElementById('set_f1_to').value || '---'; const f1_toc = document.getElementById('set_f1_to_code').value; const f1_tod = f1_toc ? `${f1_to} (${f1_toc})` : f1_to; const f1_at = document.getElementById('set_f1_arr_time').value || '--:--'; const f2_d = document.getElementById('set_f2_date').value ? document.getElementById('set_f2_date').value.split('-').reverse().join('/') : '--/--/----'; const f2_n = document.getElementById('set_f2_num').value || '----'; const f2_f = document.getElementById('set_f2_from').value || '---'; const f2_fc = document.getElementById('set_f2_from_code').value; const f2_fd = f2_fc ? `${f2_f} (${f2_fc})` : f2_f; const f2_dt = document.getElementById('set_f2_dep_time').value || '--:--'; const f2_to = document.getElementById('set_f2_to').value || '---'; const f2_toc = document.getElementById('set_f2_to_code').value; const f2_tod = f2_toc ? `${f2_to} (${f2_toc})` : f2_to; const f2_at = document.getElementById('set_f2_arr_time').value || '--:--'; let msg = `✈️ *פרטי טיסות - ${t}*\n\n*🛫 טיסה הלוך (*${f1_d}*):*\nמס' טיסה: ${f1_n}\nהמראה: ${f1_fd} בשעה ${f1_dt}\nנחיתה: ${f1_tod} בשעה ${f1_at}\n\n*🛬 טיסה חזור (*${f2_d}*):*\nמס' טיסה: ${f2_n}\nהמראה: ${f2_fd} בשעה ${f2_dt}\nנחיתה: ${f2_tod} בשעה ${f2_at}`; window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank'); }
 
         function shareMyLocation() { if(!currentTripId) return; const status = document.getElementById('location-status'); const userName = prompt("מי משתף את המיקום עכשיו? (הכנס את שמך)"); if (!userName) return; status.innerText = "מחפש מיקום..."; if (!navigator.geolocation) return status.innerText = "הדפדפן שלך לא תומך בשיתוף מיקום."; navigator.geolocation.getCurrentPosition( (position) => { const now = new Date(); db.ref(`Trips/${currentTripId}/locations/` + userName).set({ lat: position.coords.latitude, lng: position.coords.longitude, timestamp: `${now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })} - ${now.toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: '2-digit' })}` }); status.innerText = "המיקום שלך נשמר ושותף בהצלחה!"; document.getElementById('google-map-iframe').src = `https://maps.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}&z=16&output=embed`; document.getElementById('map-container').style.display = 'block'; }, (error) => { status.innerText = "שגיאה. ודא שאישרת גישה למיקום בהגדרות הטלפון/הדפדפן."; }, { enableHighAccuracy: true } ); }
         function deleteLocation(name) { if(!isAdmin) return; if(confirm(`האם למחוק את המיקום של ${name}?`)) db.ref(`Trips/${currentTripId}/locations/` + name).remove(); }
         function renderLocations(locations) { const listContainer = document.getElementById('shared-locations-list'); if (locations && Object.keys(locations).length > 0) { let html = '<h3 style="margin-bottom: 10px; color: var(--primary-green); font-size: 1.2rem; font-weight:800;">מיקומי המשפחה ששותפו:</h3><ul style="list-style: none; padding: 0;">'; for (let name in locations) { const loc = locations[name]; html += `<li class="glass-panel" style="margin-bottom: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center;"><div><strong style="font-size: 1.1rem;">${name}</strong> <br><span style="font-size:0.85rem; color:#555; font-weight:600;">(עודכן ב: ${loc.timestamp})</span></div><div style="display: flex; gap: 8px; align-items: center;"><a href="https://maps.google.com/maps?q=${loc.lat},${loc.lng}" target="_blank" style="background: var(--primary-green); color: white; padding: 10px 12px; border-radius: 8px; text-decoration: none; font-weight: 800; font-size: 0.95rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); white-space: nowrap;">🌍 מפה</a>${isAdmin ? `<button onclick="deleteLocation('${name}')" style="background: rgba(211, 47, 47, 0.1); border: 1px solid #ffcdd2; color: #d32f2f; padding: 8px; border-radius: 8px; font-size: 1rem; cursor: pointer;">🗑️</button>` : ''}</div></li>`; } listContainer.innerHTML = html + '</ul>'; } else { listContainer.innerHTML = '<div style="text-align:center; color:#666;">אין מיקומים משותפים כרגע.</div>'; } }
+        
         async function loadWeatherForecast(city) { const container = document.getElementById('weather-container'); if(!city) { container.innerHTML = 'יש להגדיר עיר לתחזית בפאנל ההגדרות (מנהל).'; return; } try { const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`); const geoData = await geoRes.json(); if (!geoData.results || geoData.results.length === 0) { container.innerHTML = `<div style="text-align:center;">לא נמצאו נתונים לעיר "${city}". ודא שהיא באנגלית.</div>`; return; } const { latitude, longitude, name } = geoData.results[0]; const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`); const weatherData = await weatherRes.json(); let html = `<div class="weather-grid">`; for(let i=0; i<weatherData.daily.time.length; i++) { const dateObj = new Date(weatherData.daily.time[i]); const dateStr = dateObj.toLocaleDateString('he-IL', {weekday: 'short', day: '2-digit', month: '2-digit'}); const max = Math.round(weatherData.daily.temperature_2m_max[i]); const min = Math.round(weatherData.daily.temperature_2m_min[i]); const code = weatherData.daily.weathercode[i]; let emoji = '☀️'; if([1,2,3].includes(code)) emoji = '⛅'; else if([45,48].includes(code)) emoji = '🌫️'; else if([51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code)) emoji = '🌧️'; else if([71,73,75,77,85,86].includes(code)) emoji = '❄️'; else if([95,96,99].includes(code)) emoji = '⛈️'; html += `<div class="weather-day"><div class="weather-date">${dateStr}</div><div class="weather-icon">${emoji}</div><div class="weather-temp">${max}° / ${min}°</div></div>`; } html += `</div><div style="font-size:0.85rem; color:#666; text-align:center; margin-top:10px; font-weight:800;">מציג עבור: ${name}</div>`; container.innerHTML = html; } catch(e) { container.innerHTML = '<div style="text-align:center;">שגיאה בטעינת מזג האוויר.</div>'; } }
     </script>
 </body>
