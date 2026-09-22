@@ -93,12 +93,9 @@
         .modal-content { background: rgba(255, 255, 255, 0.95); padding: 30px 20px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); position: relative; }
         .modal-content p { margin-bottom: 25px; font-size: 1.2rem; font-weight: 600; line-height: 1.4; color: var(--text-dark); white-space: pre-line; }
         .modal-btn { background: var(--primary-green); color: white; border: none; padding: 12px 25px; border-radius: 12px; font-size: 1.1rem; font-weight: 800; cursor: pointer; width: 100%; }
-        
         .modal-content.warning { border-top: 6px solid #d35400; }
         .modal-content.warning .modal-btn { background: #d35400; }
         .modal-content.party { border-top: 6px solid var(--primary-green); }
-        
-        /* כפתור איקס (X) לפופאפ */
         .close-modal-x { position: absolute; top: 12px; left: 15px; font-size: 1.8rem; font-weight: 800; color: #aaa; cursor: pointer; line-height: 1; transition: 0.2s; }
         .close-modal-x:active { color: #333; transform: scale(0.9); }
 
@@ -161,6 +158,7 @@
         <button class="install-close-btn" onclick="dismissInstall()">הבנתי, תודה</button>
     </div>
 
+    <!-- מסך הלובי -->
     <div id="lobby-view">
         <div class="lobby-header">
             <button class="admin-login-btn" onclick="promptAdminLogin()" title="כניסת מנהל">🔒</button>
@@ -172,6 +170,7 @@
         <button class="action-btn admin-only" onclick="createNewTrip()" style="background-color: var(--primary-brown); margin-top: 20px;">➕ צור טיול חדש (מנהל)</button>
     </div>
 
+    <!-- מסך הטיול -->
     <div id="trip-view">
         <header>
             <button class="back-btn" onclick="returnToLobby()" title="חזור ללובי"><span style="font-size: 1.2rem;">🏨</span> חזרה ללובי</button>
@@ -181,6 +180,7 @@
         </header>
 
         <main>
+            <!-- Tab 0: Home -->
             <div id="tab-home" class="tab-content active">
                 <div class="home-hero"><img id="dyn-hero-img" src="hero.jpg" alt="Hero Image" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'16\'>חסרה תמונת נוף</text></svg>'"><div class="home-hero-text" id="dyn-hero-text">...</div></div>
                 <p style="text-align: center; margin-bottom: 20px; font-size: 1.2rem; color: var(--primary-brown); font-weight: 800;">החופשה מתקרבת!</p>
@@ -193,6 +193,7 @@
                 <div class="glass-panel" style="overflow: hidden; padding: 0; margin-bottom: 20px; border-radius: 16px;"><iframe id="dyn-route-map" src="" width="100%" height="250" frameborder="0" style="border:0; display:block;" allowfullscreen></iframe></div>
             </div>
 
+            <!-- Tab 1: Itinerary -->
             <div id="tab-itinerary" class="tab-content">
                 <h2>מסלול הטיול</h2>
                 <div id="itineraryListContainer"></div>
@@ -205,6 +206,7 @@
                 </div>
             </div>
 
+            <!-- Tab 2: Packing List -->
             <div id="tab-packing" class="tab-content">
                 <h2>ציוד והכנות</h2>
                 <div style="display: flex; gap: 10px; margin-bottom: 20px;">
@@ -225,6 +227,7 @@
                 </div>
             </div>
 
+            <!-- Tab 3: Expenses -->
             <div id="tab-expenses" class="tab-content admin-only">
                 <h2>הוצאות משפחתיות</h2>
                 <div class="glass-panel" style="padding: 20px; margin-bottom: 25px;">
@@ -250,6 +253,7 @@
                 <button onclick="clearExpenses()" style="background:rgba(255, 235, 238, 0.8); backdrop-filter:blur(10px); border:1px solid #ffcdd2; color:#d32f2f; margin-top:30px; margin-bottom:50px; padding:18px; width:100%; border-radius:12px; font-size:1.2rem; cursor:pointer; font-weight:800;">🗑️ איפוס מחשבון הוצאות</button>
             </div>
 
+            <!-- Tab 4: Info & Phones -->
             <div id="tab-info" class="tab-content">
                 <h2>מידע, מסמכים וטלפונים</h2>
 
@@ -296,6 +300,7 @@
                 <button id="dyn-emergency-btn" class="action-btn" style="background-color: #d32f2f; margin-bottom: 50px;">🚨 טוען...</button>
             </div>
 
+            <!-- Tab 5: Location -->
             <div id="tab-location" class="tab-content">
                 <h2>המיקום הנוכחי שלי</h2>
                 <p style="margin-bottom: 20px; color: #555; font-size: 1rem; font-weight:600;">שתף את המיקום שלך כדי ששאר בני המשפחה יוכלו לראות איפה אתה נמצא.</p>
@@ -307,6 +312,7 @@
                 </div>
             </div>
 
+            <!-- Tab 6: Admin Settings -->
             <div id="tab-settings" class="tab-content admin-only">
                 <h2 style="margin-bottom: 25px;">⚙️ פאנל ניהול (מנהל)</h2>
                 
@@ -416,6 +422,7 @@
         </nav>
     </div>
 
+    <!-- מודל התראות חכם -->
     <div id="customModal">
         <div class="modal-content" id="modalContentDiv">
             <span class="close-modal-x" onclick="closeModal()">&times;</span>
@@ -455,17 +462,49 @@
             const btn = document.getElementById('modalBtn');
             
             content.className = 'modal-content'; 
-            document.getElementById('modalMessage').innerText = msg; 
+            document.getElementById('modalMessage').innerHTML = msg; 
             btn.innerText = buttonText;
             
             if(type === 'party') { content.classList.add('party'); icon.innerText = '🎉'; } 
             else if (type === 'warning') { content.classList.add('warning'); icon.innerText = '⚠️'; } 
+            else if (type === 'error') { content.classList.add('warning'); icon.innerText = '🔌'; }
             else { icon.innerText = '🔔'; }
 
             btn.onclick = () => { closeModal(); if(action && typeof action === 'function') action(); };
             modal.style.display = 'flex'; 
         }
         function closeModal() { document.getElementById('customModal').style.display = 'none'; }
+
+        // הגנת Fallback לטעינת מסד נתונים בלובי
+        const lobbyTimeout = setTimeout(() => {
+            const container = document.getElementById('trips-container');
+            if (container && container.innerHTML.includes('טוען טיולים')) {
+                container.innerHTML = '<div style="text-align: center; color: #d32f2f; font-size:1.1rem; margin-top:30px; line-height:1.5; padding: 20px;" class="glass-panel"><strong>שגיאת תקשורת 🔌</strong><br>לא הצלחנו למשוך את הנתונים מהענן.<br><span style="font-size:0.9rem; color:#555; display:block; margin-top:10px;">ייתכן שתוסף (כמו AdBlock, Ghostery או אנטי-וירוס) חוסם את הגישה מאחורי הקלעים.<br><strong>נסו לפתוח בחלון גלישה בסתר (Incognito)</strong>.</span></div>';
+            }
+        }, 7000); // 7 שניות המתנה
+
+        db.ref('Global').on('value', snap => {
+            const data = snap.val();
+            if (data && data.adminPin) globalAdminPin = data.adminPin; else db.ref('Global/adminPin').set("1981"); 
+            if (data && data.Templates) { globalTemplates.mandatoryTasks = data.Templates.mandatoryTasks || globalTemplates.mandatoryTasks; if (data.Templates.packing && data.Templates.packing.clothing) globalTemplates.packing = data.Templates.packing; if (data.Templates.luggageTags) globalTemplates.luggageTags = data.Templates.luggageTags; }
+            if(document.getElementById('set-globalMandatory')) {
+                document.getElementById('set-globalMandatory').value = (globalTemplates.mandatoryTasks || []).join('\n'); document.getElementById('set-globalClothing').value = (globalTemplates.packing.clothing || []).join('\n'); document.getElementById('set-globalToiletries').value = (globalTemplates.packing.toiletries || []).join('\n'); document.getElementById('set-globalPersonal').value = (globalTemplates.packing.personal || []).join('\n'); document.getElementById('set-globalMisc').value = (globalTemplates.packing.misc || []).join('\n');
+                for(let i=0; i<4; i++){ let t = globalTemplates.luggageTags[i] || {name:'', tel:'', address:'', email:''}; document.getElementById(`tag${i}-name`).value = t.name; document.getElementById(`tag${i}-tel`).value = t.tel; document.getElementById(`tag${i}-address`).value = t.address; document.getElementById(`tag${i}-email`).value = t.email; }
+            }
+            if (sessionStorage.getItem('is_admin') === 'true') setAdminMode(true);
+        }, error => {
+            console.error("Firebase Error:", error);
+        });
+
+        db.ref('Trips').on('value', snap => {
+            clearTimeout(lobbyTimeout); // ביטול שגיאת הפולבק ברגע שיש תשובה תקינה
+            const trips = snap.val(); const container = document.getElementById('trips-container'); container.innerHTML = '';
+            if (!trips) { container.innerHTML = '<div style="text-align: center; color: #666; font-size:1.1rem; margin-top:30px;">אין טיולים כרגע במערכת.</div>'; return; }
+            for (let tripId in trips) { const trip = trips[tripId]; const color = trip.settings?.lobbyColor || '#3a5a40'; const title = trip.settings?.lobbyTitle || 'טיול ללא שם'; const card = document.createElement('div'); card.className = 'trip-card'; card.onclick = () => openTrip(tripId); card.innerHTML = `<div class="trip-card-color-bar" style="background-color: ${color}"></div><div style="font-size: 3rem; margin-bottom: 10px;">✈️</div><h2>${title}</h2><p style="color: #666; font-size: 0.9rem; margin-top:5px;">לחץ לכניסה לפרטי הטיול</p>`; container.appendChild(card); }
+        }, error => {
+            clearTimeout(lobbyTimeout);
+            document.getElementById('trips-container').innerHTML = `<div style="text-align: center; color: #d32f2f; margin-top:30px;" class="glass-panel"><strong>שגיאה בגישה למסד הנתונים:</strong><br>${error.message}</div>`;
+        });
 
         function runSmartNotifications(flightDateStr, mandatoryTasks) {
             if (!flightDateStr) return;
@@ -500,28 +539,11 @@
 
         function toggleAcc(id, headerEl) { const body = document.getElementById(id); if (body.style.display === 'block') { body.style.display = 'none'; headerEl.classList.remove('active'); } else { body.style.display = 'block'; headerEl.classList.add('active'); } }
 
-        db.ref('Global').on('value', snap => {
-            const data = snap.val();
-            if (data && data.adminPin) globalAdminPin = data.adminPin; else db.ref('Global/adminPin').set("1981"); 
-            if (data && data.Templates) { globalTemplates.mandatoryTasks = data.Templates.mandatoryTasks || globalTemplates.mandatoryTasks; if (data.Templates.packing && data.Templates.packing.clothing) globalTemplates.packing = data.Templates.packing; if (data.Templates.luggageTags) globalTemplates.luggageTags = data.Templates.luggageTags; }
-            if(document.getElementById('set-globalMandatory')) {
-                document.getElementById('set-globalMandatory').value = (globalTemplates.mandatoryTasks || []).join('\n'); document.getElementById('set-globalClothing').value = (globalTemplates.packing.clothing || []).join('\n'); document.getElementById('set-globalToiletries').value = (globalTemplates.packing.toiletries || []).join('\n'); document.getElementById('set-globalPersonal').value = (globalTemplates.packing.personal || []).join('\n'); document.getElementById('set-globalMisc').value = (globalTemplates.packing.misc || []).join('\n');
-                for(let i=0; i<4; i++){ let t = globalTemplates.luggageTags[i] || {name:'', tel:'', address:'', email:''}; document.getElementById(`tag${i}-name`).value = t.name; document.getElementById(`tag${i}-tel`).value = t.tel; document.getElementById(`tag${i}-address`).value = t.address; document.getElementById(`tag${i}-email`).value = t.email; }
-            }
-            if (sessionStorage.getItem('is_admin') === 'true') setAdminMode(true);
-        });
-
         function saveGlobalTemplates() { if(!isAdmin) return; const mandatoryTasks = document.getElementById('set-globalMandatory').value.split('\n').map(t => t.trim()).filter(t => t !== ''); const packing = { clothing: document.getElementById('set-globalClothing').value.split('\n').map(t=>t.trim()).filter(t=>t!==''), toiletries: document.getElementById('set-globalToiletries').value.split('\n').map(t=>t.trim()).filter(t=>t!==''), personal: document.getElementById('set-globalPersonal').value.split('\n').map(t=>t.trim()).filter(t=>t!==''), misc: document.getElementById('set-globalMisc').value.split('\n').map(t=>t.trim()).filter(t=>t!=='') }; const luggageTags = []; for(let i=0; i<4; i++){ luggageTags.push({ name: document.getElementById(`tag${i}-name`).value.trim(), tel: document.getElementById(`tag${i}-tel`).value.trim(), address: document.getElementById(`tag${i}-address`).value.trim(), email: document.getElementById(`tag${i}-email`).value.trim() }); } db.ref('Global/Templates').set({ mandatoryTasks, packing, luggageTags }).then(() => { showAlert('התבניות הגלובליות והתגיות נשמרו בהצלחה!'); }); }
 
         function promptAdminLogin() { if (isAdmin) { if(confirm("אתה מחובר כמנהל. האם תרצה להתנתק ולעבור לתצוגת צופה?")) { setAdminMode(false); } return; } const pin = prompt("הכנס קוד מנהל כדי לערוך וליצור טיולים:"); if (pin === globalAdminPin) { setAdminMode(true); showAlert("התחברת בהצלחה כמנהל!"); } else if (pin !== null) { showAlert("קוד מנהל שגוי."); } }
         function setAdminMode(status) { isAdmin = status; sessionStorage.setItem('is_admin', status ? 'true' : 'false'); if (status) { document.body.classList.add('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔓'; } else { document.body.classList.remove('is-admin'); document.querySelector('.admin-login-btn').innerText = '🔒'; } updateInputsReadonly(); }
         function updateInputsReadonly() { document.querySelectorAll('.flight-grid input').forEach(input => { input.readOnly = !isAdmin; }); }
-
-        db.ref('Trips').on('value', snap => {
-            const trips = snap.val(); const container = document.getElementById('trips-container'); container.innerHTML = '';
-            if (!trips) { container.innerHTML = '<div style="text-align: center; color: #666; font-size:1.1rem; margin-top:30px;">אין טיולים כרגע במערכת.</div>'; return; }
-            for (let tripId in trips) { const trip = trips[tripId]; const color = trip.settings?.lobbyColor || '#3a5a40'; const title = trip.settings?.lobbyTitle || 'טיול ללא שם'; const card = document.createElement('div'); card.className = 'trip-card'; card.onclick = () => openTrip(tripId); card.innerHTML = `<div class="trip-card-color-bar" style="background-color: ${color}"></div><div style="font-size: 3rem; margin-bottom: 10px;">✈️</div><h2>${title}</h2><p style="color: #666; font-size: 0.9rem; margin-top:5px;">לחץ לכניסה לפרטי הטיול</p>`; container.appendChild(card); }
-        });
 
         function createNewTrip() {
             const title = prompt("הכנס שם לטיול החדש (למשל: קפריסין 2026):"); if (!title) return; const tripId = 'trip_' + Date.now();
@@ -558,7 +580,6 @@
 
         let currentItinerary = []; let currentItineraryEditId = null;
         function renderItinerary(items) { currentItinerary = items.filter(i => i !== null); const container = document.getElementById('itineraryListContainer'); const selectDropdown = document.getElementById('itiInsertAfter'); container.innerHTML = ''; selectDropdown.innerHTML = '<option value="start">מיקום במסלול (ראשון)</option>'; if (currentItinerary.length === 0) container.innerHTML = '<div style="text-align:center; padding:15px;">אין תחנות במסלול.</div>'; currentItinerary.forEach((item) => { const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : ''; const div = document.createElement('div'); div.className = 'glass-panel card'; div.innerHTML = `<label class="checkbox-row" style="margin-bottom: 5px;"><input type="checkbox" onchange="toggleItineraryItem('${item.id}', this)" ${chk} ${dis}><span class="${cls}" style="font-weight: 800;">${item.title}</span>${isAdmin ? `<button onclick="editItineraryItem('${item.id}')" style="background:none; border:none; font-size:1.2rem; cursor:pointer; margin-right:10px;">✏️</button><button onclick="removeItineraryItem('${item.id}')" style="background:none; border:none; color:red; font-size:1.2rem; cursor:pointer; margin-right:5px;">🗑️</button>` : ''}</label><div class="details ${cls}">${item.desc}</div>`; container.appendChild(div); const opt = document.createElement('option'); opt.value = item.id; opt.innerText = `אחרי: ${item.title}`; selectDropdown.appendChild(opt); }); }
-        
         function toggleItineraryItem(id, el) { if(!isAdmin) return; const item = currentItinerary.find(i => i && i.id == id); if (item) { item.checked = !item.checked; if(el && el.nextElementSibling) { if(item.checked) el.nextElementSibling.classList.add('checked-text'); else el.nextElementSibling.classList.remove('checked-text'); } db.ref(`Trips/${currentTripId}/itinerary`).set(currentItinerary); } }
         function editItineraryItem(id) { if(!isAdmin) return; const item = currentItinerary.find(i => i.id == id); if(item) { document.getElementById('itiTitle').value = item.title; document.getElementById('itiDesc').value = item.desc; currentItineraryEditId = id; const btn = document.getElementById('btn-add-iti'); btn.innerText = "💾 שמור שינויים"; btn.style.backgroundColor = "var(--primary-brown)"; document.getElementById('itiTitle').scrollIntoView({behavior: "smooth", block: "center"}); } }
         function saveItineraryItem() { if(!isAdmin) return; const title = document.getElementById('itiTitle').value.trim(); const desc = document.getElementById('itiDesc').value.trim(); const insertAfterId = document.getElementById('itiInsertAfter').value; if (!title) return showAlert('חובה להזין כותרת.'); if (currentItineraryEditId) { const index = currentItinerary.findIndex(i => i.id == currentItineraryEditId); if(index > -1) { currentItinerary[index].title = title; currentItinerary[index].desc = desc; } currentItineraryEditId = null; const btn = document.getElementById('btn-add-iti'); btn.innerText = "הוסף תחנה"; btn.style.backgroundColor = "var(--primary-green)"; } else { const newItem = { id: 'iti_' + Date.now(), title, desc, checked: false }; if (insertAfterId === 'start') { currentItinerary.unshift(newItem); } else { const insertIndex = currentItinerary.findIndex(i => i.id == insertAfterId); if (insertIndex > -1) currentItinerary.splice(insertIndex + 1, 0, newItem); else currentItinerary.push(newItem); } } db.ref(`Trips/${currentTripId}/itinerary`).set(currentItinerary); document.getElementById('itiTitle').value = ''; document.getElementById('itiDesc').value = ''; }
@@ -566,18 +587,15 @@
 
         let currentMandatory = []; let currentPacking = []; let currentPackingEditId = null; let currentMandatoryEditId = null;
         function renderMandatoryTasks(items) { currentMandatory = items.filter(i => i !== null); const container = document.getElementById('mandatoryTasksContainer'); container.innerHTML = ''; currentMandatory.forEach(item => { const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : ''; const div = document.createElement('div'); div.className = 'glass-panel card mandatory'; div.innerHTML = `<label class="checkbox-row"><input type="checkbox" onchange="toggleMandatoryTask('${item.id}', this)" ${chk} ${dis}><span class="${cls}">${item.text}</span>${isAdmin ? `<button onclick="editMandatoryTask('${item.id}')" style="background:none; border:none; font-size:1.2rem; cursor:pointer; margin-right:10px;">✏️</button><button onclick="removeMandatoryTask('${item.id}')" style="background:none; border:none; color:red; font-size:1.2rem; cursor:pointer; margin-right:5px;">🗑️</button>` : ''}</label>`; container.appendChild(div); }); }
-        
         function toggleMandatoryTask(id, el) { if(!isAdmin) return; const item = currentMandatory.find(i => i && i.id == id); if (item) { item.checked = !item.checked; if(el && el.nextElementSibling) { if(item.checked) el.nextElementSibling.classList.add('checked-text'); else el.nextElementSibling.classList.remove('checked-text'); } db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); } }
         function editMandatoryTask(id) { if(!isAdmin) return; const item = currentMandatory.find(i => i && i.id == id); if(item) { document.getElementById('newItemInput').value = item.text; currentMandatoryEditId = id; currentPackingEditId = null; const btn = document.getElementById('btn-add-packing'); btn.innerText = "💾 שמור חובה"; btn.style.backgroundColor = "#d35400"; document.getElementById('newItemInput').scrollIntoView({behavior: "smooth", block: "center"}); } }
         function removeMandatoryTask(id) { if(!isAdmin) return; currentMandatory = currentMandatory.filter(i => i && i.id != id); db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); }
 
         function renderPackingList(items) { currentPacking = items.filter(i => i !== null); const container = document.getElementById('packingListContainer'); container.innerHTML = ''; const cats = { clothing: { title: '👕 ביגוד', html: '' }, toiletries: { title: '🪥 כלי רחצה', html: '' }, personal: { title: '🎒 ציוד אישי', html: '' }, misc: { title: '📦 שונות', html: '' } }; currentPacking.forEach(item => { const chk = item.checked ? 'checked' : ''; const cls = item.checked ? 'checked-text' : ''; const dis = !isAdmin ? 'disabled' : ''; const cat = item.category || 'misc'; cats[cat].html += `<div class="glass-panel card" style="padding: 12px 15px; margin-bottom: 10px; border-right-color: var(--light-green);"><label class="checkbox-row"><input type="checkbox" onchange="togglePackingItem('${item.id}', this)" ${chk} ${dis}><span class="${cls}" style="font-size: 1rem;">${item.text}</span>${isAdmin ? `<button onclick="editPackingItem('${item.id}')" style="background:none; border:none; font-size:1.1rem; cursor:pointer; margin-right:10px;">✏️</button><button onclick="removePackingItem('${item.id}')" style="background:none; border:none; color:red; font-size:1.1rem; cursor:pointer; margin-right:5px;">🗑️</button>` : ''}</label></div>`; }); for(let key in cats) { if (cats[key].html !== '') container.innerHTML += `<div class="cat-header">${cats[key].title}</div>${cats[key].html}`; } }
-        
         function togglePackingItem(id, el) { if(!isAdmin) return; const item = currentPacking.find(i => i && i.id == id); if (item) { item.checked = !item.checked; if(el && el.nextElementSibling) { if(item.checked) el.nextElementSibling.classList.add('checked-text'); else el.nextElementSibling.classList.remove('checked-text'); } db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); } }
         function editPackingItem(id) { if(!isAdmin) return; const item = currentPacking.find(i => i && i.id == id); if(item) { document.getElementById('newItemInput').value = item.text; document.getElementById('newItemCategory').value = item.category || 'misc'; currentPackingEditId = id; currentMandatoryEditId = null; const btn = document.getElementById('btn-add-packing'); btn.innerText = "💾 שמור שינוי"; btn.style.backgroundColor = "var(--primary-green)"; document.getElementById('newItemInput').scrollIntoView({behavior: "smooth", block: "center"}); } }
         function addPackingItem() { if(!isAdmin) return; const input = document.getElementById('newItemInput'); const val = input.value.trim(); const cat = document.getElementById('newItemCategory').value; if (val === '') return showAlert('יש להזין שם פריט'); if(currentPackingEditId) { const index = currentPacking.findIndex(i => i && i.id == currentPackingEditId); if(index > -1) { currentPacking[index].text = val; currentPacking[index].category = cat; } db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); } else if(currentMandatoryEditId) { const index = currentMandatory.findIndex(i => i && i.id == currentMandatoryEditId); if(index > -1) currentMandatory[index].text = val; db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); } else { currentPacking.push({ id: 'pac_' + Date.now(), text: val, checked: false, category: cat }); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); } input.value = ''; currentPackingEditId = null; currentMandatoryEditId = null; const btn = document.getElementById('btn-add-packing'); btn.innerText = "הוסף"; btn.style.backgroundColor = "var(--primary-brown)"; }
         function removePackingItem(id) { if(!isAdmin) return; currentPacking = currentPacking.filter(i => i && i.id != id); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); }
-        
         function syncGlobalTemplates() { if(!isAdmin) return; let addedCount = 0; let currentManTexts = currentMandatory.map(i => i.text.trim().toLowerCase()); globalTemplates.mandatoryTasks.forEach((t, index) => { if(!currentManTexts.includes(t.trim().toLowerCase())) { currentMandatory.push({ id: 'man_' + Date.now() + '_' + index, text: t, checked: false }); addedCount++; } }); let currentPackTexts = currentPacking.map(i => i.text.trim().toLowerCase()); for(let cat in globalTemplates.packing) { globalTemplates.packing[cat].forEach((t, index) => { if(!currentPackTexts.includes(t.trim().toLowerCase())) { currentPacking.push({ id: 'pac_' + Date.now() + '_' + index + '_' + Math.floor(Math.random()*1000), text: t, checked: false, category: cat }); addedCount++; } }); } db.ref(`Trips/${currentTripId}/mandatoryTasks`).set(currentMandatory); db.ref(`Trips/${currentTripId}/packing`).set(currentPacking); showAlert(`סונכרנו בהצלחה ${addedCount} פריטים חדשים מהתבנית!`); }
 
         function printHTMLInCurrentPage(htmlContent) { document.getElementById('print-area').innerHTML = htmlContent; setTimeout(() => { window.print(); }, 300); }
