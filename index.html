@@ -158,7 +158,6 @@
         <button class="install-close-btn" onclick="dismissInstall()">הבנתי, תודה</button>
     </div>
 
-    <!-- מסך הלובי -->
     <div id="lobby-view">
         <div class="lobby-header">
             <button class="admin-login-btn" onclick="promptAdminLogin()" title="כניסת מנהל">🔒</button>
@@ -170,7 +169,6 @@
         <button class="action-btn admin-only" onclick="createNewTrip()" style="background-color: var(--primary-brown); margin-top: 20px;">➕ צור טיול חדש (מנהל)</button>
     </div>
 
-    <!-- מסך הטיול -->
     <div id="trip-view">
         <header>
             <button class="back-btn" onclick="returnToLobby()" title="חזור ללובי"><span style="font-size: 1.2rem;">🏨</span> חזרה ללובי</button>
@@ -180,7 +178,6 @@
         </header>
 
         <main>
-            <!-- Tab 0: Home -->
             <div id="tab-home" class="tab-content active">
                 <div class="home-hero"><img id="dyn-hero-img" src="hero.jpg" alt="Hero Image" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#ccc\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'16\'>חסרה תמונת נוף</text></svg>'"><div class="home-hero-text" id="dyn-hero-text">...</div></div>
                 <p style="text-align: center; margin-bottom: 20px; font-size: 1.2rem; color: var(--primary-brown); font-weight: 800;">החופשה מתקרבת!</p>
@@ -193,7 +190,6 @@
                 <div class="glass-panel" style="overflow: hidden; padding: 0; margin-bottom: 20px; border-radius: 16px;"><iframe id="dyn-route-map" src="" width="100%" height="250" frameborder="0" style="border:0; display:block;" allowfullscreen></iframe></div>
             </div>
 
-            <!-- Tab 1: Itinerary -->
             <div id="tab-itinerary" class="tab-content">
                 <h2>מסלול הטיול</h2>
                 <div id="itineraryListContainer"></div>
@@ -206,7 +202,6 @@
                 </div>
             </div>
 
-            <!-- Tab 2: Packing List -->
             <div id="tab-packing" class="tab-content">
                 <h2>ציוד והכנות</h2>
                 <div style="display: flex; gap: 10px; margin-bottom: 20px;">
@@ -227,7 +222,6 @@
                 </div>
             </div>
 
-            <!-- Tab 3: Expenses -->
             <div id="tab-expenses" class="tab-content admin-only">
                 <h2>הוצאות משפחתיות</h2>
                 <div class="glass-panel" style="padding: 20px; margin-bottom: 25px;">
@@ -253,7 +247,6 @@
                 <button onclick="clearExpenses()" style="background:rgba(255, 235, 238, 0.8); backdrop-filter:blur(10px); border:1px solid #ffcdd2; color:#d32f2f; margin-top:30px; margin-bottom:50px; padding:18px; width:100%; border-radius:12px; font-size:1.2rem; cursor:pointer; font-weight:800;">🗑️ איפוס מחשבון הוצאות</button>
             </div>
 
-            <!-- Tab 4: Info & Phones -->
             <div id="tab-info" class="tab-content">
                 <h2>מידע, מסמכים וטלפונים</h2>
 
@@ -300,7 +293,6 @@
                 <button id="dyn-emergency-btn" class="action-btn" style="background-color: #d32f2f; margin-bottom: 50px;">🚨 טוען...</button>
             </div>
 
-            <!-- Tab 5: Location -->
             <div id="tab-location" class="tab-content">
                 <h2>המיקום הנוכחי שלי</h2>
                 <p style="margin-bottom: 20px; color: #555; font-size: 1rem; font-weight:600;">שתף את המיקום שלך כדי ששאר בני המשפחה יוכלו לראות איפה אתה נמצא.</p>
@@ -312,7 +304,6 @@
                 </div>
             </div>
 
-            <!-- Tab 6: Admin Settings -->
             <div id="tab-settings" class="tab-content admin-only">
                 <h2 style="margin-bottom: 25px;">⚙️ פאנל ניהול (מנהל)</h2>
                 
@@ -422,10 +413,9 @@
         </nav>
     </div>
 
-    <!-- מודל התראות חכם -->
     <div id="customModal">
         <div class="modal-content" id="modalContentDiv">
-            <span class="close-modal-x" onclick="closeModal()">&times;</span>
+            <span class="close-modal-x" onclick="closeModal()">×</span>
             <div id="modalIcon" style="font-size: 3rem; margin-bottom: 10px;">🔔</div>
             <p id="modalMessage">הודעה</p>
             <button id="modalBtn" class="modal-btn">הבנתי</button>
@@ -436,6 +426,12 @@
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 
     <script>
+        // כפיית התחברות לשרת (עוקף חסימות אופליין של הטלפון)
+        const firebaseConfig = { apiKey: "AIzaSyAKlewYVxd7bWRRV-M8hs_YZKuYp1V0TQM", authDomain: "family-travel-app-d4710.firebaseapp.com", databaseURL: "https://family-travel-app-d4710-default-rtdb.europe-west1.firebasedatabase.app", projectId: "family-travel-app-d4710", storageBucket: "family-travel-app-d4710.firebasestorage.app", messagingSenderId: "843954095365", appId: "1:843954095365:web:d9687120c3987d3a7aa36c" };
+        firebase.initializeApp(firebaseConfig); 
+        const db = firebase.database();
+        firebase.database().goOnline(); // כופה על האפליקציה לחפש חיבור פעיל
+
         function checkInstallPrompt() {
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || document.referrer.includes('android-app://');
             if (isStandalone) return; 
@@ -448,9 +444,6 @@
         }
         function dismissInstall() { document.getElementById('install-prompt').style.display = 'none'; localStorage.setItem('install_prompt_dismissed', 'true'); }
         setTimeout(checkInstallPrompt, 2000);
-
-        const firebaseConfig = { apiKey: "AIzaSyAKlewYVxd7bWRRV-M8hs_YZKuYp1V0TQM", authDomain: "family-travel-app-d4710.firebaseapp.com", databaseURL: "https://family-travel-app-d4710-default-rtdb.europe-west1.firebasedatabase.app", projectId: "family-travel-app-d4710", storageBucket: "family-travel-app-d4710.firebasestorage.app", messagingSenderId: "843954095365", appId: "1:843954095365:web:d9687120c3987d3a7aa36c" };
-        firebase.initializeApp(firebaseConfig); const db = firebase.database();
 
         let currentTripId = null; let isAdmin = false; let globalAdminPin = "1981"; let countdownInterval = null;
         let globalTemplates = { mandatoryTasks: ['בדוק דרכונים בתוקף', 'ביטוח נסיעות לחו"ל', 'הצטיידות בכסף מקומי', 'הפקת רישיון נהיגה בינ"ל', 'מסמכים מודפסים'], packing: { clothing: ['חולצות קצרות/ארוכות', 'מכנסיים', 'הלבשה תחתונה וגרביים', 'נעלי הליכה/ספורט', 'מעיל/גקט', 'בגדי ים'], toiletries: ['מברשת ומשחת שיניים', 'דאודורנט', 'שמפו וסבון גוף', 'קרם הגנה'], personal: ['מטען לטלפון נייד', 'מתאם שקעים בינלאומי', 'משקפי שמש/ראייה', 'סוללת גיבוי'], misc: ['תיק עזרה ראשונה', 'שקיות ניילון לכביסה', 'משחקים קטנים'] }, luggageTags: [ { name: 'Eliran Shmilovich', tel: '972-504039236', address: 'Bareket 12 , Afula , Israel', email: 'eliranshmilo@Gmail.com' }, { name: 'Dror Aizenberg', tel: '972-542420007', address: 'Bareket 12 , Afula , Israel', email: '' }, { name: '', tel: '', address: '', email: '' }, { name: '', tel: '', address: '', email: '' } ] };
@@ -479,7 +472,11 @@
         const lobbyTimeout = setTimeout(() => {
             const container = document.getElementById('trips-container');
             if (container && container.innerHTML.includes('טוען טיולים')) {
-                container.innerHTML = '<div style="text-align: center; color: #d32f2f; font-size:1.1rem; margin-top:30px; line-height:1.5; padding: 20px;" class="glass-panel"><strong>שגיאת תקשורת 🔌</strong><br>לא הצלחנו למשוך את הנתונים מהענן.<br><span style="font-size:0.9rem; color:#555; display:block; margin-top:10px;">ייתכן שתוסף (כמו AdBlock, Ghostery או אנטי-וירוס) חוסם את הגישה מאחורי הקלעים.<br><strong>נסו לפתוח בחלון גלישה בסתר (Incognito)</strong>.</span></div>';
+                if (!navigator.onLine) {
+                    container.innerHTML = '<div style="text-align: center; color: #d32f2f; font-size:1.1rem; margin-top:30px; line-height:1.5; padding: 20px;" class="glass-panel"><strong>אין חיבור לאינטרנט 📶</strong><br>הטלפון מדווח שהוא במצב לא מקוון.<br><span style="font-size:0.9rem; color:#555; display:block; margin-top:10px;">נסו לכבות ולהדליק את הנתונים הסלולריים או ה-WiFi.</span></div>';
+                } else {
+                    container.innerHTML = '<div style="text-align: center; color: #d32f2f; font-size:1.1rem; margin-top:30px; line-height:1.5; padding: 20px;" class="glass-panel"><strong>שגיאת תקשורת 🔌</strong><br>לא הצלחנו למשוך את הנתונים מהענן.<br><span style="font-size:0.9rem; color:#555; display:block; margin-top:10px;">ייתכן שתוסף רשת או הגנת סייבר של הסלולר חוסמים את הגישה.<br><strong>נסו לפתוח בדפדפן רגיל או בגלישה בסתר (Incognito)</strong>.</span></div>';
+                }
             }
         }, 7000); // 7 שניות המתנה
 
