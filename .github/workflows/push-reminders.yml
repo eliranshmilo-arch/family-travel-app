@@ -1,0 +1,32 @@
+name: Push reminders - mandatory tasks
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # כל יום ב-06:00 UTC (08:00-09:00 שעון ישראל)
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'שלח הודעת בדיקה לכל המכשירים (בלי לעדכן מונים)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        working-directory: .github/push
+        run: npm install --no-audit --no-fund
+      - name: Send reminders
+        working-directory: .github/push
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          TEST_MODE: ${{ github.event.inputs.test == 'true' }}
+        run: node send-reminders.js

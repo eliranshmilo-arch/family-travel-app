@@ -6,6 +6,7 @@
     <title>פורטל הטיולים המשפחתי</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     
@@ -32,6 +33,7 @@
         .lobby-header h1 { font-size: 1.7rem; line-height: 1.3; color: var(--primary-green); font-weight: 800; }
         .lobby-header p { color: var(--primary-brown); font-size: 1.1rem; font-weight: 600; margin-top: 8px; }
         .admin-login-btn { position: absolute; top: 0; left: 0; background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.8); border-radius: 50%; width: 45px; height: 45px; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .notif-btn { position: absolute; top: 0; right: 0; background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.8); border-radius: 50%; width: 45px; height: 45px; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .trips-grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding-bottom: 50px; }
         .trip-card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 25px; text-align: center; cursor: pointer; transition: transform 0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
         .trip-card:active { transform: scale(0.96); }
@@ -162,6 +164,7 @@
     <div id="lobby-view">
         <div class="lobby-header">
             <button class="admin-login-btn" onclick="promptAdminLogin()" title="כניסת מנהל">🔒</button>
+            <button class="notif-btn" id="notif-btn" onclick="enableNotifications()" title="הפעלת התראות">🔕</button>
             <img src="icon.png" alt="לוגו" style="width: 85px; height: 85px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 12px; border: 3px solid rgba(255,255,255,0.6); object-fit: cover;">
             <h1>הטיולים של משפחת<br>שמילוביץ' - איזנברג</h1>
             <p>בחרו טיול כדי להצטרף לחוויה</p>
@@ -441,6 +444,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-messaging-compat.js"></script>
 
     <script>
         const firebaseConfig = { apiKey: "AIzaSyAKlewYVxd7bWRRV-M8hs_YZKuYp1V0TQM", authDomain: "family-travel-app-d4710.firebaseapp.com", databaseURL: "https://family-travel-app-d4710-default-rtdb.europe-west1.firebasedatabase.app", projectId: "family-travel-app-d4710", storageBucket: "family-travel-app-d4710.firebasestorage.app", messagingSenderId: "843954095365", appId: "1:843954095365:web:d9687120c3987d3a7aa36c" };
@@ -542,10 +546,73 @@
                 card.innerHTML = `<div class="trip-card-color-bar" style="background-color: ${color}"></div><div style="font-size: 3rem; margin-bottom: 10px; filter: ${isCompleted ? 'grayscale(100%)' : 'none'};">${isCompleted ? '🌍' : '✈️'}</div><h2 style="${isCompleted ? 'color:#666;' : ''}">${title}</h2>${completedBadge}<p style="color: #666; font-size: 0.9rem; margin-top:5px;">לחץ לכניסה לפרטי הטיול</p>`; 
                 container.appendChild(card); 
             }
+
+            if (pendingDeepLink && trips[pendingDeepLink.trip]) {
+                const link = pendingDeepLink; pendingDeepLink = null;
+                history.replaceState(null, '', location.pathname);
+                openTrip(link.trip);
+                if (link.tab === 'packing') switchTab('packing', document.querySelectorAll('.nav-btn')[2]);
+            }
         }, error => {
             clearTimeout(lobbyTimeout);
             document.getElementById('trips-container').innerHTML = `<div style="text-align: center; color: #d32f2f; margin-top:30px;" class="glass-panel"><strong>שגיאה בגישה למסד הנתונים:</strong><br>${error.message}</div>`;
         });
+
+        // ===== התראות פוש (Firebase Cloud Messaging) =====
+        // מפתח VAPID מתוך: Firebase Console > Project settings > Cloud Messaging > Web Push certificates
+        const VAPID_KEY = "BBjngnxbCT0uam3bTjTEH53HaJp7IbO181CvKqMd5Pm4cxHCDIgy__WIQaAZpuYmn058ptxyS-UBmvgddKdGibo";
+
+        function updateNotifButton() {
+            const btn = document.getElementById('notif-btn'); if (!btn) return;
+            const on = ('Notification' in window) && Notification.permission === 'granted' && localStorage.getItem('push_enabled') === 'true';
+            btn.innerText = on ? '🔔' : '🔕';
+            btn.title = on ? 'התראות פעילות' : 'הפעלת התראות';
+        }
+
+        async function registerPushToken(silent) {
+            const supported = await Promise.resolve(firebase.messaging.isSupported());
+            if (!('serviceWorker' in navigator) || !('Notification' in window) || !supported) {
+                if (!silent) {
+                    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                    showAlert(isIOS ? 'באייפון התראות עובדות רק מהאפליקציה שעל מסך הבית.\nלחצו על כפתור השיתוף (⍐) ← "הוסף למסך הבית", פתחו את האפליקציה משם ולחצו שוב על 🔕.' : 'הדפדפן הזה לא תומך בהתראות. נסו לפתוח ב-Chrome.', 'warning');
+                }
+                return;
+            }
+            if (!silent) {
+                const perm = await Notification.requestPermission();
+                if (perm !== 'granted') { showAlert('ההתראות לא אושרו. אפשר לאשר אותן בהגדרות הדפדפן ולנסות שוב.', 'warning'); return; }
+            } else if (Notification.permission !== 'granted') return;
+
+            const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js');
+            const token = await firebase.messaging().getToken({ vapidKey: VAPID_KEY, serviceWorkerRegistration: reg });
+            if (!token) throw new Error('no token');
+            const key = token.replace(/[.#$\[\]\/]/g, '_');
+            await db.ref('PushTokens/' + key).set({ token, updatedAt: Date.now(), ua: navigator.userAgent.slice(0, 150) });
+            localStorage.setItem('push_enabled', 'true');
+            updateNotifButton();
+            if (!silent) showAlert('ההתראות הופעלו! 🔔\nנעדכן אתכם כשהטיסה מתקרבת ויש משימות חובה פתוחות.', 'party', 'מעולה');
+        }
+
+        function enableNotifications() {
+            registerPushToken(false).catch(err => { console.error('Push error:', err); showAlert('לא הצלחנו להפעיל התראות במכשיר הזה. נסו שוב מאוחר יותר.', 'warning'); });
+        }
+
+        // רענון שקט של הטוקן במכשירים שכבר אישרו התראות + הצגת פוש כשהאפליקציה פתוחה
+        setTimeout(() => {
+            updateNotifButton();
+            if (localStorage.getItem('push_enabled') === 'true') registerPushToken(true).catch(err => console.warn('Push refresh failed:', err));
+            Promise.resolve(firebase.messaging.isSupported()).then(ok => {
+                if (!ok) return;
+                firebase.messaging().onMessage(payload => {
+                    const n = payload.notification || {}; const tripId = payload.data && payload.data.tripId;
+                    showAlert(`${n.title || ''}\n${n.body || ''}`, 'warning', tripId ? 'קח אותי למשימות' : 'הבנתי', tripId ? () => { openTrip(tripId); switchTab('packing', document.querySelectorAll('.nav-btn')[2]); } : null);
+                });
+            });
+        }, 1500);
+
+        // קישור ישיר מתוך התראה: ?trip=ID&tab=packing
+        const deepLinkParams = new URLSearchParams(location.search);
+        let pendingDeepLink = deepLinkParams.get('trip') ? { trip: deepLinkParams.get('trip'), tab: deepLinkParams.get('tab') } : null;
 
         function runSmartNotifications(flightDateStr, mandatoryTasks, isCompleted) {
             if (isCompleted || !flightDateStr) return; // לא מקפיצים התראות על טיול שהסתיים

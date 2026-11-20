@@ -1,0 +1,8 @@
+{
+  "name": "trip-push-reminders",
+  "private": true,
+  "description": "שליחת תזכורות פוש על משימות חובה לפני טיסה",
+  "dependencies": {
+    "firebase-admin": "^12.7.0"
+  }
+}

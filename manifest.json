@@ -1,0 +1,14 @@
+{
+  "name": "פורטל הטיולים המשפחתי",
+  "short_name": "הטיולים שלנו",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fefae0",
+  "theme_color": "#3a5a40",
+  "icons": [
+    { "src": "icon.png", "sizes": "447x447", "type": "image/png", "purpose": "any" }
+  ]
+}
